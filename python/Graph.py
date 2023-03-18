@@ -3,8 +3,15 @@ import pyqtgraph as pg
 class Graph(pg.PlotWidget):
     def __init__(self):
         super().__init__()
-        self.setBackground("white")
         self.plots = []
+
+        self.lightTheme()
+
+    def lightTheme(self):
+        self.setBackground("white")
+        
+    def darkTheme(self):
+        self.setBackground("black")
 
     def addPlot(self, color):
         pen = pg.mkPen(color=color)

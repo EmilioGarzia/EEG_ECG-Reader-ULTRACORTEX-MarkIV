@@ -1,0 +1,25 @@
+#CH1check, #CH9check{ background-color: rgb(128,129,130);color:white;}
+#CH2check, #CH10check{ background-color: rgb(123, 74,141); color:white; }
+#CH3check, #CH11check{ background-color: rgb(57, 90, 161); color:white; }
+#CH4check, #CH12check{ background-color: rgb(49,113,89); color:white;}
+#CH5check, #CH13check{ background-color: rgb(220, 174, 5); color:white;}
+#CH6check, #CH14check{ background-color: rgb(254,97,55); color: white;}
+#CH7check, #CH15check{ background-color: rgb(255,56,44); color:white;}
+#CH8check, #CH16check{ background-color: rgb(162, 81,48); color: white;}
+
+#MainWindow{
+    background-color: rgb(21, 21, 21);
+}
+
+QGroupBox{
+    color: white;
+}
+
+QCheckBox{
+    color: white;
+    border-radius: 6px;
+}
+
+QLabel{
+    color: white;
+}

@@ -41,7 +41,7 @@ class MainWindow(QMainWindow):
         init_series(fftWidget)
         self.addFTTPlot(fftWidget)
 
-        self.lightMode()
+        self.darkMode()
 
     def showAbout(self): self.aboutWindow.show()
     def addWavePlot(self, widget): self.waveContainer.addWidget(widget)
@@ -52,9 +52,20 @@ class MainWindow(QMainWindow):
     def lightMode(self):
         with open("..{0}css{0}styleLight.css".format(separator), "r") as css:
             global waveWidget
+            global fftWidget
             myCSS = css.read()
             self.setStyleSheet(myCSS)
-            waveWidget.setBackground("black")
+            waveWidget.lightTheme()
+            fftWidget.lightTheme()
+        
+    def darkMode(self):
+        with open("..{0}css{0}styleDark.css".format(separator), "r") as css:
+            global waveWidget
+            global fftWidget
+            myCSS = css.read()
+            self.setStyleSheet(myCSS)
+            waveWidget.darkTheme()
+            fftWidget.darkTheme()
 
     def show_hide_wave(self, state):
         if state == 2:

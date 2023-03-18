@@ -119,6 +119,9 @@
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
           <layout class="QVBoxLayout" name="channelLayout">
+           <property name="sizeConstraint">
+            <enum>QLayout::SetDefaultConstraint</enum>
+           </property>
            <item>
             <widget class="QCheckBox" name="CH1check">
              <property name="font">
@@ -622,8 +625,8 @@
    <slot>show_hide_wave()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>916</x>
-     <y>70</y>
+     <x>1164</x>
+     <y>121</y>
     </hint>
     <hint type="destinationlabel">
      <x>866</x>
@@ -638,8 +641,8 @@
    <slot>show_hide_fft()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>916</x>
-     <y>93</y>
+     <x>1164</x>
+     <y>195</y>
     </hint>
     <hint type="destinationlabel">
      <x>797</x>
@@ -679,10 +682,44 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionLight</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>lightMode()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>596</x>
+     <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDark</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>darkMode()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>596</x>
+     <y>401</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>show_hide_wave()</slot>
   <slot>show_hide_fft()</slot>
   <slot>showAbout()</slot>
+  <slot>lightMode()</slot>
+  <slot>darkMode()</slot>
  </slots>
 </ui>
