@@ -15,3 +15,5 @@ QCheckBox{
     color: white;
     border-radius: 6px;
 }
+
+#playButton, #pauseButton{ background-color: transparent; }

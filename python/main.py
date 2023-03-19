@@ -43,7 +43,12 @@ class MainWindow(QMainWindow):
         
         #start GUI in dark mode
         self.darkMode()
-    
+
+    def start(self):
+        global board
+        board.connect("..{0}record{0}test.csv".format(separator))
+        self.startLoop(update, 1000//board.sampling_rate)
+
     #some methods of MainWindow
     def showFileManager(self): self.fileManager.showFileBrowser()
     def showAbout(self): self.aboutWindow.show()
@@ -104,13 +109,11 @@ def main():
     #Connect GUI to Cyton board
     global board
     board = CytonDaisyBoard("/dev/ttuUSB0")
-    board.connect("..{0}record{0}test.csv".format(separator))
     
     #main application
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
-    window.startLoop(update, 1000//board.sampling_rate)
     sys.exit(app.exec_())
 
 
@@ -126,7 +129,6 @@ def init_series(graph):
     for i in range(len(board.exg_channels)):
         color = board.get_channel_color(i+1)
         graph.addPlot(color)
-
 
 #Start Process
 if __name__ == "__main__":

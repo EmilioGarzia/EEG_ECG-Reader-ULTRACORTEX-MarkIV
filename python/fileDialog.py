@@ -6,7 +6,6 @@ class FileBrowser(QFileDialog):
         self.setGeometry(100,100, 300, 300)
         self.path = None
 
-    def showFileBrowser(self):
-        self.path, _ = self.getOpenFileName(self)
+    def showFileBrowser(self): self.path, _ = self.getOpenFileName(self)
 
     def getPath(self): return self.path
