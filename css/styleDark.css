@@ -7,19 +7,11 @@
 #CH7check, #CH15check{ background-color: rgb(255,56,44); color:white;}
 #CH8check, #CH16check{ background-color: rgb(162, 81,48); color: white;}
 
-#MainWindow{
-    background-color: rgb(21, 21, 21);
-}
-
-QGroupBox{
-    color: white;
-}
+#MainWindow{ background-color: rgb(21, 21, 21); }
+QLabel{ color: white; }
+QGroupBox{ color: white; }
 
 QCheckBox{
     color: white;
     border-radius: 6px;
-}
-
-QLabel{
-    color: white;
 }

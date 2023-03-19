@@ -5,7 +5,12 @@ class Graph(pg.PlotWidget):
         super().__init__()
         self.plots = []
 
+        self.showGrid(x=True, y=True)
+        self.setLabel("left", "µV")
+        self.setLabel("bottom", "Time")
+
         self.lightTheme()
+        
 
     def lightTheme(self):
         self.setBackground("white")
