@@ -24,6 +24,7 @@ class MainWindow(QMainWindow):
         self.fileManager = fileDialog.FileBrowser()
         #About window dialog
         self.aboutWindow = aboutDialog.AboutDialog()
+        
         #Wave Plot Instruction
         global waveWidget
         waveWidget = Graph()
@@ -31,6 +32,7 @@ class MainWindow(QMainWindow):
         waveWidget.setYRange(-20000, 20000)
         init_series(waveWidget)
         self.addWavePlot(waveWidget)
+        
         # FFT Plot Instruction
         global fftWidget
         fftWidget = Graph()
@@ -38,6 +40,7 @@ class MainWindow(QMainWindow):
         fftWidget.setYRange(0, 10000)
         init_series(fftWidget)
         self.addFTTPlot(fftWidget)
+        
         #start GUI in dark mode
         self.darkMode()
     
