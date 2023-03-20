@@ -4,6 +4,7 @@ import platform
 
 separator = "\\" if platform.system() == "Windows" else "/"
 
+
 class AboutDialog(QDialog):
     def __init__(self):
         super().__init__()
