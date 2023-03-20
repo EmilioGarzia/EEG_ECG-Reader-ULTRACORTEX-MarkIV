@@ -8,3 +8,8 @@
 #CH8check, #CH16check{ background-color: rgb(162, 81,48); color: white;}
 
 #playButton, #pauseButton{ background-color: transparent; }
+
+#playButton:hover, #pauseButton:hover{ 
+    background-color: gray;
+    border-radius: 15px;
+}
