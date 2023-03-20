@@ -227,6 +227,16 @@
             <enum>QLayout::SetDefaultConstraint</enum>
            </property>
            <item>
+            <widget class="QCheckBox" name="allChannelCheck">
+             <property name="text">
+              <string>All</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QCheckBox" name="CH1check">
              <property name="font">
               <font>
@@ -640,7 +650,7 @@
      <x>0</x>
      <y>0</y>
      <width>1193</width>
-     <height>21</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -777,8 +787,8 @@
    <slot>show_hide_wave()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1164</x>
-     <y>121</y>
+     <x>1155</x>
+     <y>147</y>
     </hint>
     <hint type="destinationlabel">
      <x>866</x>
@@ -793,8 +803,8 @@
    <slot>show_hide_fft()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1164</x>
-     <y>195</y>
+     <x>1155</x>
+     <y>230</y>
     </hint>
     <hint type="destinationlabel">
      <x>797</x>
@@ -889,8 +899,8 @@
    <slot>start()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>125</x>
-     <y>185</y>
+     <x>213</x>
+     <y>165</y>
     </hint>
     <hint type="destinationlabel">
      <x>266</x>
@@ -905,12 +915,284 @@
    <slot>stopLoop()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>156</x>
-     <y>183</y>
+     <x>291</x>
+     <y>165</y>
     </hint>
     <hint type="destinationlabel">
      <x>319</x>
      <y>191</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CH1check</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>toggledChannel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>204</x>
+     <y>476</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>406</x>
+     <y>395</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CH2check</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>toggledChannel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>81</x>
+     <y>496</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>391</x>
+     <y>388</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CH3check</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>toggledChannel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>53</x>
+     <y>510</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>175</x>
+     <y>415</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CH4check</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>toggledChannel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>125</x>
+     <y>531</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>380</x>
+     <y>380</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CH5check</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>toggledChannel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>161</x>
+     <y>556</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>596</x>
+     <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CH6check</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>toggledChannel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>161</x>
+     <y>575</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>596</x>
+     <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CH7check</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>toggledChannel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>161</x>
+     <y>594</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>596</x>
+     <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CH8check</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>toggledChannel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>161</x>
+     <y>613</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>596</x>
+     <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CH9check</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>toggledChannel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>161</x>
+     <y>632</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>596</x>
+     <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CH10check</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>toggledChannel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>161</x>
+     <y>651</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>596</x>
+     <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CH11check</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>toggledChannel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>161</x>
+     <y>670</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>596</x>
+     <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CH12check</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>toggledChannel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>161</x>
+     <y>689</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>596</x>
+     <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CH13check</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>toggledChannel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>161</x>
+     <y>708</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>596</x>
+     <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CH14check</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>toggledChannel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>161</x>
+     <y>727</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>596</x>
+     <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CH15check</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>toggledChannel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>161</x>
+     <y>746</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>596</x>
+     <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CH16check</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>toggledChannel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>161</x>
+     <y>765</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>596</x>
+     <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>allChannelCheck</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>selectAllChannel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>41</x>
+     <y>458</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>98</x>
+     <y>394</y>
     </hint>
    </hints>
   </connection>
@@ -924,5 +1206,7 @@
   <slot>showFileManager()</slot>
   <slot>start()</slot>
   <slot>stopLoop()</slot>
+  <slot>toggledChannel()</slot>
+  <slot>selectAllChannel()</slot>
  </slots>
 </ui>
