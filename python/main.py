@@ -24,7 +24,7 @@ class MainWindow(QMainWindow):
         self.fileManager = fileDialog.FileBrowser()
         #About window dialog
         self.aboutWindow = aboutDialog.AboutDialog()
-        
+
         #Wave Plot Instruction
         global waveWidget
         waveWidget = Graph()
@@ -46,7 +46,8 @@ class MainWindow(QMainWindow):
 
     def start(self):
         global board
-        board.connect("..{0}record{0}test.csv".format(separator))
+        board.connect(self.fileManager.getPath())
+        self.openedFileLabel.setText(self.fileManager.getFilename())
         self.startLoop(update, 1000//board.sampling_rate)
 
     #some methods of MainWindow
