@@ -6,9 +6,11 @@ from graph import *
 import platform
 import aboutDialog
 import fileDialog
+import serial.tools.list_ports
 
 # global var
 separator = "\\" if platform.system() == "Windows" else "/"  # file system separator
+serial_port_connected = dict()                               # all serial port connected
 
 class MainWindow(QMainWindow):
     def __init__(self, board, *args, **kwargs):
@@ -20,7 +22,6 @@ class MainWindow(QMainWindow):
         uic.loadUi("..{0}GUI{0}gui.ui".format(separator), self)
         # File browser object
         self.fileManager = fileDialog.FileBrowser()
-
         # About window dialog
         self.aboutWindow = aboutDialog.AboutDialog()
 
@@ -32,13 +33,42 @@ class MainWindow(QMainWindow):
         self.fftWidget = Graph((0, 60), (0, 10000))
         self.addGraph(self.fftWidget, self.fftContainer)
 
-        # start GUI in dark mode
+        # start GUI in dark mode and Initialize Widgets
         self.darkMode()
+        self.initBoardType()
 
+
+    #Methods for Board Type Input
+    def initBoardType(self):
+        global type_of_board
+        for t in type_of_board.keys():
+            self.inputBoard.addItem(t)
+    #  --------------------------------------- DA COMPLETARE CON MANUEL  ******************** ------------------
+    def changeBoardType(self): 
+        global type_of_board
+        print(type_of_board.get(self.inputBoard.currentText()))
+
+
+    #Methods for Serial Port List
+    def refreshSerialPort(self):
+        self.serialPortInput.clear()
+        global serial_port_connected
+        ports = serial.tools.list_ports.comports()
+        for port, description, _ in sorted(ports):
+            serial_port_connected.update({description : port})
+            self.serialPortInput.addItem(description)
+    
+    def connectToSerialPort(self):
+        global serial_port_connected
+        selected_port = serial_port_connected.get(self.serialPortInput.currentText())
+        print(selected_port)
+    # ---------------------------------------------------------------------------------------------------------
+    
+    #Play the plot
     def start(self, ):
         self.board.connect(self.fileManager.getPath())
         self.startLoop(self.update, 1000 // self.board.sampling_rate)
-
+    
     # Functions that update plot data
     def update(self):
         wave, fft = self.board.read_data()
@@ -51,6 +81,10 @@ class MainWindow(QMainWindow):
     def showFileManager(self):
         self.fileManager.showFileBrowser()
         self.openedFileLabel.setText(self.fileManager.getFilename())
+
+    def openOutputDirManager(self):
+        outDir = QFileDialog.getExistingDirectory(self, "Select Directory", options=QFileDialog.ShowDirsOnly)
+        self.outputDirectory.setText(outDir)
 
     def showAbout(self): self.aboutWindow.show()
 

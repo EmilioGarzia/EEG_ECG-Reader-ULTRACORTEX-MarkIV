@@ -15,11 +15,8 @@ class Graph(pg.PlotWidget):
         self.lightTheme()
 
     def lightTheme(self): self.setBackground("white")
-
     def darkTheme(self): self.setBackground("black")
-
     def hidePlot(self, index): self.removeItem(self.plots[index - 1])
-
     def showPlot(self, index): self.addItem(self.plots[index - 1])
 
     def addPlot(self, color):

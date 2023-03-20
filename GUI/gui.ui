@@ -26,6 +26,9 @@
          <string>Playback Mode</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_7">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetNoConstraint</enum>
+         </property>
          <item>
           <spacer name="verticalSpacer_2">
            <property name="orientation">
@@ -164,6 +167,9 @@
          <string>Live Stream</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_5">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetNoConstraint</enum>
+         </property>
          <item>
           <spacer name="verticalSpacer_4">
            <property name="orientation">
@@ -191,6 +197,12 @@
            </item>
            <item>
             <widget class="QComboBox" name="inputBoard">
+             <property name="minimumSize">
+              <size>
+               <width>200</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="contextMenuPolicy">
               <enum>Qt::DefaultContextMenu</enum>
              </property>
@@ -224,15 +236,35 @@
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="serialPortInput"/>
+            <widget class="QComboBox" name="serialPortInput">
+             <property name="minimumSize">
+              <size>
+               <width>300</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton">
+            <widget class="QPushButton" name="refreshSerialPortBtn">
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Refresh serial port list&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Refresh Serial Port List&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"/>
              </property>
              <property name="text">
               <string/>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>../SVG/refreshSerialPortList.svg</normaloff>../SVG/refreshSerialPortList.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>25</width>
+               <height>25</height>
+              </size>
              </property>
             </widget>
            </item>
@@ -240,6 +272,9 @@
             <spacer name="horizontalSpacer_3">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Expanding</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
@@ -261,12 +296,15 @@
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit">
+            <widget class="QLineEdit" name="outputDirectory">
              <property name="maximumSize">
               <size>
                <width>16777215</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Output directory&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="styleSheet">
               <string notr="true">border-radius: 5px</string>
@@ -332,20 +370,10 @@
           <enum>QLayout::SetMaximumSize</enum>
          </property>
          <property name="rightMargin">
-          <number>7</number>
+          <number>9</number>
          </property>
          <item>
-          <widget class="QLineEdit" name="lineEdit_3">
-           <property name="styleSheet">
-            <string notr="true">border-radius: 5px</string>
-           </property>
-           <property name="placeholderText">
-            <string>Patient's surname</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEdit_2">
+          <widget class="QLineEdit" name="patientName">
            <property name="styleSheet">
             <string notr="true">border-radius: 5px</string>
            </property>
@@ -355,11 +383,21 @@
           </widget>
          </item>
          <item>
-          <widget class="QPlainTextEdit" name="plainTextEdit">
+          <widget class="QLineEdit" name="patientSurname">
+           <property name="styleSheet">
+            <string notr="true">border-radius: 5px</string>
+           </property>
+           <property name="placeholderText">
+            <string>Patient's surname</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPlainTextEdit" name="patientDescription">
            <property name="maximumSize">
             <size>
              <width>16777215</width>
-             <height>100</height>
+             <height>150</height>
             </size>
            </property>
            <property name="cursor" stdset="0">
@@ -397,6 +435,9 @@
          <string>Main Plot</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetNoConstraint</enum>
+         </property>
          <item>
           <spacer name="verticalSpacer_6">
            <property name="orientation">
@@ -515,6 +556,9 @@
           <bold>false</bold>
          </font>
         </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable/Disable single channel&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="styleSheet">
          <string notr="true"/>
         </property>
@@ -529,6 +573,9 @@
            </property>
            <item>
             <widget class="QCheckBox" name="allChannelCheck">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check/Uncheck all channel&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="text">
               <string>All</string>
              </property>
@@ -951,7 +998,7 @@
      <x>0</x>
      <y>0</y>
      <width>1193</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -1106,8 +1153,8 @@
    <slot>show_hide_wave()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>852</x>
-     <y>142</y>
+     <x>925</x>
+     <y>183</y>
     </hint>
     <hint type="destinationlabel">
      <x>866</x>
@@ -1122,8 +1169,8 @@
    <slot>show_hide_fft()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>852</x>
-     <y>169</y>
+     <x>925</x>
+     <y>206</y>
     </hint>
     <hint type="destinationlabel">
      <x>797</x>
@@ -1218,8 +1265,8 @@
    <slot>start()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>69</x>
-     <y>164</y>
+     <x>64</x>
+     <y>180</y>
     </hint>
     <hint type="destinationlabel">
      <x>266</x>
@@ -1234,8 +1281,8 @@
    <slot>stopLoop()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>119</x>
-     <y>164</y>
+     <x>112</x>
+     <y>180</y>
     </hint>
     <hint type="destinationlabel">
      <x>319</x>
@@ -1250,8 +1297,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>229</x>
-     <y>364</y>
+     <x>250</x>
+     <y>436</y>
     </hint>
     <hint type="destinationlabel">
      <x>406</x>
@@ -1266,8 +1313,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>106</x>
-     <y>394</y>
+     <x>127</x>
+     <y>462</y>
     </hint>
     <hint type="destinationlabel">
      <x>391</x>
@@ -1282,8 +1329,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>78</x>
-     <y>425</y>
+     <x>99</x>
+     <y>488</y>
     </hint>
     <hint type="destinationlabel">
      <x>175</x>
@@ -1298,8 +1345,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>150</x>
-     <y>455</y>
+     <x>171</x>
+     <y>514</y>
     </hint>
     <hint type="destinationlabel">
      <x>380</x>
@@ -1314,8 +1361,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>186</x>
-     <y>486</y>
+     <x>207</x>
+     <y>540</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1330,8 +1377,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>186</x>
-     <y>516</y>
+     <x>207</x>
+     <y>566</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1346,8 +1393,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>186</x>
-     <y>547</y>
+     <x>207</x>
+     <y>592</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1362,8 +1409,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>186</x>
-     <y>578</y>
+     <x>207</x>
+     <y>618</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1378,8 +1425,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>186</x>
-     <y>608</y>
+     <x>207</x>
+     <y>644</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1394,8 +1441,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>186</x>
-     <y>639</y>
+     <x>207</x>
+     <y>670</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1410,8 +1457,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>186</x>
-     <y>669</y>
+     <x>207</x>
+     <y>696</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1426,8 +1473,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>161</x>
-     <y>689</y>
+     <x>182</x>
+     <y>722</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1442,8 +1489,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>161</x>
-     <y>708</y>
+     <x>182</x>
+     <y>748</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1506,8 +1553,8 @@
    <slot>selectAllChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>66</x>
-     <y>333</y>
+     <x>87</x>
+     <y>410</y>
     </hint>
     <hint type="destinationlabel">
      <x>98</x>
@@ -1547,6 +1594,70 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>inputBoard</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>changeBoardType()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>241</x>
+     <y>133</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>391</x>
+     <y>-10</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>refreshSerialPortBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>refreshSerialPort()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>528</x>
+     <y>194</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>607</x>
+     <y>369</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>serialPortInput</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>connectToSerialPort()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>217</x>
+     <y>199</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>592</x>
+     <y>363</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>browseFileBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openOutputDirManager()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>559</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>601</x>
+     <y>350</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>show_hide_wave()</slot>
@@ -1561,5 +1672,9 @@
   <slot>selectAllChannel()</slot>
   <slot>fontMaximize()</slot>
   <slot>fontMinimize()</slot>
+  <slot>changeBoardType()</slot>
+  <slot>refreshSerialPort()</slot>
+  <slot>connectToSerialPort()</slot>
+  <slot>openOutputDirManager()</slot>
  </slots>
 </ui>

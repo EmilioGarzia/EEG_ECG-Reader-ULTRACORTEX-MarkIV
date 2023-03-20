@@ -19,5 +19,12 @@ QGroupBox{
     font-weight: bold;
 }
 
-#openedFileLabel{ color: green; }
+#openedFileLabel{ color: rgb(235, 129, 22); }
 QCheckBox{ border-radius: 6px; }
+
+#refreshSerialPortBtn{ background-color: transparent; }
+
+#refreshSerialPortBtn:hover{ 
+    background-color: gray; 
+    border-radius: 10px;
+}

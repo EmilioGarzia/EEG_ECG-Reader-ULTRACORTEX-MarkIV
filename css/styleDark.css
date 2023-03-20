@@ -28,7 +28,7 @@ QCheckBox{
     border-radius: 15px;
 }
 
-#openedFileLabel{ color: rgb(0, 106, 255); }
+#openedFileLabel{ color: rgb(235, 193, 22); }
 QListView{
     background-color: black;
     color: white;
@@ -52,3 +52,9 @@ QLineEdit, QPlainTextEdit, QComboBox{
     background-color: black;
     padding: 4px;
 }
+
+#refreshSerialPortBtn{ 
+    background-color: transparent;
+    border-radius: 10px;
+}
+#refreshSerialPortBtn:hover{ background-color: white; }

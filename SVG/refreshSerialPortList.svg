@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="24.579786mm"
+   height="19.579163mm"
+   viewBox="0 0 24.579787 19.579162"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
+   sodipodi:docname="refreshSerialPortList.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="2.2097881"
+     inkscape:cx="31.677246"
+     inkscape:cy="154.31344"
+     inkscape:window-width="2560"
+     inkscape:window-height="1057"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Livello 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-90.990312,-117.54451)">
+    <path
+       d="m 96.070312,129.87409 5.079998,-5.08 h -2.83104 c 0.926042,-1.79916 2.80458,-3.0427 4.97417,-3.0427 1.40229,0 2.69875,0.52916 3.6777,1.40229 h 5.15938 c -1.56105,-3.33375 -4.94771,-5.60917 -8.83708,-5.60917 -4.524378,0 -8.334378,3.06917 -9.445628,7.24958 h -2.8575 z"
+       fill="#0070c0"
+       id="path9"
+       style="stroke-width:0.264583" />
+    <path
+       d="m 115.5701,129.87409 -5.07999,-5.08 -5.08001,5.08 h 2.8575 c -0.92604,1.79917 -2.80458,3.04271 -4.97416,3.04271 -1.4023,0 -2.69875,-0.52916 -3.677711,-1.40229 h -5.185834 c 1.5875,3.33375 4.947709,5.60917 8.863545,5.60917 4.52437,0 8.33437,-3.06917 9.44562,-7.24959 z"
+       fill="#0070c0"
+       id="path11"
+       style="stroke-width:0.264583" />
+  </g>
+</svg>

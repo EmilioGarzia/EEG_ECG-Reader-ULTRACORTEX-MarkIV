@@ -5,7 +5,15 @@ import time
 import csv
 import numpy as np
 
-
+#Type of board supported
+type_of_board = {
+    "CYTON DAISY BOARD [16CH]": BoardIds.CYTON_DAISY_BOARD,
+    "CYTON BOARD [8CH]": BoardIds.CYTON_BOARD,
+    "CYTON DAISY WIFI BOARD [16CH]": BoardIds.CYTON_DAISY_WIFI_BOARD,
+    "CYTON WIFI BOARD [8CH]": BoardIds.CYTON_WIFI_BOARD,
+    "GANGLION BOARD": BoardIds.GANGLION_BOARD,
+    "GANGLION WIFI BOARD": BoardIds.GANGLION_WIFI_BOARD
+}
 
 class Function:
     def __init__(self, x, y):
@@ -15,9 +23,10 @@ class Function:
 
 class CytonDaisyBoard:
     def __init__(self, port):
+        global type_of_board
         params = BrainFlowInputParams()
         params.serial_port = port
-        self.board = BoardShim(BoardIds.CYTON_DAISY_BOARD, params)
+        self.board = BoardShim(type_of_board.get("CYTON DAISY BOARD [16CH]"), params)
         self.board_id = self.board.get_board_id()
         self.exg_channels = BoardShim.get_exg_channels(self.board_id)
         self.sampling_rate = BoardShim.get_sampling_rate(self.board_id)
