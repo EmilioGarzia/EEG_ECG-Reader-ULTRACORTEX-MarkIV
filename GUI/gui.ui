@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1193</width>
-    <height>803</height>
+    <height>848</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,19 +21,27 @@
     <item>
      <layout class="QHBoxLayout" name="toolbar">
       <item>
-       <widget class="QGroupBox" name="groupBox_3">
-        <property name="title">
-         <string>Live Stream</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_5"/>
-       </widget>
-      </item>
-      <item>
        <widget class="QGroupBox" name="groupBox_4">
         <property name="title">
          <string>Playback Mode</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_7">
+         <item>
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Minimum</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>30</width>
+             <height>50</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_6">
            <item>
@@ -44,6 +52,9 @@
                 <widget class="QPushButton" name="playButton">
                  <property name="cursor">
                   <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start playback&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="styleSheet">
                   <string notr="true"/>
@@ -67,6 +78,9 @@
                 <widget class="QPushButton" name="pauseButton">
                  <property name="cursor">
                   <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Stop playback&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="styleSheet">
                   <string notr="true"/>
@@ -119,21 +133,263 @@
            </item>
           </layout>
          </item>
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Minimum</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>30</width>
+             <height>50</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
         </layout>
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
+       <widget class="QGroupBox" name="groupBox_3">
+        <property name="maximumSize">
          <size>
-          <width>40</width>
-          <height>20</height>
+          <width>500</width>
+          <height>16777215</height>
          </size>
         </property>
-       </spacer>
+        <property name="title">
+         <string>Live Stream</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <item>
+          <spacer name="verticalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Minimum</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>30</width>
+             <height>50</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_9">
+           <item>
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>Board Type</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="inputBoard">
+             <property name="contextMenuPolicy">
+              <enum>Qt::DefaultContextMenu</enum>
+             </property>
+             <property name="currentText">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_11">
+           <item>
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>Serial Port</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="serialPortInput"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Refresh serial port list&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_10">
+           <item>
+            <widget class="QLabel" name="label_5">
+             <property name="text">
+              <string>Output</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">border-radius: 5px</string>
+             </property>
+             <property name="dragEnabled">
+              <bool>true</bool>
+             </property>
+             <property name="placeholderText">
+              <string>Output folder...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="browseFileBtn">
+             <property name="maximumSize">
+              <size>
+               <width>50</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose output directory from file system&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>...</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Minimum</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>30</width>
+             <height>50</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox_5">
+        <property name="maximumSize">
+         <size>
+          <width>500</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="title">
+         <string>Patient Information</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_9">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetMaximumSize</enum>
+         </property>
+         <property name="rightMargin">
+          <number>7</number>
+         </property>
+         <item>
+          <widget class="QLineEdit" name="lineEdit_3">
+           <property name="styleSheet">
+            <string notr="true">border-radius: 5px</string>
+           </property>
+           <property name="placeholderText">
+            <string>Patient's surname</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEdit_2">
+           <property name="styleSheet">
+            <string notr="true">border-radius: 5px</string>
+           </property>
+           <property name="placeholderText">
+            <string>Patient's name</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPlainTextEdit" name="plainTextEdit">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>100</height>
+            </size>
+           </property>
+           <property name="cursor" stdset="0">
+            <cursorShape>IBeamCursor</cursorShape>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Description of session&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Plain</enum>
+           </property>
+           <property name="sizeAdjustPolicy">
+            <enum>QAbstractScrollArea::AdjustToContents</enum>
+           </property>
+           <property name="lineWrapMode">
+            <enum>QPlainTextEdit::WidgetWidth</enum>
+           </property>
+           <property name="placeholderText">
+            <string>Description</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </item>
       <item>
        <widget class="QGroupBox" name="groupBox">
@@ -141,6 +397,22 @@
          <string>Main Plot</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <spacer name="verticalSpacer_6">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Minimum</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>30</width>
+             <height>50</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
          <item>
           <widget class="QCheckBox" name="wavePlotCheckBox">
            <property name="cursor">
@@ -189,8 +461,37 @@
            </property>
           </widget>
          </item>
+         <item>
+          <spacer name="verticalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Minimum</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>30</width>
+             <height>50</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
         </layout>
        </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout"/>
@@ -650,7 +951,7 @@
      <x>0</x>
      <y>0</y>
      <width>1193</width>
-     <height>24</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -672,9 +973,17 @@
      <addaction name="actionDark"/>
      <addaction name="actionLight"/>
     </widget>
+    <widget class="QMenu" name="menuFont_Size">
+     <property name="title">
+      <string>Font Size</string>
+     </property>
+     <addaction name="actionZoom"/>
+     <addaction name="actionZoom_2"/>
+    </widget>
     <addaction name="actionFullscreen"/>
     <addaction name="actionNormal_Screen"/>
     <addaction name="menuMode"/>
+    <addaction name="menuFont_Size"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -745,6 +1054,16 @@
     <string>Normal Screen</string>
    </property>
   </action>
+  <action name="actionZoom">
+   <property name="text">
+    <string>Zoom +</string>
+   </property>
+  </action>
+  <action name="actionZoom_2">
+   <property name="text">
+    <string>Zoom -</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections>
@@ -787,8 +1106,8 @@
    <slot>show_hide_wave()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1155</x>
-     <y>147</y>
+     <x>852</x>
+     <y>142</y>
     </hint>
     <hint type="destinationlabel">
      <x>866</x>
@@ -803,8 +1122,8 @@
    <slot>show_hide_fft()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1155</x>
-     <y>230</y>
+     <x>852</x>
+     <y>169</y>
     </hint>
     <hint type="destinationlabel">
      <x>797</x>
@@ -899,8 +1218,8 @@
    <slot>start()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>213</x>
-     <y>165</y>
+     <x>69</x>
+     <y>164</y>
     </hint>
     <hint type="destinationlabel">
      <x>266</x>
@@ -915,8 +1234,8 @@
    <slot>stopLoop()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>291</x>
-     <y>165</y>
+     <x>119</x>
+     <y>164</y>
     </hint>
     <hint type="destinationlabel">
      <x>319</x>
@@ -931,8 +1250,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>204</x>
-     <y>476</y>
+     <x>229</x>
+     <y>364</y>
     </hint>
     <hint type="destinationlabel">
      <x>406</x>
@@ -947,8 +1266,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>81</x>
-     <y>496</y>
+     <x>106</x>
+     <y>394</y>
     </hint>
     <hint type="destinationlabel">
      <x>391</x>
@@ -963,8 +1282,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>53</x>
-     <y>510</y>
+     <x>78</x>
+     <y>425</y>
     </hint>
     <hint type="destinationlabel">
      <x>175</x>
@@ -979,8 +1298,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>125</x>
-     <y>531</y>
+     <x>150</x>
+     <y>455</y>
     </hint>
     <hint type="destinationlabel">
      <x>380</x>
@@ -995,8 +1314,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>161</x>
-     <y>556</y>
+     <x>186</x>
+     <y>486</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1011,8 +1330,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>161</x>
-     <y>575</y>
+     <x>186</x>
+     <y>516</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1027,8 +1346,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>161</x>
-     <y>594</y>
+     <x>186</x>
+     <y>547</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1043,8 +1362,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>161</x>
-     <y>613</y>
+     <x>186</x>
+     <y>578</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1059,8 +1378,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>161</x>
-     <y>632</y>
+     <x>186</x>
+     <y>608</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1075,8 +1394,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>161</x>
-     <y>651</y>
+     <x>186</x>
+     <y>639</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1091,8 +1410,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>161</x>
-     <y>670</y>
+     <x>186</x>
+     <y>669</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1139,8 +1458,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>161</x>
-     <y>727</y>
+     <x>186</x>
+     <y>761</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1155,8 +1474,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>161</x>
-     <y>746</y>
+     <x>186</x>
+     <y>791</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1171,8 +1490,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>161</x>
-     <y>765</y>
+     <x>186</x>
+     <y>822</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1187,12 +1506,44 @@
    <slot>selectAllChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>41</x>
-     <y>458</y>
+     <x>66</x>
+     <y>333</y>
     </hint>
     <hint type="destinationlabel">
      <x>98</x>
      <y>394</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionZoom</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>fontMaximize()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>596</x>
+     <y>423</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionZoom_2</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>fontMinimize()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>596</x>
+     <y>423</y>
     </hint>
    </hints>
   </connection>
@@ -1208,5 +1559,7 @@
   <slot>stopLoop()</slot>
   <slot>toggledChannel()</slot>
   <slot>selectAllChannel()</slot>
+  <slot>fontMaximize()</slot>
+  <slot>fontMinimize()</slot>
  </slots>
 </ui>

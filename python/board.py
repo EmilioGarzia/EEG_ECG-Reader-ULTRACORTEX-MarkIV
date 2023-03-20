@@ -1,10 +1,11 @@
 from brainflow.board_shim import BrainFlowInputParams, BoardShim, BoardIds
 from brainflow.data_filter import DataFilter, FilterTypes, DetrendOperations, NoiseTypes, WindowOperations
-
 from datetime import datetime
 import time
 import csv
 import numpy as np
+
+
 
 class Function:
     def __init__(self, x, y):

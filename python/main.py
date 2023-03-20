@@ -1,7 +1,5 @@
 import sys
-
 from PyQt5 import uic, QtCore
-
 from board import *
 from PyQt5.QtWidgets import *
 from graph import *
@@ -11,7 +9,6 @@ import fileDialog
 
 # global var
 separator = "\\" if platform.system() == "Windows" else "/"  # file system separator
-
 
 class MainWindow(QMainWindow):
     def __init__(self, board, *args, **kwargs):
@@ -55,8 +52,7 @@ class MainWindow(QMainWindow):
         self.fileManager.showFileBrowser()
         self.openedFileLabel.setText(self.fileManager.getFilename())
 
-    def showAbout(self):
-        self.aboutWindow.show()
+    def showAbout(self): self.aboutWindow.show()
 
     def addGraph(self, graph, container):
         for i in range(len(self.board.exg_channels)):
@@ -65,6 +61,8 @@ class MainWindow(QMainWindow):
         container.addWidget(graph)
 
     # Methods for theme
+    def fontMaximize(self): self.setStyleSheet(self.styleSheet() + "*{ font-size: 20px; }")
+    def fontMinimize(self): self.setStyleSheet(self.styleSheet() + "*{ font-size: 13px; }")
     def lightMode(self):
         with open("..{0}css{0}styleLight.css".format(separator), "r") as css:
             myCSS = css.read()

@@ -14,5 +14,10 @@
     border-radius: 15px;
 }
 
+QGroupBox{ 
+    color: red; 
+    font-weight: bold;
+}
+
 #openedFileLabel{ color: green; }
 QCheckBox{ border-radius: 6px; }

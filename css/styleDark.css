@@ -12,7 +12,8 @@ QLabel{ color: white; }
 
 QGroupBox{ 
     background-color: rgb(36, 36, 36);
-    color: white; 
+    color: yellow; 
+    font-weight: bold;
 }
 
 QCheckBox{
@@ -27,4 +28,27 @@ QCheckBox{
     border-radius: 15px;
 }
 
-#openedFileLabel{ color: limegreen; }
+#openedFileLabel{ color: rgb(0, 106, 255); }
+QListView{
+    background-color: black;
+    color: white;
+}
+
+#browseFileBtn{
+    background-color: rgb(0, 106, 255);
+    color: white;
+    border-radius: 2px;
+    padding: 5px 10px 5px 10px;
+    font-size: 12px;
+}
+
+#browseFileBtn:hover{
+    background-color: white;
+    color: black;
+}
+
+QLineEdit, QPlainTextEdit, QComboBox{
+    color: white;
+    background-color: black;
+    padding: 4px;
+}
