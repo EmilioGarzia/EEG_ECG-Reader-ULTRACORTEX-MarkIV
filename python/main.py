@@ -22,6 +22,7 @@ class MainWindow(QMainWindow):
         uic.loadUi("..{0}GUI{0}gui.ui".format(separator), self)
         #File browser object
         self.fileManager = fileDialog.FileBrowser()
+        
         #About window dialog
         self.aboutWindow = aboutDialog.AboutDialog()
 
@@ -47,11 +48,13 @@ class MainWindow(QMainWindow):
     def start(self):
         global board
         board.connect(self.fileManager.getPath())
-        self.openedFileLabel.setText(self.fileManager.getFilename())
         self.startLoop(update, 1000//board.sampling_rate)
 
     #some methods of MainWindow
-    def showFileManager(self): self.fileManager.showFileBrowser()
+    def showFileManager(self): 
+        self.fileManager.showFileBrowser()
+        self.openedFileLabel.setText(self.fileManager.getFilename())
+
     def showAbout(self): self.aboutWindow.show()
     def addWavePlot(self, widget): self.waveContainer.addWidget(widget)
     def addFTTPlot(self, widget): self.fftContainer.addWidget(widget)

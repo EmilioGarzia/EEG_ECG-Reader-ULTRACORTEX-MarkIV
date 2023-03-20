@@ -9,7 +9,11 @@
 
 #MainWindow{ background-color: rgb(21, 21, 21); }
 QLabel{ color: white; }
-QGroupBox{ color: white; }
+
+QGroupBox{ 
+    background-color: rgb(36, 36, 36);
+    color: white; 
+}
 
 QCheckBox{
     color: white;
