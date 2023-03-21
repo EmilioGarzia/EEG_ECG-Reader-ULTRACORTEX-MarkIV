@@ -7,10 +7,11 @@ class Graph(pg.PlotWidget):
         self.plots = []
 
         self.showGrid(x=True, y=True)
-        self.setLabel("left", "µV")
-        self.setLabel("bottom", "Time")
-
         self.lightTheme()
+
+    def setLabels(self, x_label, y_label):
+        self.setLabel("left", y_label)
+        self.setLabel("bottom", x_label)
 
     def lightTheme(self): self.setBackground("white")
     def darkTheme(self): self.setBackground("black")

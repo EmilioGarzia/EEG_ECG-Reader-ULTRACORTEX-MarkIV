@@ -31,10 +31,12 @@ class MainWindow(QMainWindow):
 
         # Wave Plot Instruction
         self.waveWidget = Graph()
+        self.waveWidget.setLabels("Time (s)", "Amplitude (µV)")
         self.waveContainer.addWidget(self.waveWidget)
 
         # FFT Plot Instruction
         self.fftWidget = Graph()
+        self.fftWidget.setLabels("Frequency (Hz)", "Amplitude (µV)")
         self.fftContainer.addWidget(self.fftWidget)
 
         # start GUI in dark mode and Initialize Widgets
