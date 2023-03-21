@@ -5,7 +5,8 @@ import time
 import csv
 import numpy as np
 
-#Type of board supported
+
+# Supported types of boards
 type_of_board = {
     "CYTON DAISY BOARD [16CH]": BoardIds.CYTON_DAISY_BOARD,
     "CYTON BOARD [8CH]": BoardIds.CYTON_BOARD,
@@ -15,60 +16,72 @@ type_of_board = {
     "GANGLION WIFI BOARD": BoardIds.GANGLION_WIFI_BOARD
 }
 
+
 class Function:
     def __init__(self, x, y):
         self.x = x
         self.y = y
 
 
-class CytonDaisyBoard:
-    def __init__(self, port):
-        global type_of_board
-        params = BrainFlowInputParams()
-        params.serial_port = port
-        self.board = BoardShim(type_of_board.get("CYTON DAISY BOARD [16CH]"), params)
-        self.board_id = self.board.get_board_id()
-        self.exg_channels = BoardShim.get_exg_channels(self.board_id)
-        self.sampling_rate = BoardShim.get_sampling_rate(self.board_id)
+class Board:
+    def __init__(self):
+        self.board = None
+        self.exg_channels = None
+        self.sampling_rate = 125
         self.update_speed_ms = 50
         self.window_size = 4
-        self.num_points = self.window_size * self.sampling_rate
+        self.num_points = self.calculate_points_number()
         self.colors = [(128, 129, 130), (123, 74, 141), (57, 90, 161), (49, 113, 89),
                        (220, 174, 5), (254, 97, 55), (255, 56, 44), (162, 81, 48)]
 
-        self.writer = None
         self.totalData = None
+        self.writer = None
         self.real_time = True
         self.reader = None
         self.prevTime = None
 
-    def connect(self, dataFile=None):
-        self.totalData = np.zeros(shape=(self.num_points, 32)).tolist()
-        if dataFile is None:
-            self.real_time = True
-            # Creates the file which will contain data produced during the next session
-            filename = datetime.now().strftime("%m-%d-%Y_%H:%M:%S.csv")
-            file = open(filename, 'a+')
-            self.writer = csv.writer(file)  # Instantiates the csv parser
+    def calculate_points_number(self):
+        return self.window_size * self.sampling_rate
 
-            print("Preparo la sessione...")
-            self.board.prepare_session()
-            print("Avvio la sessione...")
-            self.board.start_stream()
-            time.sleep(5)
-        else:
-            self.real_time = False
-            file = open(dataFile, 'r')
-            self.reader = csv.reader(file)
-            next(self.reader)
-            self.prevTime = time.time() * 1000
-        return 0
+    def begin_capturing(self, board_type, port, output_folder=""):
+        self.real_time = True
+        global type_of_board
+        params = BrainFlowInputParams()
+        params.serial_port = port
+        self.board = BoardShim(board_type, params)
+        board_id = self.board.get_board_id()
+        self.exg_channels = BoardShim.get_exg_channels(board_id)
+        self.sampling_rate = BoardShim.get_sampling_rate(board_id)
+        self.num_points = self.calculate_points_number()
+
+        output_file = output_folder + datetime.now().strftime("%m-%d-%Y_%H:%M:%S.csv")
+        print(output_file)
+        file = open(output_file, 'a+')
+        self.writer = csv.writer(file)  # Instantiates the csv parser
+        self.writer.writerow([self.exg_channels[0], self.exg_channels[-1]])
+
+        print("Preparo la sessione...")
+        self.board.prepare_session()
+        print("Avvio la sessione...")
+        self.board.start_stream()
+        time.sleep(5)
+
+    def playback(self, input_file):
+        self.real_time = False
+        file = open(input_file, 'r')
+        self.reader = csv.reader(file)
+        header = next(self.reader)
+        self.exg_channels = range(int(header[0]), int(header[1]))
+        self.prevTime = time.time() * 1000
 
     # Returns a tuple containing the following data in order: wave, fft
     # This function must be called inside a loop
     def read_data(self):
         if self.real_time:
             new_data = self.board.get_board_data(self.num_points)
+            if self.totalData is None:
+                self.totalData = list(np.zeros(shape=(self.num_points, len(new_data))))
+
             if len(new_data[0]) > 0:
                 self.filter_data(new_data)
                 transposed_new_data = np.transpose(new_data)
@@ -83,8 +96,11 @@ class CytonDaisyBoard:
             # Aggiunge i nuovi dati letti da file alla matrice
             for _ in range(passedSamples):
                 try:
-                    self.totalData.append(np.array(next(self.reader), dtype="float64"))
-                except Exception:
+                    row = next(self.reader)
+                    if self.totalData is None:
+                        self.totalData = list(np.zeros(shape=(self.num_points, len(row))))
+                    self.totalData.append(np.array(row, dtype="float64"))
+                except EOFError:
                     return None, None
 
         self.totalData = self.clip_data(self.totalData)

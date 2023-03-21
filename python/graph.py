@@ -2,10 +2,8 @@ import pyqtgraph as pg
 
 
 class Graph(pg.PlotWidget):
-    def __init__(self, xrange, yrange):
+    def __init__(self):
         super().__init__()
-        self.setXRange(xrange[0], xrange[1])
-        self.setYRange(yrange[0], yrange[1])
         self.plots = []
 
         self.showGrid(x=True, y=True)

@@ -1,5 +1,5 @@
 import sys
-from PyQt5 import uic, QtCore
+from PyQt5 import uic, QtCore, QtGui
 from board import *
 from PyQt5.QtWidgets import *
 from graph import *
@@ -10,13 +10,13 @@ import serial.tools.list_ports
 
 # global var
 separator = "\\" if platform.system() == "Windows" else "/"  # file system separator
-serial_port_connected = dict()                               # all serial port connected
+serial_port_connected = dict()  # all serial port connected
+
 
 class MainWindow(QMainWindow):
-    def __init__(self, board, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
         self.timer = QtCore.QTimer()
-        self.board = board
 
         # GUI loader
         uic.loadUi("..{0}GUI{0}gui.ui".format(separator), self)
@@ -25,50 +25,69 @@ class MainWindow(QMainWindow):
         # About window dialog
         self.aboutWindow = aboutDialog.AboutDialog()
 
+        self.board = Board()
+        self.selected_board_type = None
+        self.selected_port = None
+
         # Wave Plot Instruction
-        self.waveWidget = Graph((-board.num_points, 0), (-20000, 20000))
-        self.addGraph(self.waveWidget, self.waveContainer)
+        self.waveWidget = Graph()
+        self.waveContainer.addWidget(self.waveWidget)
 
         # FFT Plot Instruction
-        self.fftWidget = Graph((0, 60), (0, 10000))
-        self.addGraph(self.fftWidget, self.fftContainer)
+        self.fftWidget = Graph()
+        self.fftContainer.addWidget(self.fftWidget)
 
         # start GUI in dark mode and Initialize Widgets
         self.darkMode()
         self.initBoardType()
 
-
-    #Methods for Board Type Input
+    # Methods for Board Type Input
     def initBoardType(self):
         global type_of_board
         for t in type_of_board.keys():
             self.inputBoard.addItem(t)
-    #  --------------------------------------- DA COMPLETARE CON MANUEL  ******************** ------------------
-    def changeBoardType(self): 
-        global type_of_board
-        print(type_of_board.get(self.inputBoard.currentText()))
 
+    def changeBoardType(self):
+        self.selected_board_type = type_of_board.get(self.inputBoard.currentText())
 
-    #Methods for Serial Port List
+    # Methods for Serial Port List
     def refreshSerialPort(self):
         self.serialPortInput.clear()
         global serial_port_connected
         ports = serial.tools.list_ports.comports()
         for port, description, _ in sorted(ports):
-            serial_port_connected.update({description : port})
+            serial_port_connected.update({description: port})
             self.serialPortInput.addItem(description)
-    
+
     def connectToSerialPort(self):
         global serial_port_connected
-        selected_port = serial_port_connected.get(self.serialPortInput.currentText())
-        print(selected_port)
+        self.selected_port = serial_port_connected.get(self.serialPortInput.currentText())
+
     # ---------------------------------------------------------------------------------------------------------
-    
-    #Play the plot
-    def start(self, ):
-        self.board.connect(self.fileManager.getPath())
+
+    # Play the plot
+    def start(self):
+        if self.selected_port is not None and self.selected_board_type is not None:
+            self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.WaitCursor))
+            output_path = self.outputDirectory.text() + separator
+            self.board.begin_capturing(self.selected_board_type, self.selected_port, output_path)
+            self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
+        else:
+            input_path = self.fileManager.getPath()
+            if input_path == "":
+                input_path = None
+            self.board.playback(input_path)
+
+        self.initGraph(self.waveWidget)
+        self.waveWidget.setXRange(-self.board.num_points, 0)
+        self.waveWidget.setYRange(-20000, 20000)
+
+        self.initGraph(self.fftWidget)
+        self.fftWidget.setXRange(0, 60)
+        self.fftWidget.setYRange(0, 10000)
+
         self.startLoop(self.update, 1000 // self.board.sampling_rate)
-    
+
     # Functions that update plot data
     def update(self):
         wave, fft = self.board.read_data()
@@ -86,17 +105,21 @@ class MainWindow(QMainWindow):
         outDir = QFileDialog.getExistingDirectory(self, "Select Directory", options=QFileDialog.ShowDirsOnly)
         self.outputDirectory.setText(outDir)
 
-    def showAbout(self): self.aboutWindow.show()
+    def showAbout(self):
+        self.aboutWindow.show()
 
-    def addGraph(self, graph, container):
+    def initGraph(self, graph):
         for i in range(len(self.board.exg_channels)):
             color = self.board.get_channel_color(i + 1)
             graph.addPlot(color)
-        container.addWidget(graph)
 
     # Methods for theme
-    def fontMaximize(self): self.setStyleSheet(self.styleSheet() + "*{ font-size: 20px; }")
-    def fontMinimize(self): self.setStyleSheet(self.styleSheet() + "*{ font-size: 13px; }")
+    def fontMaximize(self):
+        self.setStyleSheet(self.styleSheet() + "*{ font-size: 20px; }")
+
+    def fontMinimize(self):
+        self.setStyleSheet(self.styleSheet() + "*{ font-size: 13px; }")
+
     def lightMode(self):
         with open("..{0}css{0}styleLight.css".format(separator), "r") as css:
             myCSS = css.read()
@@ -181,12 +204,9 @@ class MainWindow(QMainWindow):
 
 # ****************************************** - - - Main block - - - *****************************************#
 def main():
-    # Connect GUI to Cyton board
-    board = CytonDaisyBoard("/dev/ttyUSB0")
-
     # main application
     app = QApplication(sys.argv)
-    window = MainWindow(board)
+    window = MainWindow()
     window.show()
     sys.exit(app.exec_())
 
