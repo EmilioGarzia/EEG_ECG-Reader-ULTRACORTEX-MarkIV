@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1193</width>
-    <height>848</height>
+    <width>1291</width>
+    <height>901</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,12 +23,29 @@
       <item>
        <widget class="QGroupBox" name="groupBox_4">
         <property name="title">
-         <string>Playback Mode</string>
+         <string>Controls</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_7">
          <property name="sizeConstraint">
           <enum>QLayout::SetNoConstraint</enum>
          </property>
+         <item>
+          <widget class="QRadioButton" name="liveRadioBtn">
+           <property name="text">
+            <string>Live Stream Mode</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="playbackRadioBtn">
+           <property name="text">
+            <string>Playback Mode</string>
+           </property>
+          </widget>
+         </item>
          <item>
           <spacer name="verticalSpacer_2">
            <property name="orientation">
@@ -152,11 +169,42 @@
            </property>
           </spacer>
          </item>
+         <item>
+          <widget class="QSlider" name="speedControl">
+           <property name="minimum">
+            <number>0</number>
+           </property>
+           <property name="maximum">
+            <number>4</number>
+           </property>
+           <property name="singleStep">
+            <number>1</number>
+           </property>
+           <property name="pageStep">
+            <number>1</number>
+           </property>
+           <property name="value">
+            <number>1</number>
+           </property>
+           <property name="sliderPosition">
+            <number>1</number>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="tickPosition">
+            <enum>QSlider::TicksBelow</enum>
+           </property>
+           <property name="tickInterval">
+            <number>1</number>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
       </item>
       <item>
-       <widget class="QGroupBox" name="groupBox_3">
+       <widget class="QGroupBox" name="liveControlGroup">
         <property name="maximumSize">
          <size>
           <width>500</width>
@@ -997,8 +1045,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1193</width>
-     <height>21</height>
+     <width>1291</width>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -1153,8 +1201,8 @@
    <slot>show_hide_wave()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>925</x>
-     <y>183</y>
+     <x>1009</x>
+     <y>167</y>
     </hint>
     <hint type="destinationlabel">
      <x>866</x>
@@ -1169,8 +1217,8 @@
    <slot>show_hide_fft()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>925</x>
-     <y>206</y>
+     <x>1009</x>
+     <y>194</y>
     </hint>
     <hint type="destinationlabel">
      <x>797</x>
@@ -1297,8 +1345,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>250</x>
-     <y>436</y>
+     <x>275</x>
+     <y>414</y>
     </hint>
     <hint type="destinationlabel">
      <x>406</x>
@@ -1313,8 +1361,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>127</x>
-     <y>462</y>
+     <x>152</x>
+     <y>445</y>
     </hint>
     <hint type="destinationlabel">
      <x>391</x>
@@ -1329,8 +1377,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>99</x>
-     <y>488</y>
+     <x>124</x>
+     <y>475</y>
     </hint>
     <hint type="destinationlabel">
      <x>175</x>
@@ -1345,8 +1393,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>171</x>
-     <y>514</y>
+     <x>196</x>
+     <y>506</y>
     </hint>
     <hint type="destinationlabel">
      <x>380</x>
@@ -1361,8 +1409,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>207</x>
-     <y>540</y>
+     <x>232</x>
+     <y>537</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1457,8 +1505,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>207</x>
-     <y>696</y>
+     <x>232</x>
+     <y>721</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1473,8 +1521,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>182</x>
-     <y>722</y>
+     <x>207</x>
+     <y>752</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1489,8 +1537,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>182</x>
-     <y>748</y>
+     <x>207</x>
+     <y>783</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1505,8 +1553,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>186</x>
-     <y>761</y>
+     <x>211</x>
+     <y>814</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1521,8 +1569,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>186</x>
-     <y>791</y>
+     <x>211</x>
+     <y>844</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1537,8 +1585,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>186</x>
-     <y>822</y>
+     <x>211</x>
+     <y>875</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -1553,8 +1601,8 @@
    <slot>selectAllChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>87</x>
-     <y>410</y>
+     <x>112</x>
+     <y>383</y>
     </hint>
     <hint type="destinationlabel">
      <x>98</x>
@@ -1601,12 +1649,12 @@
    <slot>changeBoardType()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>241</x>
-     <y>133</y>
+     <x>457</x>
+     <y>151</y>
     </hint>
     <hint type="destinationlabel">
      <x>391</x>
-     <y>-10</y>
+     <y>0</y>
     </hint>
    </hints>
   </connection>
@@ -1617,8 +1665,8 @@
    <slot>refreshSerialPort()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>528</x>
-     <y>194</y>
+     <x>597</x>
+     <y>201</y>
     </hint>
     <hint type="destinationlabel">
      <x>607</x>
@@ -1633,8 +1681,8 @@
    <slot>connectToSerialPort()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>217</x>
-     <y>199</y>
+     <x>470</x>
+     <y>195</y>
     </hint>
     <hint type="destinationlabel">
      <x>592</x>
@@ -1649,12 +1697,44 @@
    <slot>openOutputDirManager()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>559</x>
-     <y>254</y>
+     <x>644</x>
+     <y>241</y>
     </hint>
     <hint type="destinationlabel">
      <x>601</x>
      <y>350</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>playbackRadioBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>activatePlaybackMode()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>67</x>
+     <y>110</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>171</x>
+     <y>40</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>liveRadioBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>activateLiveMode()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>74</x>
+     <y>71</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>169</x>
+     <y>29</y>
     </hint>
    </hints>
   </connection>
@@ -1676,5 +1756,7 @@
   <slot>refreshSerialPort()</slot>
   <slot>connectToSerialPort()</slot>
   <slot>openOutputDirManager()</slot>
+  <slot>activatePlaybackMode()</slot>
+  <slot>activateLiveMode()</slot>
  </slots>
 </ui>

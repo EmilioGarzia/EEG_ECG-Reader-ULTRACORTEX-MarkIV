@@ -53,6 +53,11 @@ QLineEdit, QPlainTextEdit, QComboBox{
     padding: 4px;
 }
 
+QRadioButton{
+    color: white;
+    background-color: transparent;
+}
+
 #refreshSerialPortBtn{ 
     background-color: transparent;
     border-radius: 10px;

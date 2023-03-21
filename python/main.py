@@ -43,6 +43,9 @@ class MainWindow(QMainWindow):
         self.darkMode()
         self.initBoardType()
 
+    def activatePlaybackMode(self): self.liveControlGroup.setEnabled(False)
+    def activateLiveMode(self): self.liveControlGroup.setEnabled(True)
+
     # Methods for Board Type Input
     def initBoardType(self):
         global type_of_board
@@ -65,13 +68,14 @@ class MainWindow(QMainWindow):
         global serial_port_connected
         self.selected_port = serial_port_connected.get(self.serialPortInput.currentText())
 
-    # ---------------------------------------------------------------------------------------------------------
-
     # Play the plot
     def start(self):
         if self.selected_port is not None and self.selected_board_type is not None:
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.WaitCursor))
-            output_path = self.outputDirectory.text() + separator
+            output_path = ""
+            if not len(self.outputDirectory.text()) == 0:
+                output_path = self.outputDirectory.text() + separator
+                output_path = output_path.replace("/",separator)
             self.board.begin_capturing(self.selected_board_type, self.selected_port, output_path)
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
         else:
@@ -116,11 +120,9 @@ class MainWindow(QMainWindow):
             graph.addPlot(color)
 
     # Methods for theme
-    def fontMaximize(self):
-        self.setStyleSheet(self.styleSheet() + "*{ font-size: 20px; }")
+    def fontMaximize(self): self.setStyleSheet(self.styleSheet() + "*{ font-size: 20px; }")
 
-    def fontMinimize(self):
-        self.setStyleSheet(self.styleSheet() + "*{ font-size: 13px; }")
+    def fontMinimize(self): self.setStyleSheet(self.styleSheet() + "*{ font-size: 13px; }")
 
     def lightMode(self):
         with open("..{0}css{0}styleLight.css".format(separator), "r") as css:
