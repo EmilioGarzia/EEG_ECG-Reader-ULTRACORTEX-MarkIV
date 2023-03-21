@@ -7,5 +7,5 @@ separator = "\\" if platform.system() == "Windows" else "/"
 
 class AboutDialog(QDialog):
     def __init__(self):
-        super().__init__()
+        super().__init__(None)
         uic.loadUi("..{0}GUI{0}aboutDialog.ui".format(separator), self)
