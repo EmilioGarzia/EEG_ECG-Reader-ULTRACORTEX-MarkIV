@@ -33,14 +33,42 @@ class MainWindow(QMainWindow):
         self.fftWidget = None
 
         # start GUI in dark mode and Initialize Widgets
+        self.hideSessionWidgets()
         self.darkMode()
         self.initBoardType()
 
+    def hideSessionWidgets(self):
+        self.waveLabel.hide()
+        if self.waveWidget:
+            self.waveWidget.hide()
+        self.fftLabel.hide()
+        if self.fftWidget:
+            self.fftWidget.hide()
+        self.ecgLabel.hide()
+        #if self.ecgWidget:
+        #    self.ecgWidget.hide()
+        self.allChannelCheck.hide()
+        self.eeg_channels.hide()
+        self.ecg_channels.hide()
+
+    def showSessionWidgets(self):
+        self.waveLabel.show()
+        self.waveWidget.show()
+        self.fftLabel.show()
+        self.fftWidget.show()
+        self.ecgLabel.show()
+        #self.ecgWidget.show()
+        self.allChannelCheck.show()
+        self.eeg_channels.show()
+        self.ecg_channels.show()
+
     def activatePlaybackMode(self):
         self.liveControlGroup.setEnabled(False)
+        self.playbackGroup.setEnabled(True)
 
     def activateLiveMode(self):
         self.liveControlGroup.setEnabled(True)
+        self.playbackGroup.setEnabled(False)
 
     # Methods for Board Type Input
     def initBoardType(self):
@@ -63,11 +91,11 @@ class MainWindow(QMainWindow):
     def connectToSerialPort(self):
         global serial_port_connected
         self.selected_port = serial_port_connected.get(self.serialPortInput.currentText())
+        self.initSession()
 
     # Play the plot
     def start(self):
-        self.sessionWidget.show()
-        if self.selected_port is not None and self.selected_board_type is not None:
+        if self.liveRadioBtn.isChecked():
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.WaitCursor))
             output_path = ""
             if not len(self.outputDirectory.text()) == 0:
@@ -81,26 +109,15 @@ class MainWindow(QMainWindow):
                 input_path = None
             self.board.playback(input_path)
 
-        # Wave Plot Instruction
-        self.waveWidget = Graph()
+        # Setup wave graphs
         self.initGraph(self.waveWidget)
         self.waveWidget.setXRange(-self.board.num_points, 0)
         self.waveWidget.setYRange(-20000, 20000)
-        self.waveWidget.setLabels("Time (s)", "Amplitude (µV)")
-        self.waveContainer.addWidget(self.waveWidget)
 
-        # FFT Plot Instruction
-        self.fftWidget = Graph()
+        # Setup fft graphs
         self.initGraph(self.fftWidget)
         self.fftWidget.setXRange(0, 60)
         self.fftWidget.setYRange(0, 10000)
-        self.fftWidget.setLabels("Frequency (Hz)", "Amplitude (µV)")
-        self.fftContainer.addWidget(self.fftWidget)
-
-        if self.darkMode:
-            self.darkMode()
-        else:
-            self.lightMode()
 
         self.startLoop(self.update, 1000 // self.board.sampling_rate)
 
@@ -116,6 +133,28 @@ class MainWindow(QMainWindow):
     def showFileManager(self):
         self.fileManager.showFileBrowser()
         self.openedFileLabel.setText(self.fileManager.getFilename())
+        self.initSession()
+
+    def initSession(self):
+        # Wave Plot Instruction
+        self.waveWidget = Graph()
+        self.waveWidget.setLabels("Time (s)", "Amplitude (µV)")
+        self.waveContainer.addWidget(self.waveWidget)
+
+        # FFT Plot Instruction
+        self.fftWidget = Graph()
+        self.fftWidget.setLabels("Frequency (Hz)", "Amplitude (µV)")
+        self.fftContainer.addWidget(self.fftWidget)
+
+        self.showSessionWidgets()
+        self.mainViewGroup.setEnabled(True)
+        self.ecg_channels.hide()
+        self.ecgLabel.hide()
+
+        if self.darkMode:
+            self.darkMode()
+        else:
+            self.lightMode()
 
     def openOutputDirManager(self):
         outDir = QFileDialog.getExistingDirectory(self, "Select Directory", options=QFileDialog.ShowDirsOnly)
@@ -196,21 +235,43 @@ class MainWindow(QMainWindow):
     # Methods for Show/Hide plot
     def show_hide_wave(self, state):
         if state == 2:
-            self.waveMainContainer.show()
-            self.groupBox_2.show()
+            self.waveLabel.show()
+            self.waveWidget.show()
+            self.showSidebar()
         else:
-            self.waveMainContainer.hide()
-            if not self.fftPlotCheckBox.isChecked():
-                self.groupBox_2.hide()
+            self.waveLabel.hide()
+            self.waveWidget.hide()
+            if not self.fftPlotCheckBox.isChecked() and not self.ecgPlotCheckBox.isChecked():
+                self.hideSessionWidgets()
 
     def show_hide_fft(self, state):
         if state == 2:
-            self.fftMainContainer.show()
-            self.groupBox_2.show()
+            self.fftLabel.show()
+            self.fftWidget.show()
+            self.showSidebar()
         else:
-            self.fftMainContainer.hide()
-            if not self.wavePlotCheckBox.isChecked():
-                self.groupBox_2.hide()
+            self.fftLabel.hide()
+            self.fftWidget.hide()
+            if not self.wavePlotCheckBox.isChecked() and not self.ecgPlotCheckBox.isChecked():
+                self.hideSessionWidgets()
+
+    def show_hide_ecg(self, state):
+        if state == 2:
+            self.ecgLabel.show()
+            self.ecgWidget.show()
+            self.showSidebar()
+        else:
+            self.ecgLabel.hide()
+            self.ecgWidget.hide()
+            self.ecg_channels.hide()
+            if not self.wavePlotCheckBox.isChecked() and not self.fftPlotCheckBox.isChecked():
+                self.hideSessionWidgets()
+
+    def showSidebar(self):
+        self.allChannelCheck.show()
+        self.eeg_channels.show()
+        if self.ecgPlotCheckBox.isChecked():
+            self.ecg_channels.show()
 
     def show_hide_toolbar(self):
         if self.controlsGroup.isVisible():
@@ -225,12 +286,6 @@ class MainWindow(QMainWindow):
             self.mainViewGroup.show()
             self.patientGroup.show()
             self.playbackGroup.show()
-
-    def show_hide_ecg(self, state):
-        if state == 2:
-            pass  # se spuntato
-        else:
-            pass  # no spuntato
 
     def on_off_ecg(self, state):
         if state == 2:

@@ -100,7 +100,7 @@ class Board:
                     if self.totalData is None:
                         self.totalData = list(np.zeros(shape=(self.num_points, len(row))))
                     self.totalData.append(np.array(row, dtype="float64"))
-                except EOFError:
+                except StopIteration:
                     return None, None
 
         self.totalData = self.clip_data(self.totalData)
