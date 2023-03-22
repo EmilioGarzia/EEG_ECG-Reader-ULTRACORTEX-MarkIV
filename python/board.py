@@ -71,8 +71,7 @@ class Board:
         file = open(input_file, 'r')
         self.reader = csv.reader(file)
         header = next(self.reader)
-        self.exg_channels = range(int(header[0]), int(header[1]))
-        self.prevTime = time.time() * 1000
+        self.exg_channels = range(int(header[0]), int(header[1])+1)
 
     # Returns a tuple containing the following data in order: wave, fft
     # This function must be called inside a loop
@@ -88,20 +87,14 @@ class Board:
                 self.save_data(transposed_new_data)
                 self.totalData.extend(transposed_new_data)
         else:
-            currTime = time.time() * 1000
-            passedTime = currTime - self.prevTime
-            self.prevTime = currTime
-            passedSamples = int(passedTime * self.sampling_rate / 1000)
-
             # Aggiunge i nuovi dati letti da file alla matrice
-            for _ in range(passedSamples):
-                try:
-                    row = next(self.reader)
-                    if self.totalData is None:
-                        self.totalData = list(np.zeros(shape=(self.num_points, len(row))))
-                    self.totalData.append(np.array(row, dtype="float64"))
-                except StopIteration:
-                    return None, None
+            try:
+                row = next(self.reader)
+                if self.totalData is None:
+                    self.totalData = list(np.zeros(shape=(self.num_points, len(row))))
+                self.totalData.append(np.array(row, dtype="float64"))
+            except StopIteration:
+                return None, None
 
         self.totalData = self.clip_data(self.totalData)
         data = np.transpose(self.totalData)

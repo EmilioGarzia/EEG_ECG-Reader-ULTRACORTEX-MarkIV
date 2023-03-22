@@ -13,16 +13,32 @@ class Graph(pg.PlotWidget):
         self.setLabel("left", y_label)
         self.setLabel("bottom", x_label)
 
-    def lightTheme(self): self.setBackground("white")
-    def darkTheme(self): self.setBackground("black")
-    def hidePlot(self, index): self.removeItem(self.plots[index - 1])
-    def showPlot(self, index): self.addItem(self.plots[index - 1])
+    def lightTheme(self):
+        self.setBackground("white")
+
+    def darkTheme(self):
+        self.setBackground("black")
+
+    def hidePlot(self, index):
+        print(index-1)
+        if index <= len(self.plots):
+            self.removeItem(self.plots[index - 1])
+
+    def showPlot(self, index):
+        print(index-1)
+        if index <= len(self.plots):
+            self.addItem(self.plots[index - 1])
 
     def addPlot(self, color):
         pen = pg.mkPen(color=color)
         plot = self.plot([], [], pen=pen)
         self.plots.append(plot)
         return plot
+
+    def clear(self):
+        for plot in self.plots:
+            self.removeItem(plot)
+        self.plots.clear()
 
     def refresh(self, data):
         for i in range(len(self.plots)):

@@ -31,6 +31,7 @@ class MainWindow(QMainWindow):
 
         self.waveWidget = None
         self.fftWidget = None
+        self.ecgWidget = None
 
         # start GUI in dark mode and Initialize Widgets
         self.hideSessionWidgets()
@@ -39,25 +40,16 @@ class MainWindow(QMainWindow):
 
     def hideSessionWidgets(self):
         self.waveLabel.hide()
-        if self.waveWidget:
-            self.waveWidget.hide()
         self.fftLabel.hide()
-        if self.fftWidget:
-            self.fftWidget.hide()
         self.ecgLabel.hide()
-        #if self.ecgWidget:
-        #    self.ecgWidget.hide()
         self.allChannelCheck.hide()
         self.eeg_channels.hide()
         self.ecg_channels.hide()
 
     def showSessionWidgets(self):
         self.waveLabel.show()
-        self.waveWidget.show()
         self.fftLabel.show()
-        self.fftWidget.show()
         self.ecgLabel.show()
-        #self.ecgWidget.show()
         self.allChannelCheck.show()
         self.eeg_channels.show()
         self.ecg_channels.show()
@@ -95,6 +87,25 @@ class MainWindow(QMainWindow):
 
     # Play the plot
     def start(self):
+        self.pauseButton.setEnabled(True)
+        self.startLoop(self.update, 1000 // self.board.sampling_rate)
+
+    # Functions that update plot data
+    def update(self):
+        wave, fft = self.board.read_data()
+        if wave is not None and fft is not None:
+            self.waveWidget.refresh(wave)
+            self.fftWidget.refresh(fft)
+        else:
+            self.stopLoop()
+
+    # some methods of MainWindow
+    def showFileManager(self):
+        self.fileManager.showFileBrowser()
+        self.openedFileLabel.setText(self.fileManager.getFilename())
+        self.initSession()
+
+    def initSession(self):
         if self.liveRadioBtn.isChecked():
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.WaitCursor))
             output_path = ""
@@ -109,45 +120,33 @@ class MainWindow(QMainWindow):
                 input_path = None
             self.board.playback(input_path)
 
-        # Setup wave graphs
+        # Wave Plot Instruction
+        self.waveWidget = Graph()
         self.initGraph(self.waveWidget)
         self.waveWidget.setXRange(-self.board.num_points, 0)
         self.waveWidget.setYRange(-20000, 20000)
-
-        # Setup fft graphs
-        self.initGraph(self.fftWidget)
-        self.fftWidget.setXRange(0, 60)
-        self.fftWidget.setYRange(0, 10000)
-
-        self.startLoop(self.update, 1000 // self.board.sampling_rate)
-
-    # Functions that update plot data
-    def update(self):
-        wave, fft = self.board.read_data()
-        if wave is not None:
-            self.waveWidget.refresh(wave)
-        if fft is not None:
-            self.fftWidget.refresh(fft)
-
-    # some methods of MainWindow
-    def showFileManager(self):
-        self.fileManager.showFileBrowser()
-        self.openedFileLabel.setText(self.fileManager.getFilename())
-        self.initSession()
-
-    def initSession(self):
-        # Wave Plot Instruction
-        self.waveWidget = Graph()
         self.waveWidget.setLabels("Time (s)", "Amplitude (µV)")
         self.waveContainer.addWidget(self.waveWidget)
 
         # FFT Plot Instruction
         self.fftWidget = Graph()
+        self.initGraph(self.fftWidget)
+        self.fftWidget.setXRange(0, 60)
+        self.fftWidget.setYRange(0, 10000)
         self.fftWidget.setLabels("Frequency (Hz)", "Amplitude (µV)")
         self.fftContainer.addWidget(self.fftWidget)
 
+        self.ecgWidget = Graph()
+        self.initGraph(self.ecgWidget, range(9, 11))
+        self.ecgWidget.setLabels("Time (s)", "Amplitude (mV)")
+        self.ecgContainer.addWidget(self.ecgWidget)
+        if not self.ecgPlotCheckBox.isChecked():
+            self.ecgWidget.hide()
+
         self.showSessionWidgets()
         self.mainViewGroup.setEnabled(True)
+        if not self.eeg_ecg_mode.isChecked():
+            self.ecgPlotCheckBox.setEnabled(False)
         self.ecg_channels.hide()
         self.ecgLabel.hide()
 
@@ -163,8 +162,10 @@ class MainWindow(QMainWindow):
     def showAbout(self):
         self.aboutWindow.show()
 
-    def initGraph(self, graph):
-        for i in range(len(self.board.exg_channels)):
+    def initGraph(self, graph, channel_range=None):
+        if channel_range is None:
+            channel_range = self.board.exg_channels
+        for i in channel_range:
             color = self.board.get_channel_color(i + 1)
             graph.addPlot(color)
 
@@ -196,10 +197,14 @@ class MainWindow(QMainWindow):
     def toggledChannel(self, state):
         x = int(self.sender().text())
         if state == 2:
+            print("Wave\n")
             self.waveWidget.showPlot(x)
+            print("FFT\n")
             self.fftWidget.showPlot(x)
         else:
+            print("Wave\n")
             self.waveWidget.hidePlot(x)
+            print("FFT\n")
             self.fftWidget.hidePlot(x)
 
     def checkBoxSetter(self, status):
@@ -220,17 +225,7 @@ class MainWindow(QMainWindow):
         self.CH15check.setChecked(status)
         self.CH16check.setChecked(status)
 
-    def selectAllChannel(self, state):
-        if state == 2:
-            for x in self.board.exg_channels:
-                self.waveWidget.showPlot(x)
-                self.fftWidget.showPlot(x)
-                self.checkBoxSetter(True)
-        else:
-            for x in self.board.exg_channels:
-                self.waveWidget.hidePlot(x)
-                self.fftWidget.hidePlot(x)
-                self.checkBoxSetter(False)
+    def selectAllChannel(self, state): self.checkBoxSetter(state == 2)
 
     # Methods for Show/Hide plot
     def show_hide_wave(self, state):
@@ -289,8 +284,10 @@ class MainWindow(QMainWindow):
 
     def on_off_ecg(self, state):
         if state == 2:
+            self.ecgPlotCheckBox.setEnabled(True)
             self.ecgPlotCheckBox.setChecked(True)
         else:
+            self.ecgPlotCheckBox.setEnabled(False)
             self.ecgPlotCheckBox.setChecked(False)
 
     # Methods for loop
@@ -301,6 +298,7 @@ class MainWindow(QMainWindow):
 
     def stopLoop(self):
         self.timer.stop()
+        self.pauseButton.setEnabled(False)
 
 
 # ****************************************** - - - Main block - - - *****************************************#

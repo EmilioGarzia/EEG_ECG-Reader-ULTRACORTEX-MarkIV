@@ -411,7 +411,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QCheckBox" name="checkBox">
+            <widget class="QCheckBox" name="eeg_ecg_mode">
              <property name="cursor">
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
@@ -2323,7 +2323,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkBox</sender>
+   <sender>eeg_ecg_mode</sender>
    <signal>stateChanged(int)</signal>
    <receiver>MainWindow</receiver>
    <slot>on_off_ecg()</slot>
