@@ -29,22 +29,18 @@ class MainWindow(QMainWindow):
         self.selected_board_type = None
         self.selected_port = None
 
-        # Wave Plot Instruction
-        self.waveWidget = Graph()
-        self.waveWidget.setLabels("Time (s)", "Amplitude (µV)")
-        self.waveContainer.addWidget(self.waveWidget)
-
-        # FFT Plot Instruction
-        self.fftWidget = Graph()
-        self.fftWidget.setLabels("Frequency (Hz)", "Amplitude (µV)")
-        self.fftContainer.addWidget(self.fftWidget)
+        self.waveWidget = None
+        self.fftWidget = None
 
         # start GUI in dark mode and Initialize Widgets
         self.darkMode()
         self.initBoardType()
 
-    def activatePlaybackMode(self): self.liveControlGroup.setEnabled(False)
-    def activateLiveMode(self): self.liveControlGroup.setEnabled(True)
+    def activatePlaybackMode(self):
+        self.liveControlGroup.setEnabled(False)
+
+    def activateLiveMode(self):
+        self.liveControlGroup.setEnabled(True)
 
     # Methods for Board Type Input
     def initBoardType(self):
@@ -70,12 +66,13 @@ class MainWindow(QMainWindow):
 
     # Play the plot
     def start(self):
+        self.sessionWidget.show()
         if self.selected_port is not None and self.selected_board_type is not None:
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.WaitCursor))
             output_path = ""
             if not len(self.outputDirectory.text()) == 0:
                 output_path = self.outputDirectory.text() + separator
-                output_path = output_path.replace("/",separator)
+                output_path = output_path.replace("/", separator)
             self.board.begin_capturing(self.selected_board_type, self.selected_port, output_path)
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
         else:
@@ -84,13 +81,26 @@ class MainWindow(QMainWindow):
                 input_path = None
             self.board.playback(input_path)
 
+        # Wave Plot Instruction
+        self.waveWidget = Graph()
         self.initGraph(self.waveWidget)
         self.waveWidget.setXRange(-self.board.num_points, 0)
         self.waveWidget.setYRange(-20000, 20000)
+        self.waveWidget.setLabels("Time (s)", "Amplitude (µV)")
+        self.waveContainer.addWidget(self.waveWidget)
 
+        # FFT Plot Instruction
+        self.fftWidget = Graph()
         self.initGraph(self.fftWidget)
         self.fftWidget.setXRange(0, 60)
         self.fftWidget.setYRange(0, 10000)
+        self.fftWidget.setLabels("Frequency (Hz)", "Amplitude (µV)")
+        self.fftContainer.addWidget(self.fftWidget)
+
+        if self.darkMode:
+            self.darkMode()
+        else:
+            self.lightMode()
 
         self.startLoop(self.update, 1000 // self.board.sampling_rate)
 
@@ -120,23 +130,29 @@ class MainWindow(QMainWindow):
             graph.addPlot(color)
 
     # Methods for theme
-    def fontMaximize(self): self.setStyleSheet(self.styleSheet() + "*{ font-size: 20px; }")
+    def fontMaximize(self):
+        self.setStyleSheet(self.styleSheet() + "*{ font-size: 20px; }")
 
-    def fontMinimize(self): self.setStyleSheet(self.styleSheet() + "*{ font-size: 13px; }")
+    def fontMinimize(self):
+        self.setStyleSheet(self.styleSheet() + "*{ font-size: 13px; }")
 
     def lightMode(self):
         with open("..{0}css{0}styleLight.css".format(separator), "r") as css:
             myCSS = css.read()
             self.setStyleSheet(myCSS)
-            self.waveWidget.lightTheme()
-            self.fftWidget.lightTheme()
+            if self.waveWidget is not None:
+                self.waveWidget.lightTheme()
+            if self.fftWidget is not None:
+                self.fftWidget.lightTheme()
 
     def darkMode(self):
         with open("..{0}css{0}styleDark.css".format(separator), "r") as css:
             myCSS = css.read()
             self.setStyleSheet(myCSS)
-            self.waveWidget.darkTheme()
-            self.fftWidget.darkTheme()
+            if self.waveWidget is not None:
+                self.waveWidget.darkTheme()
+            if self.fftWidget is not None:
+                self.fftWidget.darkTheme()
 
     def toggledChannel(self, state):
         x = int(self.sender().text())
@@ -195,6 +211,32 @@ class MainWindow(QMainWindow):
             self.fftMainContainer.hide()
             if not self.wavePlotCheckBox.isChecked():
                 self.groupBox_2.hide()
+
+    def show_hide_toolbar(self):
+        if self.controlsGroup.isVisible():
+            self.controlsGroup.hide()
+            self.liveControlGroup.hide()
+            self.mainViewGroup.hide()
+            self.patientGroup.hide()
+            self.playbackGroup.hide()
+        else:
+            self.controlsGroup.show()
+            self.liveControlGroup.show()
+            self.mainViewGroup.show()
+            self.patientGroup.show()
+            self.playbackGroup.show()
+
+    def show_hide_ecg(self, state):
+        if state == 2:
+            pass  # se spuntato
+        else:
+            pass  # no spuntato
+
+    def on_off_ecg(self, state):
+        if state == 2:
+            self.ecgPlotCheckBox.setChecked(True)
+        else:
+            self.ecgPlotCheckBox.setChecked(False)
 
     # Methods for loop
     def startLoop(self, loop, delay):
