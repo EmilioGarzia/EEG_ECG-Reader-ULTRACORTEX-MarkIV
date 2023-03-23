@@ -88,6 +88,7 @@ class MainWindow(QMainWindow):
 
     # Play the plot
     def start(self):
+        self.playButton.setEnabled(False)
         self.pauseButton.setEnabled(True)
         self.startLoop(self.update, 1000 // self.board.sampling_rate)
 
@@ -179,7 +180,7 @@ class MainWindow(QMainWindow):
         if channel_range is None:
             channel_range = self.board.exg_channels
         for i in channel_range:
-            color = self.board.get_channel_color(i + 1)
+            color = self.board.get_channel_color(i)
             graph.addPlot(color)
 
     # Methods for theme
@@ -325,6 +326,7 @@ class MainWindow(QMainWindow):
 
     def stopLoop(self):
         self.timer.stop()
+        self.playButton.setEnabled(True)
         self.pauseButton.setEnabled(False)
 
 
