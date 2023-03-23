@@ -836,7 +836,7 @@
               <enum>Qt::LeftToRight</enum>
              </property>
              <property name="minimum">
-              <number>0</number>
+              <number>1</number>
              </property>
              <property name="maximum">
               <number>4</number>
@@ -848,13 +848,16 @@
               <number>1</number>
              </property>
              <property name="value">
-              <number>1</number>
+              <number>4</number>
              </property>
              <property name="sliderPosition">
-              <number>1</number>
+              <number>4</number>
              </property>
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="invertedControls">
+              <bool>true</bool>
              </property>
              <property name="tickPosition">
               <enum>QSlider::TicksBelow</enum>
@@ -1902,8 +1905,8 @@
    <slot>start()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>311</x>
-     <y>205</y>
+     <x>298</x>
+     <y>215</y>
     </hint>
     <hint type="destinationlabel">
      <x>266</x>
@@ -1918,8 +1921,8 @@
    <slot>stopLoop()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>405</x>
-     <y>205</y>
+     <x>386</x>
+     <y>215</y>
     </hint>
     <hint type="destinationlabel">
      <x>319</x>
@@ -1966,8 +1969,8 @@
    <slot>changeBoardType()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>784</x>
-     <y>241</y>
+     <x>742</x>
+     <y>244</y>
     </hint>
     <hint type="destinationlabel">
      <x>391</x>
@@ -1998,8 +2001,8 @@
    <slot>connectToSerialPort()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>876</x>
-     <y>279</y>
+     <x>835</x>
+     <y>288</y>
     </hint>
     <hint type="destinationlabel">
      <x>592</x>
@@ -2014,8 +2017,8 @@
    <slot>openOutputDirManager()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>894</x>
-     <y>324</y>
+     <x>887</x>
+     <y>335</y>
     </hint>
     <hint type="destinationlabel">
      <x>601</x>
@@ -2030,8 +2033,8 @@
    <slot>activatePlaybackMode()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>394</x>
-     <y>251</y>
+     <x>430</x>
+     <y>284</y>
     </hint>
     <hint type="destinationlabel">
      <x>171</x>
@@ -2046,8 +2049,8 @@
    <slot>activateLiveMode()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>271</x>
-     <y>251</y>
+     <x>304</x>
+     <y>284</y>
     </hint>
     <hint type="destinationlabel">
      <x>169</x>
@@ -2062,8 +2065,8 @@
    <slot>show_hide_toolbar()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>327</x>
-     <y>74</y>
+     <x>234</x>
+     <y>92</y>
     </hint>
     <hint type="destinationlabel">
      <x>675</x>
@@ -2078,8 +2081,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>75</x>
-     <y>560</y>
+     <x>66</x>
+     <y>557</y>
     </hint>
     <hint type="destinationlabel">
      <x>175</x>
@@ -2094,8 +2097,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>75</x>
-     <y>530</y>
+     <x>66</x>
+     <y>529</y>
     </hint>
     <hint type="destinationlabel">
      <x>391</x>
@@ -2110,8 +2113,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>75</x>
-     <y>498</y>
+     <x>66</x>
+     <y>501</y>
     </hint>
     <hint type="destinationlabel">
      <x>406</x>
@@ -2126,8 +2129,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>75</x>
-     <y>651</y>
+     <x>66</x>
+     <y>641</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2142,8 +2145,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>75</x>
-     <y>758</y>
+     <x>66</x>
+     <y>725</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2174,8 +2177,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>75</x>
-     <y>703</y>
+     <x>66</x>
+     <y>697</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2190,8 +2193,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>75</x>
-     <y>806</y>
+     <x>66</x>
+     <y>781</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2206,8 +2209,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>75</x>
-     <y>899</y>
+     <x>66</x>
+     <y>865</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2222,8 +2225,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>75</x>
-     <y>790</y>
+     <x>66</x>
+     <y>753</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2238,8 +2241,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>75</x>
-     <y>622</y>
+     <x>66</x>
+     <y>613</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2254,8 +2257,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>75</x>
-     <y>929</y>
+     <x>66</x>
+     <y>893</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2270,8 +2273,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>75</x>
-     <y>837</y>
+     <x>66</x>
+     <y>809</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2286,8 +2289,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>75</x>
-     <y>868</y>
+     <x>66</x>
+     <y>837</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2302,8 +2305,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>75</x>
-     <y>960</y>
+     <x>66</x>
+     <y>921</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2318,8 +2321,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>75</x>
-     <y>591</y>
+     <x>66</x>
+     <y>585</y>
     </hint>
     <hint type="destinationlabel">
      <x>380</x>
@@ -2334,8 +2337,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>75</x>
-     <y>677</y>
+     <x>66</x>
+     <y>669</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2366,12 +2369,28 @@
    <slot>on_off_ecg()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>364</x>
-     <y>307</y>
+     <x>362</x>
+     <y>365</y>
     </hint>
     <hint type="destinationlabel">
      <x>530</x>
      <y>111</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>speedControl</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>changeSpeed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1082</x>
+     <y>327</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1153</x>
+     <y>34</y>
     </hint>
    </hints>
   </connection>
@@ -2398,5 +2417,6 @@
   <slot>show_hide_toolbar()</slot>
   <slot>show_hide_ecg()</slot>
   <slot>on_off_ecg()</slot>
+  <slot>changeSpeed()</slot>
  </slots>
 </ui>

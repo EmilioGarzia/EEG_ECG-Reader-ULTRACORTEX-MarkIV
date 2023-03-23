@@ -16,7 +16,6 @@ serial_port_connected = dict()  # all serial port connected
 class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
-        self.timer = QtCore.QTimer()
 
         # GUI loader
         uic.loadUi("..{0}GUI{0}gui.ui".format(separator), self)
@@ -24,15 +23,23 @@ class MainWindow(QMainWindow):
         self.fileManager = fileDialog.FileBrowser()
         # About window dialog
         self.aboutWindow = aboutDialog.AboutDialog()
+        self.timer = None
+        self.singleWaves = None
 
         self.board = Board()
         self.selected_board_type = None
         self.selected_port = None
 
-        self.singleWaves = None
-        self.waveWidget = None
-        self.fftWidget = None
-        self.ecgWidget = None
+        self.waveWidget = Graph()
+        self.waveWidget.setLabels("Time (s)", "Amplitude (µV)")
+        self.waveContainer.addWidget(self.waveWidget)
+
+        self.fftWidget = Graph()
+        self.fftWidget.setLabels("Frequency (Hz)", "Amplitude (µV)")
+        self.fftContainer.addWidget(self.fftWidget)
+
+        self.ecgWidget = Graph()
+        self.ecgContainer.addWidget(self.ecgWidget)
 
         # start GUI in dark mode and Initialize Widgets
         self.hideSessionWidgets()
@@ -40,17 +47,17 @@ class MainWindow(QMainWindow):
         self.initBoardType()
 
     def hideSessionWidgets(self):
-        self.waveLabel.hide()
-        self.fftLabel.hide()
-        self.ecgLabel.hide()
+        self.waveMainContainer.hide()
+        self.fftMainContainer.hide()
+        self.ecgMainContainer.hide()
         self.allChannelCheck.hide()
         self.eeg_channels.hide()
         self.ecg_channels.hide()
 
     def showSessionWidgets(self):
-        self.waveLabel.show()
-        self.fftLabel.show()
-        self.ecgLabel.show()
+        self.waveMainContainer.show()
+        self.fftMainContainer.show()
+        self.ecgMainContainer.show()
         self.allChannelCheck.show()
         self.eeg_channels.show()
         self.ecg_channels.show()
@@ -90,7 +97,17 @@ class MainWindow(QMainWindow):
     def start(self):
         self.playButton.setEnabled(False)
         self.pauseButton.setEnabled(True)
-        self.startLoop(self.update, 1000 // self.board.sampling_rate)
+
+        delay = self.calculateDelay(self.speedControl.value())
+        self.startLoop(self.update, delay)
+
+    def changeSpeed(self, value):
+        self.stopLoop()
+        self.startLoop(self.update, self.calculateDelay(value))
+
+    def calculateDelay(self, sliderValue):
+        speed = 5 - sliderValue
+        return int(1000 / self.board.sampling_rate * speed)
 
     # Functions that update plot data
     def update(self):
@@ -107,6 +124,7 @@ class MainWindow(QMainWindow):
     def showFileManager(self):
         self.fileManager.showFileBrowser()
         self.openedFileLabel.setText(self.fileManager.getFilename())
+        self.closeSession()
         self.initSession()
 
     def initSession(self):
@@ -125,35 +143,29 @@ class MainWindow(QMainWindow):
             self.board.playback(input_path)
 
         # EEG Single Waves Instructions
-        self.singleWaves = []
-        for _ in self.board.exg_channels:
-            graph = Graph()
-            graph.setXRange(-self.board.num_points, 0)
-            graph.setYRange(-20000, 20000)
-            graph.setLabels("Time (s)", "Amplitude (µV)")
-            self.singleWaves.append(graph)
-            self.singleWavesLayout.addWidget(graph)
+        if self.singleWaves is None:
+            self.singleWaves = []
+            for _ in self.board.exg_channels:
+                graph = Graph()
+                graph.setXRange(-self.board.num_points, 0)
+                graph.setYRange(-20000, 20000)
+                graph.setLabels("Time (s)", "Amplitude (µV)")
+                self.singleWaves.append(graph)
+                self.singleWavesLayout.addWidget(graph)
 
-        # Wave Plot Instruction
-        self.waveWidget = Graph()
+        # Wave Plot Instructions
         self.initGraph(self.waveWidget)
         self.waveWidget.setXRange(-self.board.num_points, 0)
         self.waveWidget.setYRange(-20000, 20000)
-        self.waveWidget.setLabels("Time (s)", "Amplitude (µV)")
-        self.waveContainer.addWidget(self.waveWidget)
 
-        # FFT Plot Instruction
-        self.fftWidget = Graph()
+        # FFT Plot Instructions
         self.initGraph(self.fftWidget)
         self.fftWidget.setXRange(0, 60)
         self.fftWidget.setYRange(0, 10000)
-        self.fftWidget.setLabels("Frequency (Hz)", "Amplitude (µV)")
-        self.fftContainer.addWidget(self.fftWidget)
 
-        self.ecgWidget = Graph()
+        # ECG Plot Instructions
         self.initGraph(self.ecgWidget, range(9, 11))
         self.ecgWidget.setLabels("Time (s)", "Amplitude (mV)")
-        self.ecgContainer.addWidget(self.ecgWidget)
         if not self.ecgPlotCheckBox.isChecked():
             self.ecgWidget.hide()
 
@@ -168,6 +180,16 @@ class MainWindow(QMainWindow):
             self.darkMode()
         else:
             self.lightMode()
+
+    def closeSession(self):
+        self.stopLoop()
+        self.waveWidget.reset()
+        self.fftWidget.reset()
+        self.ecgWidget.reset()
+        if self.singleWaves is not None:
+            for wave in self.singleWaves:
+                self.singleWavesLayout.removeWidget(wave)
+            self.singleWaves = None
 
     def openOutputDirManager(self):
         outDir = QFileDialog.getExistingDirectory(self, "Select Directory", options=QFileDialog.ShowDirsOnly)
@@ -244,28 +266,25 @@ class MainWindow(QMainWindow):
         self.ECGCH10check.setChecked(status)
         self.ECGCH11check.setChecked(status)
 
-    def selectAllChannel(self, state): self.checkBoxSetter(state == 2)
+    def selectAllChannel(self, state):
+        self.checkBoxSetter(state == 2)
 
     # Methods for Show/Hide plot
     def show_hide_wave(self, state):
         if state == 2:
-            self.waveLabel.show()
-            self.waveWidget.show()
+            self.waveMainContainer.show()
             self.showSidebar()
         else:
-            self.waveLabel.hide()
-            self.waveWidget.hide()
+            self.waveMainContainer.hide()
             if not self.fftPlotCheckBox.isChecked() and not self.ecgPlotCheckBox.isChecked():
                 self.hideSessionWidgets()
 
     def show_hide_fft(self, state):
         if state == 2:
-            self.fftLabel.show()
-            self.fftWidget.show()
+            self.fftMainContainer.show()
             self.showSidebar()
         else:
-            self.fftLabel.hide()
-            self.fftWidget.hide()
+            self.fftMainContainer.hide()
             if not self.wavePlotCheckBox.isChecked() and not self.ecgPlotCheckBox.isChecked():
                 self.hideSessionWidgets()
 
@@ -274,12 +293,10 @@ class MainWindow(QMainWindow):
             return
 
         if state == 2:
-            self.ecgLabel.show()
-            self.ecgWidget.show()
+            self.ecgMainContainer.show()
             self.showSidebar()
         else:
-            self.ecgLabel.hide()
-            self.ecgWidget.hide()
+            self.ecgMainContainer.hide()
             self.ecg_channels.hide()
             if not self.wavePlotCheckBox.isChecked() and not self.fftPlotCheckBox.isChecked():
                 self.hideSessionWidgets()
@@ -320,14 +337,16 @@ class MainWindow(QMainWindow):
 
     # Methods for loop
     def startLoop(self, loop, delay):
+        self.timer = QtCore.QTimer()
         self.timer.setInterval(delay)
         self.timer.timeout.connect(loop)
         self.timer.start()
 
     def stopLoop(self):
-        self.timer.stop()
-        self.playButton.setEnabled(True)
-        self.pauseButton.setEnabled(False)
+        if self.timer is not None:
+            self.timer.stop()
+            self.playButton.setEnabled(True)
+            self.pauseButton.setEnabled(False)
 
 
 # ****************************************** - - - Main block - - - *****************************************#

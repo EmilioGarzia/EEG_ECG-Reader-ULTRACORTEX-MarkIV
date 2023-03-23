@@ -5,6 +5,7 @@ import time
 import csv
 import numpy as np
 
+from python.graph import Function
 
 # Supported types of boards
 type_of_board = {
@@ -15,12 +16,6 @@ type_of_board = {
     "GANGLION BOARD": BoardIds.GANGLION_BOARD,
     "GANGLION WIFI BOARD": BoardIds.GANGLION_WIFI_BOARD
 }
-
-
-class Function:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
 
 
 class Board:
@@ -38,7 +33,6 @@ class Board:
         self.writer = None
         self.real_time = True
         self.reader = None
-        self.prevTime = None
 
     def calculate_points_number(self):
         return self.window_size * self.sampling_rate
@@ -60,6 +54,7 @@ class Board:
         self.writer.writerow([self.exg_channels[0], self.exg_channels[-1]])
 
         print("Preparo la sessione...")
+        self.totalData = None
         self.board.prepare_session()
         print("Avvio la sessione...")
         self.board.start_stream()
@@ -71,6 +66,7 @@ class Board:
         self.reader = csv.reader(file)
         header = next(self.reader)
         self.exg_channels = range(int(header[0]), int(header[1])+1)
+        self.totalData = None
 
     # Returns a tuple containing the following data in order: wave, fft
     # This function must be called inside a loop

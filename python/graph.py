@@ -1,13 +1,16 @@
 import pyqtgraph as pg
 
 
+class Function:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+
 class Graph(pg.PlotWidget):
     def __init__(self):
         super().__init__()
         self.plots = []
-
-        ciao = pg.PlotWidget()
-        ciao.plot()
 
         self.showGrid(x=True, y=True)
         self.lightTheme()
@@ -36,11 +39,11 @@ class Graph(pg.PlotWidget):
         self.plots.append(plot)
         return plot
 
-    def clear(self):
+    def reset(self):
         for plot in self.plots:
             self.removeItem(plot)
         self.plots.clear()
 
     def refresh(self, data):
-        for i in range(len(self.plots)):
-            self.plots[i].setData(data[i].x, data[i].y)
+        for i, plot in enumerate(self.plots):
+            plot.setData(data[i].x, data[i].y)
