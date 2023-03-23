@@ -6,6 +6,9 @@ class Graph(pg.PlotWidget):
         super().__init__()
         self.plots = []
 
+        ciao = pg.PlotWidget()
+        ciao.plot()
+
         self.showGrid(x=True, y=True)
         self.lightTheme()
 

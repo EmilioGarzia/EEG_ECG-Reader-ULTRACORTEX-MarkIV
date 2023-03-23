@@ -29,6 +29,7 @@ class MainWindow(QMainWindow):
         self.selected_board_type = None
         self.selected_port = None
 
+        self.singleWaves = None
         self.waveWidget = None
         self.fftWidget = None
         self.ecgWidget = None
@@ -96,6 +97,8 @@ class MainWindow(QMainWindow):
         if wave is not None and fft is not None:
             self.waveWidget.refresh(wave)
             self.fftWidget.refresh(fft)
+            for i, graph in enumerate(self.singleWaves):
+                graph.refresh(wave[i])
         else:
             self.stopLoop()
 
@@ -119,6 +122,16 @@ class MainWindow(QMainWindow):
             if input_path == "":
                 input_path = None
             self.board.playback(input_path)
+
+        # EEG Single Waves Instructions
+        self.singleWaves = []
+        for _ in self.board.exg_channels:
+            graph = Graph()
+            graph.setXRange(-self.board.num_points, 0)
+            graph.setYRange(-20000, 20000)
+            graph.setLabels("Time (s)", "Amplitude (µV)")
+            self.singleWaves.append(graph)
+            self.singleWavesLayout.addWidget(graph)
 
         # Wave Plot Instruction
         self.waveWidget = Graph()
@@ -180,6 +193,9 @@ class MainWindow(QMainWindow):
         with open("..{0}css{0}styleLight.css".format(separator), "r") as css:
             myCSS = css.read()
             self.setStyleSheet(myCSS)
+            if self.singleWaves is not None:
+                for graph in self.singleWaves:
+                    graph.lightTheme()
             if self.waveWidget is not None:
                 self.waveWidget.lightTheme()
             if self.fftWidget is not None:
@@ -189,6 +205,9 @@ class MainWindow(QMainWindow):
         with open("..{0}css{0}styleDark.css".format(separator), "r") as css:
             myCSS = css.read()
             self.setStyleSheet(myCSS)
+            if self.singleWaves is not None:
+                for graph in self.singleWaves:
+                    graph.darkTheme()
             if self.waveWidget is not None:
                 self.waveWidget.darkTheme()
             if self.fftWidget is not None:

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1298</width>
-    <height>1061</height>
+    <height>1067</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1467,17 +1467,23 @@
             </layout>
            </item>
            <item>
-            <layout class="QVBoxLayout" name="verticalLayout_4"/>
+            <layout class="QVBoxLayout" name="singleWavesLayout"/>
            </item>
           </layout>
          </widget>
         </item>
         <item>
          <widget class="QGroupBox" name="ecg_channels">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="maximumSize">
            <size>
-            <width>350</width>
-            <height>16777215</height>
+            <width>500</width>
+            <height>130</height>
            </size>
           </property>
           <property name="title">

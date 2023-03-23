@@ -55,7 +55,6 @@ class Board:
         self.num_points = self.calculate_points_number()
 
         output_file = output_folder + datetime.now().strftime("%m-%d-%Y_%H:%M:%S.csv")
-        print(output_file)
         file = open(output_file, 'a+')
         self.writer = csv.writer(file)  # Instantiates the csv parser
         self.writer.writerow([self.exg_channels[0], self.exg_channels[-1]])
