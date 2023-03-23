@@ -197,14 +197,10 @@ class MainWindow(QMainWindow):
     def toggledChannel(self, state):
         x = int(self.sender().text())
         if state == 2:
-            print("Wave\n")
             self.waveWidget.showPlot(x)
-            print("FFT\n")
             self.fftWidget.showPlot(x)
         else:
-            print("Wave\n")
             self.waveWidget.hidePlot(x)
-            print("FFT\n")
             self.fftWidget.hidePlot(x)
 
     def checkBoxSetter(self, status):
@@ -224,6 +220,9 @@ class MainWindow(QMainWindow):
         self.CH14check.setChecked(status)
         self.CH15check.setChecked(status)
         self.CH16check.setChecked(status)
+        self.ECGCH9check.setChecked(status)
+        self.ECGCH10check.setChecked(status)
+        self.ECGCH11check.setChecked(status)
 
     def selectAllChannel(self, state): self.checkBoxSetter(state == 2)
 
@@ -251,6 +250,9 @@ class MainWindow(QMainWindow):
                 self.hideSessionWidgets()
 
     def show_hide_ecg(self, state):
+        if not self.mainViewGroup.isEnabled():
+            return
+
         if state == 2:
             self.ecgLabel.show()
             self.ecgWidget.show()
@@ -286,9 +288,15 @@ class MainWindow(QMainWindow):
         if state == 2:
             self.ecgPlotCheckBox.setEnabled(True)
             self.ecgPlotCheckBox.setChecked(True)
+            self.CH9check.hide()
+            self.CH10check.hide()
+            self.CH11check.hide()
         else:
             self.ecgPlotCheckBox.setEnabled(False)
             self.ecgPlotCheckBox.setChecked(False)
+            self.CH9check.show()
+            self.CH10check.show()
+            self.CH11check.show()
 
     # Methods for loop
     def startLoop(self, loop, delay):

@@ -20,12 +20,10 @@ class Graph(pg.PlotWidget):
         self.setBackground("black")
 
     def hidePlot(self, index):
-        print(index-1)
         if index <= len(self.plots):
             self.removeItem(self.plots[index - 1])
 
     def showPlot(self, index):
-        print(index-1)
         if index <= len(self.plots):
             self.addItem(self.plots[index - 1])
 

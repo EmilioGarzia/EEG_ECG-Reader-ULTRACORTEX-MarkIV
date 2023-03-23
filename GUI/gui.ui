@@ -1485,7 +1485,38 @@
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_16">
            <item>
-            <layout class="QVBoxLayout" name="channelECG"/>
+            <layout class="QVBoxLayout" name="channelECG">
+             <item>
+              <widget class="QCheckBox" name="ECGCH9check">
+               <property name="text">
+                <string>9</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="ECGCH10check">
+               <property name="text">
+                <string>10</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="ECGCH11check">
+               <property name="text">
+                <string>11</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
            <item>
             <layout class="QVBoxLayout" name="singleWaveECG"/>
