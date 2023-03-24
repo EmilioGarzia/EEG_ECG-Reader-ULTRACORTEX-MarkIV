@@ -1,4 +1,4 @@
-import pyqtgraph as pg
+from pyqtgraph import *
 
 
 class Function:
@@ -7,7 +7,7 @@ class Function:
         self.y = y
 
 
-class Graph(pg.PlotWidget):
+class Graph(PlotWidget):
     def __init__(self):
         super().__init__()
         self.plots = []
@@ -34,16 +34,15 @@ class Graph(pg.PlotWidget):
             self.addItem(self.plots[index - 1])
 
     def addPlot(self, color):
-        pen = pg.mkPen(color=color)
-        plot = self.plot([], [], pen=pen)
-        self.plots.append(plot)
-        return plot
+        pen = mkPen(color=color)
+        graph = self.plot([], [], pen=pen)
+        self.plots.append(graph)
+        return graph
 
-    def reset(self):
-        for plot in self.plots:
-            self.removeItem(plot)
+    def clear(self):
+        super().clear()
         self.plots.clear()
 
     def refresh(self, data):
-        for i, plot in enumerate(self.plots):
-            plot.setData(data[i].x, data[i].y)
+        for i, graph in enumerate(self.plots):
+            graph.setData(data[i].x, data[i].y)

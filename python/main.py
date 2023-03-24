@@ -102,8 +102,7 @@ class MainWindow(QMainWindow):
         self.startLoop(self.update, delay)
 
     def changeSpeed(self, value):
-        self.stopLoop()
-        self.startLoop(self.update, self.calculateDelay(value))
+        self.timer.setInterval(self.calculateDelay(value))
 
     def calculateDelay(self, sliderValue):
         speed = 5 - sliderValue
@@ -116,7 +115,7 @@ class MainWindow(QMainWindow):
             self.waveWidget.refresh(wave)
             self.fftWidget.refresh(fft)
             for i, graph in enumerate(self.singleWaves):
-                graph.refresh(wave[i])
+                graph.refresh([wave[i]])
         else:
             self.stopLoop()
 
@@ -145,11 +144,13 @@ class MainWindow(QMainWindow):
         # EEG Single Waves Instructions
         if self.singleWaves is None:
             self.singleWaves = []
-            for _ in self.board.exg_channels:
+            for ch in self.board.exg_channels:
                 graph = Graph()
+                graph.showAxes(True, size=(15, 20))
                 graph.setXRange(-self.board.num_points, 0)
                 graph.setYRange(-20000, 20000)
-                graph.setLabels("Time (s)", "Amplitude (µV)")
+                self.initGraph(graph, [ch])
+                #graph.setLabels("Time (s)", "Amplitude (µV)")
                 self.singleWaves.append(graph)
                 self.singleWavesLayout.addWidget(graph)
 
@@ -183,9 +184,9 @@ class MainWindow(QMainWindow):
 
     def closeSession(self):
         self.stopLoop()
-        self.waveWidget.reset()
-        self.fftWidget.reset()
-        self.ecgWidget.reset()
+        self.waveWidget.clear()
+        self.fftWidget.clear()
+        self.ecgWidget.clear()
         if self.singleWaves is not None:
             for wave in self.singleWaves:
                 self.singleWavesLayout.removeWidget(wave)
