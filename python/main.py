@@ -1,4 +1,3 @@
-import sys
 from PyQt5 import uic, QtCore, QtGui
 from board import *
 from PyQt5.QtWidgets import *
@@ -19,6 +18,9 @@ class MainWindow(QMainWindow):
 
         # GUI loader
         uic.loadUi("..{0}GUI{0}gui.ui".format(separator), self)
+        self.playIcon = QtGui.QIcon("..{0}SVG{0}playButton.svg".format(separator))
+        self.pauseIcon = QtGui.QIcon("..{0}SVG{0}pauseButton.svg".format(separator))
+        self.playButton.setIcon(self.playIcon)
         # File browser object
         self.fileManager = fileDialog.FileBrowser()
         # About window dialog
@@ -94,12 +96,32 @@ class MainWindow(QMainWindow):
         self.initSession()
 
     # Play the plot
-    def start(self):
-        self.playButton.setEnabled(False)
-        self.pauseButton.setEnabled(True)
+    def playPause(self):
+        if self.timer is None or not self.timer.isActive():
+            self.playButton.setIcon(self.pauseIcon)
+            if self.playbackRadioBtn.isChecked():
+                self.stopButton.setEnabled(True)
 
-        delay = self.calculateDelay(self.speedControl.value())
-        self.startLoop(self.update, delay)
+            delay = self.calculateDelay(self.speedControl.value())
+            self.startLoop(self.update, delay)
+        else:
+            self.playButton.setIcon(self.playIcon)
+            self.stopLoop()
+
+    def stop(self):
+        self.stopLoop()
+        self.board.resetPlayback()
+        self.clearGraphs()
+        self.playButton.setIcon(self.playIcon)
+        self.stopButton.setEnabled(False)
+
+    def clearGraphs(self):
+        self.waveWidget.refresh([])
+        self.fftWidget.refresh([])
+        self.ecgWidget.refresh([])
+        if self.singleWaves is not None:
+            for wave in self.singleWaves:
+                wave.refresh([])
 
     def changeSpeed(self, value):
         self.timer.setInterval(self.calculateDelay(value))
@@ -150,7 +172,6 @@ class MainWindow(QMainWindow):
                 graph.setXRange(-self.board.num_points, 0)
                 graph.setYRange(-20000, 20000)
                 self.initGraph(graph, [ch])
-                #graph.setLabels("Time (s)", "Amplitude (µV)")
                 self.singleWaves.append(graph)
                 self.singleWavesLayout.addWidget(graph)
 
@@ -171,6 +192,7 @@ class MainWindow(QMainWindow):
             self.ecgWidget.hide()
 
         self.showSessionWidgets()
+        self.playButton.setEnabled(True)
         self.mainViewGroup.setEnabled(True)
         if not self.eeg_ecg_mode.isChecked():
             self.ecgPlotCheckBox.setEnabled(False)
@@ -346,8 +368,6 @@ class MainWindow(QMainWindow):
     def stopLoop(self):
         if self.timer is not None:
             self.timer.stop()
-            self.playButton.setEnabled(True)
-            self.pauseButton.setEnabled(False)
 
 
 # ****************************************** - - - Main block - - - *****************************************#

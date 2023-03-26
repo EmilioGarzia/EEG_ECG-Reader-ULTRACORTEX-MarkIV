@@ -21,9 +21,9 @@ QCheckBox{
     border-radius: 6px;
 }
 
-#playButton, #pauseButton{ background-color: transparent; }
+#playButton, #stopButton{ background-color: transparent; }
 
-#playButton:hover, #pauseButton:hover{ 
+#playButton:hover, #stopButton:hover{
     background-color: white;
     border-radius: 15px;
 }

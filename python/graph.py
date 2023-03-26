@@ -2,7 +2,11 @@ from pyqtgraph import *
 
 
 class Function:
-    def __init__(self, x, y):
+    def __init__(self, x=None, y=None):
+        if x is None:
+            x = []
+        if y is None:
+            y = []
         self.x = x
         self.y = y
 
@@ -45,4 +49,6 @@ class Graph(PlotWidget):
 
     def refresh(self, data):
         for i, graph in enumerate(self.plots):
+            if i == len(data):
+                data.append(Function())
             graph.setData(data[i].x, data[i].y)

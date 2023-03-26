@@ -1,4 +1,5 @@
 #CH1check, #CH9check{ background-color: rgb(128,129,130);color:white;}
+#CH1check, #CH9check{ background-color: rgb(128,129,130);color:white;}
 #CH2check, #CH10check{ background-color: rgb(123, 74,141); color:white; }
 #CH3check, #CH11check{ background-color: rgb(57, 90, 161); color:white; }
 #CH4check, #CH12check{ background-color: rgb(49,113,89); color:white;}
@@ -7,9 +8,9 @@
 #CH7check, #CH15check{ background-color: rgb(255,56,44); color:white;}
 #CH8check, #CH16check{ background-color: rgb(162, 81,48); color: white;}
 
-#playButton, #pauseButton{ background-color: transparent; }
+#playButton, #stopButton{ background-color: transparent; }
 
-#playButton:hover, #pauseButton:hover{ 
+#playButton:hover, #stopButton:hover{ 
     background-color: gray;
     border-radius: 15px;
 }

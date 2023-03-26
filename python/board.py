@@ -32,6 +32,7 @@ class Board:
         self.totalData = None
         self.writer = None
         self.real_time = True
+        self.input_file = None
         self.reader = None
 
     def calculate_points_number(self):
@@ -60,13 +61,19 @@ class Board:
         self.board.start_stream()
         time.sleep(5)
 
-    def playback(self, input_file):
+    def playback(self, input_file_path):
         self.real_time = False
-        file = open(input_file, 'r')
-        self.reader = csv.reader(file)
+        self.input_file = open(input_file_path, 'r')
+        self.reader = csv.reader(self.input_file)
         header = next(self.reader)
         self.exg_channels = range(int(header[0]), int(header[1])+1)
         self.totalData = None
+
+    def resetPlayback(self):
+        if not self.real_time:
+            path = self.input_file.name
+            self.input_file.close()
+            self.playback(path)
 
     # Returns a tuple containing the following data in order: wave, fft
     # This function must be called inside a loop

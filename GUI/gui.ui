@@ -246,6 +246,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="playButton">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="maximumSize">
               <size>
                <width>100</width>
@@ -264,10 +267,6 @@
              <property name="text">
               <string/>
              </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>../SVG/playButton.svg</normaloff>../SVG/playButton.svg</iconset>
-             </property>
              <property name="iconSize">
               <size>
                <width>30</width>
@@ -277,7 +276,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pauseButton">
+            <widget class="QPushButton" name="stopButton">
              <property name="enabled">
               <bool>false</bool>
              </property>
@@ -1058,7 +1057,7 @@
               <property name="geometry">
                <rect>
                 <x>0</x>
-                <y>-94</y>
+                <y>0</y>
                 <width>459</width>
                 <height>488</height>
                </rect>
@@ -1945,38 +1944,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>playButton</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>start()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>298</x>
-     <y>215</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>266</x>
-     <y>205</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pauseButton</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>stopLoop()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>386</x>
-     <y>215</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>319</x>
-     <y>191</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>actionZoom</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
@@ -2191,8 +2158,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>66</x>
-     <y>725</y>
+     <x>74</x>
+     <y>751</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2223,8 +2190,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>66</x>
-     <y>697</y>
+     <x>74</x>
+     <y>721</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2239,8 +2206,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>66</x>
-     <y>781</y>
+     <x>74</x>
+     <y>811</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2255,8 +2222,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>66</x>
-     <y>865</y>
+     <x>74</x>
+     <y>901</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2271,8 +2238,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>66</x>
-     <y>753</y>
+     <x>74</x>
+     <y>781</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2303,8 +2270,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>66</x>
-     <y>893</y>
+     <x>74</x>
+     <y>931</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2319,8 +2286,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>66</x>
-     <y>809</y>
+     <x>74</x>
+     <y>841</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2335,8 +2302,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>66</x>
-     <y>837</y>
+     <x>74</x>
+     <y>871</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2351,8 +2318,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>66</x>
-     <y>921</y>
+     <x>74</x>
+     <y>961</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2440,6 +2407,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>stopButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>stop()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>352</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>362</x>
+     <y>65</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>playButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>playPause()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>261</x>
+     <y>191</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>268</x>
+     <y>84</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>show_hide_wave()</slot>
@@ -2448,8 +2447,6 @@
   <slot>lightMode()</slot>
   <slot>darkMode()</slot>
   <slot>showFileManager()</slot>
-  <slot>start()</slot>
-  <slot>stopLoop()</slot>
   <slot>toggledChannel()</slot>
   <slot>selectAllChannel()</slot>
   <slot>fontMaximize()</slot>
@@ -2464,5 +2461,7 @@
   <slot>show_hide_ecg()</slot>
   <slot>on_off_ecg()</slot>
   <slot>changeSpeed()</slot>
+  <slot>stop()</slot>
+  <slot>playPause()</slot>
  </slots>
 </ui>
