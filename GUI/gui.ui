@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1298</width>
-    <height>1099</height>
+    <height>1076</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1043,7 +1043,7 @@
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout">
            <item>
-            <widget class="QScrollArea" name="s">
+            <widget class="QScrollArea" name="scrollArea">
              <property name="styleSheet">
               <string notr="true"/>
              </property>
@@ -1054,23 +1054,26 @@
               <property name="geometry">
                <rect>
                 <x>0</x>
-                <y>-94</y>
+                <y>0</y>
                 <width>453</width>
-                <height>529</height>
+                <height>554</height>
                </rect>
               </property>
-              <layout class="QHBoxLayout" name="horizontalLayout_12">
+              <layout class="QVBoxLayout" name="verticalLayout_10">
                <item>
-                <layout class="QVBoxLayout" name="channelLayout">
-                 <property name="sizeConstraint">
-                  <enum>QLayout::SetMaximumSize</enum>
-                 </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_23">
                  <item>
                   <widget class="QCheckBox" name="CH1check">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>20</height>
+                    </size>
+                   </property>
                    <property name="maximumSize">
                     <size>
                      <width>50</width>
-                     <height>16777215</height>
+                     <height>20</height>
                     </size>
                    </property>
                    <property name="font">
@@ -1092,8 +1095,15 @@
                    <property name="checked">
                     <bool>true</bool>
                    </property>
+                   <property name="tristate">
+                    <bool>false</bool>
+                   </property>
                   </widget>
                  </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_24">
                  <item>
                   <widget class="QCheckBox" name="CH2check">
                    <property name="maximumSize">
@@ -1120,6 +1130,10 @@
                    </property>
                   </widget>
                  </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_25">
                  <item>
                   <widget class="QCheckBox" name="CH3check">
                    <property name="maximumSize">
@@ -1146,6 +1160,10 @@
                    </property>
                   </widget>
                  </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_26">
                  <item>
                   <widget class="QCheckBox" name="CH4check">
                    <property name="maximumSize">
@@ -1172,6 +1190,10 @@
                    </property>
                   </widget>
                  </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_27">
                  <item>
                   <widget class="QCheckBox" name="CH5check">
                    <property name="maximumSize">
@@ -1198,6 +1220,10 @@
                    </property>
                   </widget>
                  </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_28">
                  <item>
                   <widget class="QCheckBox" name="CH6check">
                    <property name="maximumSize">
@@ -1224,6 +1250,10 @@
                    </property>
                   </widget>
                  </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_29">
                  <item>
                   <widget class="QCheckBox" name="CH7check">
                    <property name="maximumSize">
@@ -1250,8 +1280,12 @@
                    </property>
                   </widget>
                  </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_31">
                  <item>
-                  <widget class="QCheckBox" name="CH8check">
+                  <widget class="QCheckBox" name="CH8check_2">
                    <property name="maximumSize">
                     <size>
                      <width>50</width>
@@ -1276,6 +1310,10 @@
                    </property>
                   </widget>
                  </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_32">
                  <item>
                   <widget class="QCheckBox" name="CH9check">
                    <property name="maximumSize">
@@ -1302,6 +1340,10 @@
                    </property>
                   </widget>
                  </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_33">
                  <item>
                   <widget class="QCheckBox" name="CH10check">
                    <property name="maximumSize">
@@ -1328,6 +1370,10 @@
                    </property>
                   </widget>
                  </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_34">
                  <item>
                   <widget class="QCheckBox" name="CH11check">
                    <property name="maximumSize">
@@ -1354,6 +1400,10 @@
                    </property>
                   </widget>
                  </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_35">
                  <item>
                   <widget class="QCheckBox" name="CH12check">
                    <property name="maximumSize">
@@ -1380,6 +1430,10 @@
                    </property>
                   </widget>
                  </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_36">
                  <item>
                   <widget class="QCheckBox" name="CH13check">
                    <property name="maximumSize">
@@ -1406,6 +1460,10 @@
                    </property>
                   </widget>
                  </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_37">
                  <item>
                   <widget class="QCheckBox" name="CH14check">
                    <property name="maximumSize">
@@ -1432,6 +1490,10 @@
                    </property>
                   </widget>
                  </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_38">
                  <item>
                   <widget class="QCheckBox" name="CH15check">
                    <property name="maximumSize">
@@ -1458,6 +1520,10 @@
                    </property>
                   </widget>
                  </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_39">
                  <item>
                   <widget class="QCheckBox" name="CH16check">
                    <property name="maximumSize">
@@ -1486,9 +1552,6 @@
                  </item>
                 </layout>
                </item>
-               <item>
-                <layout class="QVBoxLayout" name="singleWavesLayout"/>
-               </item>
               </layout>
              </widget>
             </widget>
@@ -1513,9 +1576,9 @@
           <property name="title">
            <string>ECG Channels</string>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_16">
+          <layout class="QVBoxLayout" name="verticalLayout_12">
            <item>
-            <layout class="QVBoxLayout" name="channelECG">
+            <layout class="QHBoxLayout" name="horizontalLayout_12">
              <item>
               <widget class="QCheckBox" name="ECGCH9check">
                <property name="font">
@@ -1533,6 +1596,10 @@
                </property>
               </widget>
              </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_16">
              <item>
               <widget class="QCheckBox" name="ECGCH10check">
                <property name="font">
@@ -1550,6 +1617,10 @@
                </property>
               </widget>
              </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_18">
              <item>
               <widget class="QCheckBox" name="ECGCH11check">
                <property name="font">
@@ -1568,9 +1639,6 @@
               </widget>
              </item>
             </layout>
-           </item>
-           <item>
-            <layout class="QVBoxLayout" name="singleWaveECG"/>
            </item>
           </layout>
          </widget>
@@ -2085,86 +2153,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>CH3check</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>toggledChannel()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>87</x>
-     <y>491</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>175</x>
-     <y>415</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>CH2check</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>toggledChannel()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>87</x>
-     <y>459</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>391</x>
-     <y>388</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>CH1check</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>toggledChannel()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>87</x>
-     <y>427</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>406</x>
-     <y>395</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>CH6check</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>toggledChannel()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>87</x>
-     <y>587</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>596</x>
-     <y>401</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>CH9check</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>toggledChannel()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>87</x>
-     <y>683</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>596</x>
-     <y>401</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>allChannelCheck</sender>
    <signal>stateChanged(int)</signal>
    <receiver>MainWindow</receiver>
@@ -2177,182 +2165,6 @@
     <hint type="destinationlabel">
      <x>98</x>
      <y>394</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>CH8check</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>toggledChannel()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>87</x>
-     <y>651</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>596</x>
-     <y>401</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>CH11check</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>toggledChannel()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>87</x>
-     <y>747</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>596</x>
-     <y>401</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>CH14check</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>toggledChannel()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>87</x>
-     <y>843</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>596</x>
-     <y>401</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>CH10check</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>toggledChannel()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>87</x>
-     <y>715</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>596</x>
-     <y>401</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>CH5check</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>toggledChannel()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>87</x>
-     <y>555</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>596</x>
-     <y>401</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>CH15check</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>toggledChannel()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>87</x>
-     <y>875</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>596</x>
-     <y>401</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>CH12check</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>toggledChannel()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>87</x>
-     <y>779</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>596</x>
-     <y>401</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>CH13check</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>toggledChannel()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>87</x>
-     <y>811</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>596</x>
-     <y>401</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>CH16check</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>toggledChannel()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>87</x>
-     <y>907</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>596</x>
-     <y>401</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>CH4check</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>toggledChannel()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>87</x>
-     <y>523</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>380</x>
-     <y>380</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>CH7check</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>toggledChannel()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>87</x>
-     <y>619</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>596</x>
-     <y>401</y>
     </hint>
    </hints>
   </connection>
