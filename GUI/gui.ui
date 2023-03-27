@@ -19,22 +19,6 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
-     <spacer name="verticalSpacer_7">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::Fixed</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>15</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item>
      <layout class="QHBoxLayout" name="horizontalLayout_6">
       <property name="spacing">
        <number>10</number>
@@ -43,7 +27,10 @@
        <enum>QLayout::SetMinimumSize</enum>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>15</number>
+      </property>
+      <property name="bottomMargin">
+       <number>15</number>
       </property>
       <item>
        <spacer name="horizontalSpacer_7">
@@ -66,7 +53,7 @@
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>35</height>
+          <height>40</height>
          </size>
         </property>
         <property name="font">
@@ -111,22 +98,6 @@
        </spacer>
       </item>
      </layout>
-    </item>
-    <item>
-     <spacer name="verticalSpacer_8">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::Fixed</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>15</height>
-       </size>
-      </property>
-     </spacer>
     </item>
     <item>
      <layout class="QHBoxLayout" name="toolbar">
@@ -639,6 +610,23 @@
           </layout>
          </item>
          <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_17">
+           <item>
+            <widget class="QPushButton" name="startSessionBtn">
+             <property name="maximumSize">
+              <size>
+               <width>150</width>
+               <height>150</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Start Session</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
           <spacer name="verticalSpacer_3">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
@@ -989,6 +977,12 @@
     </item>
     <item>
      <widget class="Line" name="line">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>15</height>
+       </size>
+      </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -1049,7 +1043,10 @@
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout">
            <item>
-            <widget class="QScrollArea" name="scrollArea">
+            <widget class="QScrollArea" name="s">
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
              <property name="widgetResizable">
               <bool>true</bool>
              </property>
@@ -1057,9 +1054,9 @@
               <property name="geometry">
                <rect>
                 <x>0</x>
-                <y>0</y>
-                <width>459</width>
-                <height>488</height>
+                <y>-94</y>
+                <width>453</width>
+                <height>529</height>
                </rect>
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_12">
@@ -1684,7 +1681,7 @@
      <x>0</x>
      <y>0</y>
      <width>1298</width>
-     <height>30</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -1854,8 +1851,8 @@
    <slot>show_hide_fft()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1217</x>
-     <y>280</y>
+     <x>1264</x>
+     <y>279</y>
     </hint>
     <hint type="destinationlabel">
      <x>797</x>
@@ -1982,8 +1979,8 @@
    <slot>changeBoardType()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>742</x>
-     <y>244</y>
+     <x>734</x>
+     <y>221</y>
     </hint>
     <hint type="destinationlabel">
      <x>391</x>
@@ -2014,8 +2011,8 @@
    <slot>connectToSerialPort()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>835</x>
-     <y>288</y>
+     <x>829</x>
+     <y>258</y>
     </hint>
     <hint type="destinationlabel">
      <x>592</x>
@@ -2030,8 +2027,8 @@
    <slot>openOutputDirManager()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>887</x>
-     <y>335</y>
+     <x>881</x>
+     <y>301</y>
     </hint>
     <hint type="destinationlabel">
      <x>601</x>
@@ -2046,8 +2043,8 @@
    <slot>activatePlaybackMode()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>430</x>
-     <y>284</y>
+     <x>415</x>
+     <y>278</y>
     </hint>
     <hint type="destinationlabel">
      <x>171</x>
@@ -2062,8 +2059,8 @@
    <slot>activateLiveMode()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>304</x>
-     <y>284</y>
+     <x>297</x>
+     <y>278</y>
     </hint>
     <hint type="destinationlabel">
      <x>169</x>
@@ -2078,8 +2075,8 @@
    <slot>show_hide_toolbar()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>234</x>
-     <y>92</y>
+     <x>271</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
      <x>675</x>
@@ -2094,8 +2091,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>66</x>
-     <y>557</y>
+     <x>87</x>
+     <y>491</y>
     </hint>
     <hint type="destinationlabel">
      <x>175</x>
@@ -2110,8 +2107,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>66</x>
-     <y>529</y>
+     <x>87</x>
+     <y>459</y>
     </hint>
     <hint type="destinationlabel">
      <x>391</x>
@@ -2126,8 +2123,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>66</x>
-     <y>501</y>
+     <x>87</x>
+     <y>427</y>
     </hint>
     <hint type="destinationlabel">
      <x>406</x>
@@ -2142,8 +2139,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>66</x>
-     <y>641</y>
+     <x>87</x>
+     <y>587</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2158,8 +2155,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>74</x>
-     <y>751</y>
+     <x>87</x>
+     <y>683</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2190,8 +2187,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>74</x>
-     <y>721</y>
+     <x>87</x>
+     <y>651</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2206,8 +2203,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>74</x>
-     <y>811</y>
+     <x>87</x>
+     <y>747</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2222,8 +2219,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>74</x>
-     <y>901</y>
+     <x>87</x>
+     <y>843</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2238,8 +2235,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>74</x>
-     <y>781</y>
+     <x>87</x>
+     <y>715</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2254,8 +2251,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>66</x>
-     <y>613</y>
+     <x>87</x>
+     <y>555</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2270,8 +2267,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>74</x>
-     <y>931</y>
+     <x>87</x>
+     <y>875</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2286,8 +2283,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>74</x>
-     <y>841</y>
+     <x>87</x>
+     <y>779</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2302,8 +2299,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>74</x>
-     <y>871</y>
+     <x>87</x>
+     <y>811</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2318,8 +2315,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>74</x>
-     <y>961</y>
+     <x>87</x>
+     <y>907</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2334,8 +2331,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>66</x>
-     <y>585</y>
+     <x>87</x>
+     <y>523</y>
     </hint>
     <hint type="destinationlabel">
      <x>380</x>
@@ -2350,8 +2347,8 @@
    <slot>toggledChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>66</x>
-     <y>669</y>
+     <x>87</x>
+     <y>619</y>
     </hint>
     <hint type="destinationlabel">
      <x>596</x>
@@ -2382,8 +2379,8 @@
    <slot>on_off_ecg()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>362</x>
-     <y>365</y>
+     <x>352</x>
+     <y>366</y>
     </hint>
     <hint type="destinationlabel">
      <x>530</x>
@@ -2439,6 +2436,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>startSessionBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>initSession()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>664</x>
+     <y>317</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>843</x>
+     <y>416</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>show_hide_wave()</slot>
@@ -2463,5 +2476,6 @@
   <slot>changeSpeed()</slot>
   <slot>stop()</slot>
   <slot>playPause()</slot>
+  <slot>initSession()</slot>
  </slots>
 </ui>

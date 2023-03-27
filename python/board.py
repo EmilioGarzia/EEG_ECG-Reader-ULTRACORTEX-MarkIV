@@ -5,7 +5,7 @@ import time
 import csv
 import numpy as np
 
-from python.graph import Function
+from graph import Function
 
 # Supported types of boards
 type_of_board = {
