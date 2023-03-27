@@ -1,3 +1,6 @@
+import csv
+import os
+
 from PyQt5 import uic, QtCore, QtGui
 from board import *
 from PyQt5.QtWidgets import *
@@ -68,10 +71,12 @@ class MainWindow(QMainWindow):
     def activatePlaybackMode(self):
         self.liveControlGroup.setEnabled(False)
         self.playbackGroup.setEnabled(True)
+        self.patientGroup.setEnabled(False)
 
     def activateLiveMode(self):
         self.liveControlGroup.setEnabled(True)
         self.playbackGroup.setEnabled(False)
+        self.patientGroup.setEnabled(True)
 
     # Methods for Board Type Input
     def initBoardType(self):
@@ -166,6 +171,8 @@ class MainWindow(QMainWindow):
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
         else:
             input_path = self.fileManager.getPath()
+            self.loadMetadata(os.path.dirname(input_path))
+
             if input_path == "":
                 input_path = None
             self.board.playback(input_path)
@@ -230,6 +237,17 @@ class MainWindow(QMainWindow):
             writer = csv.writer(metadata)
             writer.writerow(["Name", "Surname", "Description"])
             writer.writerow([name, surname, description])
+
+    def loadMetadata(self, input_file_dir):
+        files = os.listdir(input_file_dir)
+        if "metadata.csv" in files:
+            metadata = open(input_file_dir + separator + "metadata.csv", 'r')
+            reader = csv.reader(metadata)
+            next(reader)
+            data = next(reader)
+            self.patientName.setText(data[0])
+            self.patientSurname.setText(data[1])
+            self.patientDescription.setPlainText(data[2])
 
     def openOutputDirManager(self):
         outDir = QFileDialog.getExistingDirectory(self, "Select Directory", options=QFileDialog.ShowDirsOnly)
