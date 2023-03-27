@@ -94,4 +94,5 @@ QRadioButton{
     color: black;
 }
 
-#openFileBtn:disabled, #browseFileBtn:disabled, #startSessionBtn:disabled{ background-color: grey; }
+#openFileBtn:disabled, #browseFileBtn:disabled, #startSessionBtn:disabled, #inputBoard:disabled, #serialPortInput:disabled{ background-color: grey; }
+#openedFileLabel{ color: gray; }
