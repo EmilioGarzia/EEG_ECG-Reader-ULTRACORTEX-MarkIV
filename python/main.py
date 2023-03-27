@@ -21,6 +21,7 @@ class MainWindow(QMainWindow):
         self.playIcon = QtGui.QIcon("..{0}SVG{0}playButton.svg".format(separator))
         self.pauseIcon = QtGui.QIcon("..{0}SVG{0}pauseButton.svg".format(separator))
         self.playButton.setIcon(self.playIcon)
+        self.outputDirectory.setText(os.path.expanduser("~"))
         # File browser object
         self.fileManager = fileDialog.FileBrowser()
         # About window dialog
@@ -93,14 +94,12 @@ class MainWindow(QMainWindow):
     def connectToSerialPort(self):
         global serial_port_connected
         self.selected_port = serial_port_connected.get(self.serialPortInput.currentText())
-        self.initSession()
 
     # Play the plot
     def playPause(self):
         if self.timer is None or not self.timer.isActive():
             self.playButton.setIcon(self.pauseIcon)
-            if self.playbackRadioBtn.isChecked():
-                self.stopButton.setEnabled(True)
+            self.stopButton.setEnabled(True)
 
             delay = self.calculateDelay(self.speedControl.value())
             self.startLoop(self.update, delay)
@@ -110,7 +109,8 @@ class MainWindow(QMainWindow):
 
     def stop(self):
         self.stopLoop()
-        self.board.resetPlayback()
+        if self.playbackRadioBtn.isChecked():
+            self.board.resetPlayback()
         self.clearGraphs()
         self.playButton.setIcon(self.playIcon)
         self.stopButton.setEnabled(False)
@@ -153,8 +153,15 @@ class MainWindow(QMainWindow):
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.WaitCursor))
             output_path = ""
             if not len(self.outputDirectory.text()) == 0:
-                output_path = self.outputDirectory.text() + separator
+                output_path = self.outputDirectory.text()
                 output_path = output_path.replace("/", separator)
+                if not output_path.endswith(separator):
+                    output_path += separator
+
+            output_path += datetime.now().strftime("%m-%d-%Y_%H:%M:%S") + separator
+            os.makedirs(output_path, exist_ok=True)
+            self.createMetadataFile(output_path)
+
             self.board.begin_capturing(self.selected_board_type, self.selected_port, output_path)
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
         else:
@@ -213,6 +220,16 @@ class MainWindow(QMainWindow):
             for wave in self.singleWaves:
                 self.singleWavesLayout.removeWidget(wave)
             self.singleWaves = None
+
+    def createMetadataFile(self, output_path):
+        name = self.patientName.text()
+        surname = self.patientSurname.text()
+        description = self.patientDescription.toPlainText()
+        if len(name) > 0 or len(surname) > 0 or len(description) > 0:
+            metadata = open(output_path + "metadata.csv", "w")
+            writer = csv.writer(metadata)
+            writer.writerow(["Name", "Surname", "Description"])
+            writer.writerow([name, surname, description])
 
     def openOutputDirManager(self):
         outDir = QFileDialog.getExistingDirectory(self, "Select Directory", options=QFileDialog.ShowDirsOnly)

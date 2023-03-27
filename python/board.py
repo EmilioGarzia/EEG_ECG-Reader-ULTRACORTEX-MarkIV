@@ -1,3 +1,5 @@
+import os
+
 from brainflow.board_shim import BrainFlowInputParams, BoardShim, BoardIds
 from brainflow.data_filter import DataFilter, FilterTypes, DetrendOperations, NoiseTypes, WindowOperations
 from datetime import datetime
@@ -49,7 +51,12 @@ class Board:
         self.sampling_rate = BoardShim.get_sampling_rate(board_id)
         self.num_points = self.calculate_points_number()
 
-        output_file = output_folder + datetime.now().strftime("%m-%d-%Y_%H:%M:%S.csv")
+        files = os.listdir(output_folder)
+        if "metadata.csv" in files:
+            filename = str(len(files))
+        else:
+            filename = str(len(files)+1)
+        output_file = output_folder + filename + ".csv"
         file = open(output_file, 'a+')
         self.writer = csv.writer(file)  # Instantiates the csv parser
         self.writer.writerow([self.exg_channels[0], self.exg_channels[-1]])
