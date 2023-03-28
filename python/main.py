@@ -35,15 +35,15 @@ class MainWindow(QMainWindow):
         self.selected_port = None
 
         self.waveWidget = Graph()
-        self.waveWidget.setLabels("Time (s)", "Amplitude (µV)")
+        self.waveWidget.setLabels("Time", "s", "Amplitude", "V")
         self.waveContainer.addWidget(self.waveWidget)
 
         self.fftWidget = Graph()
-        self.fftWidget.setLabels("Frequency (Hz)", "Amplitude (µV)")
+        self.fftWidget.setLabels("Frequency", "Hz", "Amplitude", "V")
         self.fftContainer.addWidget(self.fftWidget)
 
         self.ecgWidget = Graph()
-        self.ecgWidget.setLabels("Time (s)", "Amplitude (mV)")
+        self.ecgWidget.setLabels("Time", "s", "Amplitude", "V")
         self.ecgContainer.addWidget(self.ecgWidget)
 
         # start GUI in dark mode and Initialize Widgets
@@ -134,7 +134,7 @@ class MainWindow(QMainWindow):
 
     def calculateDelay(self, sliderValue):
         speed = 5 - sliderValue
-        return int(1000 / self.board.sampling_rate * speed)
+        return int(self.board.update_speed_ms * speed)
 
     # Function that updates plot data
     def update(self):
@@ -144,15 +144,19 @@ class MainWindow(QMainWindow):
         elif self.eeg_ecg_mode.isChecked():
             eeg_wave, ecg_wave = self.splitWaves(wave)
             eeg_fft, _ = self.splitWaves(fft)
-            self.waveWidget.refresh(eeg_wave)
-            self.fftWidget.refresh(eeg_fft)
-            self.ecgWidget.refresh(ecg_wave)
+            self.waveWidget.refresh(eeg_wave, 1/1.0E6)
+            self.fftWidget.refresh(eeg_fft, 1/1.0E6)
+            self.ecgWidget.refresh(ecg_wave, 1/1.0E3)
         else:
-            self.waveWidget.refresh(wave)
-            self.fftWidget.refresh(fft)
+            self.waveWidget.refresh(wave, 1/1.0E6)
+            self.fftWidget.refresh(fft, 1/1.0E6)
 
         for i, w in enumerate(wave):
-            self.singleWaves[i].refresh([w])
+            if self.eeg_ecg_mode.isChecked() and i+1 in self.board.ecg_channels:
+                scale = 1/1.0E3
+            else:
+                scale = 1/1.0E6
+            self.singleWaves[i].refresh([w], scale)
 
     def splitWaves(self, waves):
         eeg_waves = []
@@ -202,8 +206,8 @@ class MainWindow(QMainWindow):
             for ch in self.board.exg_channels:
                 graph = Graph()
                 graph.showAxes(True, size=(0, 0))
-                graph.setXRange(-self.board.num_points, 0)
-                graph.setYRange(-20000, 20000)
+                graph.setXRange(-self.board.window_size, 0)
+                graph.setYRange(-0.05, 0.05)
                 self.initGraph(graph, [ch])
                 self.singleWaves.append(graph)
                 if self.eeg_ecg_mode.isChecked() and ch in self.board.ecg_channels:
@@ -213,18 +217,18 @@ class MainWindow(QMainWindow):
 
         # Wave Plot Instructions
         self.initGraph(self.waveWidget, self.board.exg_channels)
-        self.waveWidget.setXRange(-self.board.num_points, 0)
-        self.waveWidget.setYRange(-20000, 20000)
+        self.waveWidget.setXRange(-self.board.window_size, 0)
+        self.waveWidget.setYRange(-0.05, 0.05)
 
         # FFT Plot Instructions
         self.initGraph(self.fftWidget, self.board.exg_channels)
         self.fftWidget.setXRange(0, 60)
-        self.fftWidget.setYRange(0, 10000)
+        self.fftWidget.setYRange(0, 1)
 
         # ECG Plot Instructions
         self.initGraph(self.ecgWidget, self.board.ecg_channels)
-        self.ecgWidget.setXRange(-self.board.num_points, 0)
-        self.ecgWidget.setYRange(-20000, 20000)
+        self.ecgWidget.setXRange(-self.board.window_size, 0)
+        self.ecgWidget.setYRange(-0.05, 0.05)
 
         if self.eeg_ecg_mode.isChecked():
             self.showECGPlots()

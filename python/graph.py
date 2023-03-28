@@ -1,3 +1,4 @@
+import numpy as np
 from pyqtgraph import *
 
 
@@ -19,9 +20,9 @@ class Graph(PlotWidget):
         self.showGrid(x=True, y=True)
         self.lightTheme()
 
-    def setLabels(self, x_label, y_label):
-        self.setLabel("left", y_label)
-        self.setLabel("bottom", x_label)
+    def setLabels(self, x_label, x_units, y_label, y_units):
+        self.setLabel("left", y_label, y_units)
+        self.setLabel("bottom", x_label, x_units)
 
     def lightTheme(self):
         self.setBackground("white")
@@ -47,8 +48,8 @@ class Graph(PlotWidget):
         super().clear()
         self.plots.clear()
 
-    def refresh(self, data):
+    def refresh(self, data, scale=1):
         for i, graph in enumerate(self.plots):
             if i == len(data):
                 data.append(Function())
-            graph.setData(data[i].x, data[i].y)
+            graph.setData(data[i].x, np.multiply(data[i].y, scale))
