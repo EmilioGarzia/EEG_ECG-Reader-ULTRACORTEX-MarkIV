@@ -1,1 +1,0 @@
-1. Risolvere glitch toolbar quando nessun grafico è visualizzato
