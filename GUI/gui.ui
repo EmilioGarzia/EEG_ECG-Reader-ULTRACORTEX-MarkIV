@@ -1057,7 +1057,7 @@
               <property name="geometry">
                <rect>
                 <x>0</x>
-                <y>-247</y>
+                <y>0</y>
                 <width>459</width>
                 <height>644</height>
                </rect>
@@ -1621,7 +1621,7 @@
               <property name="geometry">
                <rect>
                 <x>0</x>
-                <y>-31</y>
+                <y>0</y>
                 <width>459</width>
                 <height>126</height>
                </rect>
@@ -2244,22 +2244,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>allChannelCheck</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>selectAllChannel()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>133</x>
-     <y>487</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>98</x>
-     <y>394</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>ecgPlotCheckBox</sender>
    <signal>stateChanged(int)</signal>
    <receiver>MainWindow</receiver>
@@ -2362,8 +2346,8 @@
    <slot>toggleChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>251</x>
-     <y>307</y>
+     <x>271</x>
+     <y>561</y>
     </hint>
     <hint type="destinationlabel">
      <x>603</x>
@@ -2378,8 +2362,8 @@
    <slot>toggleChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>237</x>
-     <y>346</y>
+     <x>271</x>
+     <y>601</y>
     </hint>
     <hint type="destinationlabel">
      <x>630</x>
@@ -2394,8 +2378,8 @@
    <slot>toggleChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>234</x>
-     <y>390</y>
+     <x>271</x>
+     <y>641</y>
     </hint>
     <hint type="destinationlabel">
      <x>636</x>
@@ -2410,8 +2394,8 @@
    <slot>toggleChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>228</x>
-     <y>427</y>
+     <x>271</x>
+     <y>681</y>
     </hint>
     <hint type="destinationlabel">
      <x>655</x>
@@ -2426,8 +2410,8 @@
    <slot>toggleChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>246</x>
-     <y>470</y>
+     <x>271</x>
+     <y>721</y>
     </hint>
     <hint type="destinationlabel">
      <x>675</x>
@@ -2442,8 +2426,8 @@
    <slot>toggleChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>230</x>
-     <y>505</y>
+     <x>271</x>
+     <y>761</y>
     </hint>
     <hint type="destinationlabel">
      <x>671</x>
@@ -2458,8 +2442,8 @@
    <slot>toggleChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>229</x>
-     <y>538</y>
+     <x>271</x>
+     <y>801</y>
     </hint>
     <hint type="destinationlabel">
      <x>681</x>
@@ -2474,8 +2458,8 @@
    <slot>toggleChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>233</x>
-     <y>584</y>
+     <x>271</x>
+     <y>841</y>
     </hint>
     <hint type="destinationlabel">
      <x>716</x>
@@ -2490,8 +2474,8 @@
    <slot>toggleChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>232</x>
-     <y>626</y>
+     <x>271</x>
+     <y>881</y>
     </hint>
     <hint type="destinationlabel">
      <x>730</x>
@@ -2506,8 +2490,8 @@
    <slot>toggleChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>251</x>
-     <y>664</y>
+     <x>271</x>
+     <y>921</y>
     </hint>
     <hint type="destinationlabel">
      <x>665</x>
@@ -2522,8 +2506,8 @@
    <slot>toggleChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>247</x>
-     <y>969</y>
+     <x>271</x>
+     <y>1012</y>
     </hint>
     <hint type="destinationlabel">
      <x>569</x>
@@ -2538,8 +2522,8 @@
    <slot>toggleChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>252</x>
-     <y>697</y>
+     <x>271</x>
+     <y>961</y>
     </hint>
     <hint type="destinationlabel">
      <x>907</x>
@@ -2554,8 +2538,8 @@
    <slot>toggleChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>233</x>
-     <y>741</y>
+     <x>271</x>
+     <y>1001</y>
     </hint>
     <hint type="destinationlabel">
      <x>930</x>
@@ -2570,8 +2554,8 @@
    <slot>toggleChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>258</x>
-     <y>780</y>
+     <x>271</x>
+     <y>1041</y>
     </hint>
     <hint type="destinationlabel">
      <x>908</x>
@@ -2586,8 +2570,8 @@
    <slot>toggleChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>240</x>
-     <y>826</y>
+     <x>271</x>
+     <y>1081</y>
     </hint>
     <hint type="destinationlabel">
      <x>905</x>
@@ -2602,8 +2586,8 @@
    <slot>toggleChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>255</x>
-     <y>867</y>
+     <x>271</x>
+     <y>1121</y>
     </hint>
     <hint type="destinationlabel">
      <x>918</x>
@@ -2618,8 +2602,8 @@
    <slot>toggleChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>247</x>
-     <y>910</y>
+     <x>271</x>
+     <y>1161</y>
     </hint>
     <hint type="destinationlabel">
      <x>925</x>
@@ -2634,8 +2618,8 @@
    <slot>toggleChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>261</x>
-     <y>1004</y>
+     <x>271</x>
+     <y>1052</y>
     </hint>
     <hint type="destinationlabel">
      <x>930</x>
@@ -2650,12 +2634,28 @@
    <slot>toggleChannel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>235</x>
-     <y>1048</y>
+     <x>271</x>
+     <y>1092</y>
     </hint>
     <hint type="destinationlabel">
      <x>931</x>
      <y>1048</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>allChannelCheck</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>toggleAllChannels()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>46</x>
+     <y>475</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>179</x>
+     <y>438</y>
     </hint>
    </hints>
   </connection>
@@ -2668,7 +2668,6 @@
   <slot>darkMode()</slot>
   <slot>showFileManager()</slot>
   <slot>toggleChannel()</slot>
-  <slot>selectAllChannel()</slot>
   <slot>fontMaximize()</slot>
   <slot>fontMinimize()</slot>
   <slot>changeBoardType()</slot>
@@ -2684,5 +2683,6 @@
   <slot>stop()</slot>
   <slot>playPause()</slot>
   <slot>initSession()</slot>
+  <slot>toggleAllChannels()</slot>
  </slots>
 </ui>

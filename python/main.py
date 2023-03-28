@@ -299,39 +299,22 @@ class MainWindow(QMainWindow):
                 self.ecgWidget.darkTheme()
 
     def toggleChannel(self, checked):
-        x = int(self.sender().text())
+        ch = int(self.sender().text())
         if checked:
-            self.singleWaves[x-1].showPlot()
-            self.waveWidget.showPlot(x)
-            self.fftWidget.showPlot(x)
+            self.singleWaves[ch-1].showPlot()
+            self.waveWidget.showPlot(ch)
+            self.fftWidget.showPlot(ch)
         else:
-            self.singleWaves[x-1].hidePlot()
-            self.waveWidget.hidePlot(x)
-            self.fftWidget.hidePlot(x)
+            self.singleWaves[ch-1].hidePlot()
+            self.waveWidget.hidePlot(ch)
+            self.fftWidget.hidePlot(ch)
 
-    def checkBoxSetter(self, status):
-        self.CH1check.setChecked(status)
-        self.CH2check.setChecked(status)
-        self.CH3check.setChecked(status)
-        self.CH4check.setChecked(status)
-        self.CH5check.setChecked(status)
-        self.CH6check.setChecked(status)
-        self.CH7check.setChecked(status)
-        self.CH8check.setChecked(status)
-        self.CH9check.setChecked(status)
-        self.CH10check.setChecked(status)
-        self.CH11check.setChecked(status)
-        self.CH12check.setChecked(status)
-        self.CH13check.setChecked(status)
-        self.CH14check.setChecked(status)
-        self.CH15check.setChecked(status)
-        self.CH16check.setChecked(status)
-        self.ECGCH9check.setChecked(status)
-        self.ECGCH10check.setChecked(status)
-        self.ECGCH11check.setChecked(status)
-
-    def selectAllChannel(self, state):
-        self.checkBoxSetter(state == 2)
+    def toggleAllChannels(self, checked):
+        for ch in self.board.exg_channels:
+            self.findChild(QCheckBox, "CH{}check".format(ch)).setChecked(checked)
+        self.ECGCH9check.setChecked(checked)
+        self.ECGCH10check.setChecked(checked)
+        self.ECGCH11check.setChecked(checked)
 
     # Methods for Show/Hide plot
     def show_hide_wave(self, state):
