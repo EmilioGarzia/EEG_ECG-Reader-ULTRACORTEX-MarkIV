@@ -2,7 +2,6 @@ import os
 
 from brainflow.board_shim import BrainFlowInputParams, BoardShim, BoardIds
 from brainflow.data_filter import DataFilter, FilterTypes, DetrendOperations, NoiseTypes, WindowOperations
-from datetime import datetime
 import time
 import csv
 import numpy as np
@@ -24,6 +23,7 @@ class Board:
     def __init__(self):
         self.board = None
         self.exg_channels = None
+        self.ecg_channels = [9, 10, 11]
         self.sampling_rate = 125
         self.update_speed_ms = 50
         self.window_size = 4
