@@ -29,11 +29,11 @@ class Graph(PlotWidget):
     def darkTheme(self):
         self.setBackground("black")
 
-    def hidePlot(self, index):
+    def hidePlot(self, index=1):
         if index <= len(self.plots):
             self.removeItem(self.plots[index - 1])
 
-    def showPlot(self, index):
+    def showPlot(self, index=1):
         if index <= len(self.plots):
             self.addItem(self.plots[index - 1])
 

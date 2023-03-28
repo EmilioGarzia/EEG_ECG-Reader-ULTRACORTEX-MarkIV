@@ -1,3 +1,1 @@
-1. Gestire salvataggio dei dati per pazienti diversi
-2. Risolvere visualizzazione delle singole onde
-3. Risolvere glitch toolbar quando nessun grafico è visualizzato
+1. Risolvere glitch toolbar quando nessun grafico è visualizzato

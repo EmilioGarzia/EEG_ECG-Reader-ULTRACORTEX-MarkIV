@@ -1,6 +1,6 @@
-#CH1check, #CH9check{ background-color: rgb(128,129,130);color:white;}
-#CH2check, #CH10check{ background-color: rgb(123, 74,141); color:white; }
-#CH3check, #CH11check{ background-color: rgb(57, 90, 161); color:white; }
+#CH1check, #CH9check, #ECGCH9check{ background-color: rgb(128,129,130);color:white;}
+#CH2check, #CH10check, #ECGCH10check{ background-color: rgb(123, 74,141); color:white; }
+#CH3check, #CH11check, #ECGCH11check{ background-color: rgb(57, 90, 161); color:white; }
 #CH4check, #CH12check{ background-color: rgb(49,113,89); color:white;}
 #CH5check, #CH13check{ background-color: rgb(220, 174, 5); color:white;}
 #CH6check, #CH14check{ background-color: rgb(254,97,55); color: white;}
