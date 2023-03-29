@@ -24,7 +24,8 @@ class Board:
         self.board = None
         self.exg_channels = None
         self.ecg_channels = [9, 10, 11]
-        self.sampling_rate = 125
+        self.sampling_rate = 60
+        self.nfft = DataFilter.get_nearest_power_of_two(self.sampling_rate*2)
         self.update_speed_ms = 1000/self.sampling_rate
         self.window_size = 4
         self.num_points = self.calculate_points_number()
@@ -124,7 +125,8 @@ class Board:
             sample_time = np.linspace(-self.window_size, 0, self.num_points)
             wave.append(Function(sample_time.tolist(), channelData.tolist()))
             # Calcola la trasformata di Fourier per ottenere le frequenze del segnale
-            amp, freq = DataFilter.get_psd(channelData, self.sampling_rate, WindowOperations.NO_WINDOW.value)
+            amp, freq = DataFilter.get_psd_welch(channelData, 64, 32, 120,
+                                                 WindowOperations.BLACKMAN_HARRIS.value)
             fft.append(Function(freq, amp))
         return wave, fft
 

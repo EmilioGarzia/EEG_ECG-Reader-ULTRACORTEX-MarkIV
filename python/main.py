@@ -118,6 +118,7 @@ class MainWindow(QMainWindow):
         if self.playbackRadioBtn.isChecked():
             self.board.resetPlayback()
         self.clearGraphs()
+        self.playButton.setEnabled(True)
         self.playButton.setIcon(self.playIcon)
         self.stopButton.setEnabled(False)
 
@@ -141,21 +142,25 @@ class MainWindow(QMainWindow):
         wave, fft = self.board.read_data()
         if wave is None or fft is None:
             self.stopLoop()
-        elif self.eeg_ecg_mode.isChecked():
+            self.playButton.setIcon(self.playIcon)
+            self.playButton.setEnabled(False)
+            return
+
+        if self.eeg_ecg_mode.isChecked():
             eeg_wave, ecg_wave = self.splitWaves(wave)
             eeg_fft, _ = self.splitWaves(fft)
-            self.waveWidget.refresh(eeg_wave, 1/1.0E6)
-            self.fftWidget.refresh(eeg_fft, 1/1.0E6)
-            self.ecgWidget.refresh(ecg_wave, 1/1.0E3)
+            self.waveWidget.refresh(eeg_wave, 1 / 1.0E6)
+            self.fftWidget.refresh(eeg_fft, 1 / 1.0E6)
+            self.ecgWidget.refresh(ecg_wave, 1 / 1.0E3)
         else:
-            self.waveWidget.refresh(wave, 1/1.0E6)
-            self.fftWidget.refresh(fft, 1/1.0E6)
+            self.waveWidget.refresh(wave, 1 / 1.0E6)
+            self.fftWidget.refresh(fft, 1 / 1.0E6)
 
         for i, w in enumerate(wave):
-            if self.eeg_ecg_mode.isChecked() and i+1 in self.board.ecg_channels:
-                scale = 1/1.0E3
+            if self.eeg_ecg_mode.isChecked() and i + 1 in self.board.ecg_channels:
+                scale = 1 / 1.0E3
             else:
-                scale = 1/1.0E6
+                scale = 1 / 1.0E6
             self.singleWaves[i].refresh([w], scale)
 
     def splitWaves(self, waves):
@@ -198,7 +203,10 @@ class MainWindow(QMainWindow):
 
             if input_path == "":
                 input_path = None
-            self.board.playback(input_path)
+            try:
+                self.board.playback(input_path)
+            except ValueError:
+                return
 
         # EEG/ECG Single Waves Instructions
         if self.singleWaves is None:
