@@ -19,12 +19,12 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <layout class="QHBoxLayout" name="horizontalLayout_12">
       <property name="spacing">
        <number>10</number>
       </property>
       <property name="sizeConstraint">
-       <enum>QLayout::SetMinimumSize</enum>
+       <enum>QLayout::SetDefaultConstraint</enum>
       </property>
       <property name="topMargin">
        <number>15</number>
@@ -33,26 +33,16 @@
        <number>15</number>
       </property>
       <item>
-       <spacer name="horizontalSpacer_7">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>15</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
        <widget class="QPushButton" name="show_hide_button">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="maximumSize">
          <size>
-          <width>16777215</width>
+          <width>300</width>
           <height>40</height>
          </size>
         </property>
@@ -83,6 +73,9 @@
          </size>
         </property>
        </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="mini_controls_layout"/>
       </item>
       <item>
        <spacer name="horizontalSpacer_6">
@@ -216,70 +209,74 @@
             </spacer>
            </item>
            <item>
-            <widget class="QPushButton" name="playButton">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>100</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="cursor">
-              <cursorShape>PointingHandCursor</cursorShape>
-             </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start playback&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>30</width>
-               <height>30</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="stopButton">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>100</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="cursor">
-              <cursorShape>PointingHandCursor</cursorShape>
-             </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Stop playback&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>../SVG/stopButton.svg</normaloff>../SVG/stopButton.svg</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>30</width>
-               <height>30</height>
-              </size>
-             </property>
-            </widget>
+            <layout class="QHBoxLayout" name="controlButtonsLayout">
+             <item>
+              <widget class="QPushButton" name="playButton">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>100</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start playback&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>30</width>
+                 <height>30</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="stopButton">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>100</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Stop playback&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>../SVG/stopButton.svg</normaloff>../SVG/stopButton.svg</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>30</width>
+                 <height>30</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
            <item>
             <spacer name="horizontalSpacer_4">
@@ -810,7 +807,7 @@
           </layout>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_13">
+          <layout class="QHBoxLayout" name="speedControlLayout">
            <item>
             <widget class="QSlider" name="speedControl">
              <property name="maximumSize">
@@ -1749,7 +1746,7 @@
                 </font>
                </property>
                <property name="text">
-                <string>WAVE GRAPHICS</string>
+                <string>WAVE PLOT</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1779,7 +1776,7 @@
                 </font>
                </property>
                <property name="text">
-                <string>FFT GRAPHICS</string>
+                <string>FFT PLOT</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1809,7 +1806,7 @@
                 </font>
                </property>
                <property name="text">
-                <string>ECG GRAPHICS</string>
+                <string>ECG PLOT</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1988,38 +1985,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>wavePlotCheckBox</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>show_hide_wave()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1217</x>
-     <y>250</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>866</x>
-     <y>89</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>fftPlotCheckBox</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>show_hide_fft()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1264</x>
-     <y>279</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>797</x>
-     <y>126</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>actionNormal_Screen</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
@@ -2084,22 +2049,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>openFileBtn</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>showFileManager()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1023</x>
-     <y>237</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>596</x>
-     <y>401</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>actionZoom</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
@@ -2132,102 +2081,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>inputBoard</sender>
-   <signal>currentIndexChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>changeBoardType()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>734</x>
-     <y>221</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>391</x>
-     <y>0</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>refreshSerialPortBtn</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>refreshSerialPort()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>857</x>
-     <y>255</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>607</x>
-     <y>369</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>serialPortInput</sender>
-   <signal>currentIndexChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>connectToSerialPort()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>829</x>
-     <y>258</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>592</x>
-     <y>363</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>browseFileBtn</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>openOutputDirManager()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>881</x>
-     <y>301</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>601</x>
-     <y>350</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>playbackRadioBtn</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>activatePlaybackMode()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>415</x>
-     <y>278</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>171</x>
-     <y>40</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>liveRadioBtn</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>activateLiveMode()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>297</x>
-     <y>278</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>169</x>
-     <y>29</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>show_hide_button</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
@@ -2240,102 +2093,6 @@
     <hint type="destinationlabel">
      <x>675</x>
      <y>29</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ecgPlotCheckBox</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>show_hide_ecg()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1167</x>
-     <y>306</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1258</x>
-     <y>401</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>eeg_ecg_mode</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>on_off_ecg()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>362</x>
-     <y>391</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>530</x>
-     <y>111</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>speedControl</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>changeSpeed()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1096</x>
-     <y>354</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1153</x>
-     <y>34</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>stopButton</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>stop()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>352</x>
-     <y>176</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>362</x>
-     <y>65</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>playButton</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>playPause()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>261</x>
-     <y>191</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>268</x>
-     <y>84</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>startSessionBtn</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>initSession()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>751</x>
-     <y>368</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>843</x>
-     <y>416</y>
     </hint>
    </hints>
   </connection>
@@ -2656,6 +2413,246 @@
     <hint type="destinationlabel">
      <x>179</x>
      <y>438</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>liveRadioBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>activateLiveMode()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>297</x>
+     <y>278</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>169</x>
+     <y>29</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>speedControl</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>changeSpeed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1096</x>
+     <y>354</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1153</x>
+     <y>34</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>browseFileBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openOutputDirManager()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>881</x>
+     <y>301</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>601</x>
+     <y>350</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>openFileBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>showFileManager()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1023</x>
+     <y>237</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>596</x>
+     <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>startSessionBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>initSession()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>751</x>
+     <y>368</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>843</x>
+     <y>416</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>fftPlotCheckBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>show_hide_fft()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1264</x>
+     <y>279</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>797</x>
+     <y>126</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>eeg_ecg_mode</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>on_off_ecg()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>362</x>
+     <y>391</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>530</x>
+     <y>111</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>playButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>playPause()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>261</x>
+     <y>191</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>268</x>
+     <y>84</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>serialPortInput</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>connectToSerialPort()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>829</x>
+     <y>258</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>592</x>
+     <y>363</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>refreshSerialPortBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>refreshSerialPort()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>857</x>
+     <y>255</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>607</x>
+     <y>369</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ecgPlotCheckBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>show_hide_ecg()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1167</x>
+     <y>306</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1258</x>
+     <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>inputBoard</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>changeBoardType()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>734</x>
+     <y>221</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>391</x>
+     <y>0</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>wavePlotCheckBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>show_hide_wave()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1217</x>
+     <y>250</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>866</x>
+     <y>89</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>stopButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>stop()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>352</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>362</x>
+     <y>65</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>playbackRadioBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>activatePlaybackMode()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>415</x>
+     <y>278</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>171</x>
+     <y>40</y>
     </hint>
    </hints>
   </connection>

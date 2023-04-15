@@ -44,12 +44,13 @@ class Graph(PlotWidget):
         self.plots.append(graph)
         return graph
 
-    def clear(self):
-        super().clear()
+    def clearGraph(self):
+        self.clear()
         self.plots.clear()
 
     def refresh(self, data, scale=1):
         for i, graph in enumerate(self.plots):
-            if i == len(data):
-                data.append(Function())
-            graph.setData(data[i].x, np.multiply(data[i].y, scale))
+            if i < len(data):
+                graph.setData(data[i].x, np.multiply(data[i].y, scale))
+            else:
+                graph.setData([], [])

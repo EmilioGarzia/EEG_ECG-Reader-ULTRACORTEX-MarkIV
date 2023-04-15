@@ -1,7 +1,7 @@
 import os
 
 from brainflow.board_shim import BrainFlowInputParams, BoardShim, BoardIds
-from brainflow.data_filter import DataFilter, FilterTypes, DetrendOperations, NoiseTypes, WindowOperations
+from brainflow.data_filter import DataFilter, FilterTypes, NoiseTypes, WindowOperations, DetrendOperations
 import time
 import csv
 import numpy as np
@@ -25,13 +25,15 @@ class Board:
         self.exg_channels = None
         self.ecg_channels = [9, 10, 11]
         self.sampling_rate = 60
-        self.nfft = DataFilter.get_nearest_power_of_two(self.sampling_rate*2)
-        self.update_speed_ms = 1000/self.sampling_rate
+        self.real_sampling_rate = None
+        self.update_speed_ms = 1000 / self.sampling_rate
         self.window_size = 4
-        self.num_points = self.calculate_points_number()
+        self.num_points = None
+        self.nfft = DataFilter.get_nearest_power_of_two(self.sampling_rate)
         self.colors = [(128, 129, 130), (123, 74, 141), (57, 90, 161), (49, 113, 89),
                        (220, 174, 5), (254, 97, 55), (255, 56, 44), (162, 81, 48)]
 
+        self.unprocessedSamples = 0
         self.totalData = None
         self.writer = None
         self.real_time = True
@@ -39,7 +41,7 @@ class Board:
         self.reader = None
 
     def calculate_points_number(self):
-        return self.window_size * self.sampling_rate
+        return self.window_size * self.real_sampling_rate
 
     def begin_capturing(self, board_type, port, output_folder=""):
         self.real_time = True
@@ -49,18 +51,18 @@ class Board:
         self.board = BoardShim(board_type, params)
         board_id = self.board.get_board_id()
         self.exg_channels = BoardShim.get_exg_channels(board_id)
-        self.sampling_rate = BoardShim.get_sampling_rate(board_id)
+        self.real_sampling_rate = BoardShim.get_sampling_rate(board_id)
         self.num_points = self.calculate_points_number()
 
         files = os.listdir(output_folder)
         if "metadata.csv" in files:
             filename = str(len(files))
         else:
-            filename = str(len(files)+1)
+            filename = str(len(files) + 1)
         output_file = output_folder + filename + ".csv"
         file = open(output_file, 'a+')
         self.writer = csv.writer(file)  # Instantiates the csv parser
-        self.writer.writerow([self.exg_channels[0], self.exg_channels[-1]])
+        self.writer.writerow([self.real_sampling_rate, self.exg_channels[0], self.exg_channels[-1]])
 
         print("Preparo la sessione...")
         self.totalData = None
@@ -74,7 +76,10 @@ class Board:
         self.input_file = open(input_file_path, 'r')
         self.reader = csv.reader(self.input_file)
         header = next(self.reader)
-        self.exg_channels = range(int(header[0]), int(header[1])+1)
+        self.real_sampling_rate = int(header[0])
+        self.num_points = self.calculate_points_number()
+        self.exg_channels = range(int(header[1]), int(header[2]) + 1)
+        self.unprocessedSamples = 0
         self.totalData = None
 
     def resetPlayback(self):
@@ -92,22 +97,27 @@ class Board:
                 self.totalData = list(np.zeros(shape=(self.num_points, len(new_data))))
 
             if len(new_data[0]) > 0:
-                self.filter_data(new_data)
                 transposed_new_data = np.transpose(new_data)
                 self.save_data(transposed_new_data)
                 self.totalData.extend(transposed_new_data)
         else:
+            self.unprocessedSamples += self.real_sampling_rate/self.sampling_rate
             # Aggiunge i nuovi dati letti da file alla matrice
             try:
-                row = next(self.reader)
-                if self.totalData is None:
-                    self.totalData = list(np.zeros(shape=(self.num_points, len(row))))
-                self.totalData.append(np.array(row, dtype="float64"))
+                for _ in range(int(self.unprocessedSamples)):
+                    row = next(self.reader)
+                    if self.totalData is None:
+                        self.totalData = list(np.zeros(shape=(self.num_points, len(row))))
+                    # Brainflow applies a gain of 24x when it converts data to microVolts.
+                    # We can multiply them by 24 to cancel that gain.
+                    self.totalData.append(np.multiply(np.array(row, dtype="float64"), 24))
+                    self.unprocessedSamples -= 1
             except StopIteration:
                 return None, None
 
-        self.totalData = self.clip_data(self.totalData)
-        data = np.transpose(self.totalData)
+        data = self.clip_data(self.totalData)
+        data = self.filter_data(data)
+        data = np.transpose(data)
         return self.parse_data(data)
 
     def clip_data(self, data):
@@ -124,9 +134,11 @@ class Board:
             channelData = np.array(data[channel])
             sample_time = np.linspace(-self.window_size, 0, self.num_points)
             wave.append(Function(sample_time.tolist(), channelData.tolist()))
-            # Calcola la trasformata di Fourier per ottenere le frequenze del segnale
-            amp, freq = DataFilter.get_psd_welch(channelData, 64, 32, 120,
-                                                 WindowOperations.BLACKMAN_HARRIS.value)
+            # Calcola la Power Spectrum Density
+            improvedData = channelData[-257:-1]
+            improvedData = np.subtract(improvedData, np.average(improvedData))
+            amp, freq = DataFilter.get_psd_welch(improvedData, 256, 192, self.real_sampling_rate,
+                                                 WindowOperations.HAMMING.value)
             fft.append(Function(freq, amp))
         return wave, fft
 
@@ -136,16 +148,23 @@ class Board:
             self.writer.writerow(arr)
 
     def filter_data(self, data):
+        filtered_data = np.copy(data)
         for _, channel in enumerate(self.exg_channels):
-            DataFilter.detrend(data[channel], DetrendOperations.CONSTANT.value)
-            DataFilter.perform_bandpass(data[channel], self.sampling_rate, 3.0, 45.0, 2,
+            DataFilter.detrend(filtered_data[channel], DetrendOperations.CONSTANT.value)
+            DataFilter.perform_bandpass(filtered_data[channel], self.real_sampling_rate, 3.0, 45.0, 2,
                                         FilterTypes.BUTTERWORTH.value, 0)
-            DataFilter.perform_bandstop(data[channel], self.sampling_rate, 48.0, 52.0, 2,
+            DataFilter.perform_bandstop(filtered_data[channel], self.real_sampling_rate, 48.0, 52.0, 2,
                                         FilterTypes.BUTTERWORTH.value, 0)
-            DataFilter.perform_bandstop(data[channel], self.sampling_rate, 58.0, 62.0, 2,
+            DataFilter.perform_bandstop(filtered_data[channel], self.real_sampling_rate, 58.0, 62.0, 2,
                                         FilterTypes.BUTTERWORTH.value, 0)
-            # Rimozione del rumore ambientale
-            DataFilter.remove_environmental_noise(data[channel], self.sampling_rate, NoiseTypes.FIFTY.value)
+            """
+            DataFilter.perform_bandpass(filtered_data[channel], self.real_sampling_rate, 27.5, 45.0, 4,
+                                        FilterTypes.BUTTERWORTH.value, 0)
+            """
+            # Environmental noise cancellation
+            DataFilter.remove_environmental_noise(filtered_data[channel], self.real_sampling_rate,
+                                                  NoiseTypes.FIFTY_AND_SIXTY.value)
+        return filtered_data
 
     def get_channel_color(self, ch):
         return self.colors[(ch - 1) % 8]

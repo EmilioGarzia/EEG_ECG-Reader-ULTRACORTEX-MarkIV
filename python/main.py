@@ -199,10 +199,10 @@ class MainWindow(QMainWindow):
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
         else:
             input_path = self.fileManager.getPath()
-            self.loadMetadata(os.path.dirname(input_path))
-
             if input_path == "":
-                input_path = None
+                return
+
+            self.loadMetadata(os.path.dirname(input_path))
             try:
                 self.board.playback(input_path)
             except ValueError:
@@ -238,12 +238,18 @@ class MainWindow(QMainWindow):
         self.ecgWidget.setXRange(-self.board.window_size, 0)
         self.ecgWidget.setYRange(-0.05, 0.05)
 
+        self.showSessionWidgets()
+        self.playButton.setIcon(self.playIcon)
+        self.playButton.setEnabled(True)
+        self.stopButton.setEnabled(False)
+        self.mainViewGroup.setEnabled(True)
+
         if self.eeg_ecg_mode.isChecked():
             self.showECGPlots()
+        else:
+            self.ecgPlotCheckBox.setChecked(False)
+            self.ecgPlotCheckBox.setEnabled(False)
 
-        self.showSessionWidgets()
-        self.playButton.setEnabled(True)
-        self.mainViewGroup.setEnabled(True)
         if not self.ecgPlotCheckBox.isChecked():
             self.ecg_channels.hide()
             self.ecgMainContainer.hide()
@@ -255,9 +261,9 @@ class MainWindow(QMainWindow):
 
     def closeSession(self):
         self.stopLoop()
-        self.waveWidget.clear()
-        self.fftWidget.clear()
-        self.ecgWidget.clear()
+        self.waveWidget.clearGraph()
+        self.fftWidget.clearGraph()
+        self.ecgWidget.clearGraph()
         if self.singleWaves is not None:
             for i, wave in enumerate(self.singleWaves):
                 self.findChild(QHBoxLayout, "singleCH{}".format(i + 1)).removeWidget(wave)
@@ -403,12 +409,20 @@ class MainWindow(QMainWindow):
             self.mainViewGroup.hide()
             self.patientGroup.hide()
             self.playbackGroup.hide()
+
+            self.mini_controls_layout.addWidget(self.playButton)
+            self.mini_controls_layout.addWidget(self.stopButton)
+            self.mini_controls_layout.addWidget(self.speedControl)
         else:
             self.controlsGroup.show()
             self.liveControlGroup.show()
             self.mainViewGroup.show()
             self.patientGroup.show()
             self.playbackGroup.show()
+
+            self.controlButtonsLayout.addWidget(self.playButton)
+            self.controlButtonsLayout.addWidget(self.stopButton)
+            self.speedControlLayout.addWidget(self.speedControl)
 
     def on_off_ecg(self, state):
         if state == 2:
