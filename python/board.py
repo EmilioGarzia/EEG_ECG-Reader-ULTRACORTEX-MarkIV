@@ -1,8 +1,11 @@
 import time
 
-from brainflow.board_shim import BrainFlowInputParams, BoardShim, BoardIds
+from brainflow.board_shim import BrainFlowInputParams, BoardShim
 from log_manager import DataLogger
 
+# Global variables
+base_impedance_ohms = 2200
+drive_amps = 6.0e-9
 colors = [(128, 129, 130), (123, 74, 141), (57, 90, 161), (49, 113, 89),
           (220, 174, 5), (254, 97, 55), (255, 56, 44), (162, 81, 48)]
 

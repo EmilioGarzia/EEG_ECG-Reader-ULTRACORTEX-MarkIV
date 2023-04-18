@@ -1,3 +1,5 @@
+import math
+
 import numpy as np
 import time
 
@@ -6,6 +8,7 @@ from brainflow.data_filter import DataFilter, DetrendOperations, FilterTypes, No
 
 from graph import Function
 from playback import PlaybackManager
+from board import base_impedance_ohms, drive_amps
 
 
 class DataProcessing:
@@ -13,6 +16,7 @@ class DataProcessing:
         self.speed = 1
         self.window_size = 4
         self.data_source = None
+        self.channels_impedance = None
         self.total_data = None
         self.sampling_rate = None
         self.num_points = None
@@ -45,12 +49,14 @@ class DataProcessing:
         self.clip_data()
 
         # Process data and return obtained functions
+        self.channels_impedance = []
         wave = []
         fft = []
         data = np.transpose(self.total_data)
         exg_channels = BoardShim.get_exg_channels(self.data_source.board_id)
         for i, channel in enumerate(exg_channels):
             channel_data = np.array(data[channel])
+            self.channels_impedance.append(calculate_impedance(channel_data))
             self.filter_channel(channel_data)
             wave.append(Function(np.linspace(-self.window_size, 0, self.num_points), channel_data))
             amp, freq = self.psd(channel_data)
@@ -99,6 +105,14 @@ class DataProcessing:
 
     def get_ecg_channels(self):
         return range(9, 12)
+
+
+def calculate_impedance(channel_data):
+    impedance = (math.sqrt(2)*DataFilter.calc_stddev(channel_data)*1.0E-6)/drive_amps
+    impedance -= base_impedance_ohms
+    if impedance < 0:
+        impedance = 0
+    return impedance
 
 
 def get_time():
