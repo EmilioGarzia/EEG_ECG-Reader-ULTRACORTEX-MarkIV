@@ -140,7 +140,7 @@ class MainWindow(QMainWindow):
             self.playButton.setEnabled(False)
             return
 
-        wave, fft = self.data_processing.forward()
+        impedance, wave, fft = self.data_processing.forward()
         if wave is None or fft is None:
             return
 

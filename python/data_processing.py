@@ -16,7 +16,6 @@ class DataProcessing:
         self.speed = 1
         self.window_size = 4
         self.data_source = None
-        self.channels_impedance = None
         self.total_data = None
         self.sampling_rate = None
         self.num_points = None
@@ -49,19 +48,19 @@ class DataProcessing:
         self.clip_data()
 
         # Process data and return obtained functions
-        self.channels_impedance = []
+        impedance = []
         wave = []
         fft = []
         data = np.transpose(self.total_data)
         exg_channels = BoardShim.get_exg_channels(self.data_source.board_id)
         for i, channel in enumerate(exg_channels):
             channel_data = np.array(data[channel])
-            self.channels_impedance.append(calculate_impedance(channel_data))
+            impedance.append(calculate_impedance(channel_data))
             self.filter_channel(channel_data)
             wave.append(Function(np.linspace(-self.window_size, 0, self.num_points), channel_data))
             amp, freq = self.psd(channel_data)
             fft.append(Function(freq, amp))
-        return wave, fft
+        return impedance, wave, fft
 
     def filter_channel(self, channel_data):
         DataFilter.detrend(channel_data, DetrendOperations.CONSTANT.value)
