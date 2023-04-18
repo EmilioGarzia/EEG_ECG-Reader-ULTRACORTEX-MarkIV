@@ -1,7 +1,7 @@
 import numpy as np
 import time
 
-from brainflow.board_shim import BoardShim
+from brainflow.board_shim import BoardShim, BrainFlowError
 from brainflow.data_filter import DataFilter, DetrendOperations, FilterTypes, NoiseTypes, WindowOperations
 
 from graph import Function
@@ -10,7 +10,7 @@ from playback import PlaybackManager
 
 class DataProcessing:
     def __init__(self):
-        self.frame_rate = 60
+        self.speed = 1
         self.window_size = 4
         self.data_source = None
         self.total_data = None
@@ -32,12 +32,12 @@ class DataProcessing:
 
     def forward(self):
         if self.data_source is None:
-            return
+            return None, None
 
         samples = self.get_unprocessed_samples()
         new_data = self.data_source.read_data(samples)
         if len(new_data) == 0:
-            return
+            return None, None
 
         if self.total_data is None:
             self.total_data = list(np.zeros(shape=(self.num_points, len(new_data[0]))))
@@ -82,24 +82,24 @@ class DataProcessing:
 
     def get_unprocessed_samples(self):
         if self.prev_time is None:
-            self.prev_time = DataProcessing.get_time()
+            self.prev_time = get_time()
             return 0
 
-        curr_time = DataProcessing.get_time()
+        curr_time = get_time()
         passed_time = curr_time-self.prev_time
         self.prev_time = curr_time
-        time_per_sample = 1000//self.sampling_rate
+        time_per_sample = 1000/(self.sampling_rate*self.speed)
         return int(passed_time/time_per_sample)
 
     def get_exg_channels(self):
         try:
             return BoardShim.get_exg_channels(self.data_source.board_id)
-        except AttributeError or TypeError:
+        except BrainFlowError or AttributeError:
             return range(1, 17)
 
     def get_ecg_channels(self):
         return range(9, 12)
 
-    @classmethod
-    def get_time(cls):
-        return time.time()*1000
+
+def get_time():
+    return time.time()*1000

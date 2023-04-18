@@ -32,44 +32,34 @@ QGroupBox{
 #openedFileLabel{ color: rgb(235, 129, 22); }
 QCheckBox{ border-radius: 6px; }
 
-#refreshSerialPortBtn{ background-color: transparent; }
-
-#refreshSerialPortBtn:hover{ 
-    background-color: gray; 
-    border-radius: 10px;
-}
-
-#openFileBtn{
+QPushButton{
     background-color: rgb(0, 106, 255);
     padding: 10px;
     border-radius: 10px;
     color: white;
 }
-#openFileBtn:hover{
+QPushButton:hover{
     background-color: rgb(128, 201, 225);
     color: white;
 }
 
-#browseFileBtn{
-    background-color: rgb(0, 106, 255);
+QLineEdit, QPlainTextEdit, QComboBox{
     color: white;
-    border-radius: 2px;
-    padding: 5px 10px 5px 10px;
-    font-size: 12px;
-}
-#browseFileBtn:hover{
-    background-color: rgb(128, 201, 225);
-    color: black;
+    background-color: black;
+    padding: 4px;
 }
 
-#startSessionBtn{
-    background-color: rgb(0, 106, 255);
-    color: white;
-    border-radius: 2px;
-    padding: 5px 10px 5px 10px;
-    font-size: 12px;
+#refreshSerialPortBtn{
+    padding: 2px;
+    background-color: transparent;
 }
-#startSessionBtn:hover{
-    background-color: rgb(128, 201, 225);
-    color: black;
+
+#refreshSerialPortBtn:hover{ 
+    background-color: gray; 
+    border-radius: 5px;
+}
+
+#browseFileBtn {
+    padding: 5px 10px;
+    border-radius: 5px;
 }

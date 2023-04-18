@@ -36,12 +36,10 @@ class MainWindow(QMainWindow):
         self.fileManager = fileDialog.FileBrowser()
         # About window dialog
         self.aboutWindow = aboutDialog.AboutDialog()
-        self.timer = None
-        self.singleWaves = None
 
         self.data_processing = DataProcessing()
-        self.selected_board_type = None
-        self.selected_port = None
+        self.timer = None
+        self.singleWaves = None
 
         self.waveWidget = Graph()
         self.waveWidget.setLabels("Time", "s", "Amplitude", "V")
@@ -94,9 +92,6 @@ class MainWindow(QMainWindow):
         for t in type_of_board.keys():
             self.inputBoard.addItem(t)
 
-    def changeBoardType(self):
-        self.selected_board_type = type_of_board.get(self.inputBoard.currentText())
-
     # Methods for Serial Port List
     def refreshSerialPort(self):
         self.serialPortInput.clear()
@@ -106,18 +101,14 @@ class MainWindow(QMainWindow):
             serial_port_connected.update({description: port})
             self.serialPortInput.addItem(description)
 
-    def connectToSerialPort(self):
-        global serial_port_connected
-        self.selected_port = serial_port_connected.get(self.serialPortInput.currentText())
-
     # Play the plot
     def playPause(self):
         if self.timer is None or not self.timer.isActive():
             self.playButton.setIcon(self.pauseIcon)
             self.stopButton.setEnabled(True)
-
-            delay = self.calculateDelay()
-            self.startLoop(self.update, delay)
+            self.calculateUpdateSpeed()
+            self.data_processing.prev_time = None
+            self.startLoop(self.update, 60)
         else:
             self.playButton.setIcon(self.playIcon)
             self.stopLoop()
@@ -138,12 +129,8 @@ class MainWindow(QMainWindow):
             for wave in self.singleWaves:
                 wave.refresh([])
 
-    def changeSpeed(self):
-        self.timer.setInterval(self.calculateDelay())
-
-    def calculateDelay(self):
-        speed = 5 - self.speedControl.value()
-        return int(1000/self.data_processing.frame_rate*speed)
+    def calculateUpdateSpeed(self):
+        self.data_processing.speed = self.speedControl.value()/4
 
     # Function that updates plot data
     def update(self):
@@ -197,7 +184,9 @@ class MainWindow(QMainWindow):
     def initSession(self):
         if self.liveRadioBtn.isChecked():
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.WaitCursor))
-            data_source = Board(self.selected_board_type, self.selected_port, self.outputDirectory.text())
+            board_type = type_of_board.get(self.inputBoard.currentText())
+            port = serial_port_connected.get(self.serialPortInput.currentText())
+            data_source = Board(board_type, port, self.outputDirectory.text())
             self.data_processing.start_session(data_source)
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
         else:
@@ -264,6 +253,7 @@ class MainWindow(QMainWindow):
             self.darkMode()
         else:
             self.lightMode()
+        self.show_hide_toolbar()
 
     def closeSession(self):
         self.stopLoop()
@@ -402,6 +392,8 @@ class MainWindow(QMainWindow):
             self.mini_controls_layout.addWidget(self.playButton)
             self.mini_controls_layout.addWidget(self.stopButton)
             self.mini_controls_layout.addWidget(self.speedControl)
+            if self.data_processing.data_source is None:
+                self.speedControl.setEnabled(False)
         else:
             self.controlsGroup.show()
             self.liveControlGroup.show()
@@ -412,6 +404,7 @@ class MainWindow(QMainWindow):
             self.controlButtonsLayout.addWidget(self.playButton)
             self.controlButtonsLayout.addWidget(self.stopButton)
             self.speedControlLayout.addWidget(self.speedControl)
+            self.speedControl.setEnabled(True)
 
     def on_off_ecg(self, state):
         ecg_channels = self.data_processing.get_ecg_channels()
