@@ -1,16 +1,25 @@
 from PyQt5 import uic, QtCore, QtGui
-from board import *
 from PyQt5.QtWidgets import *
+import serial.tools.list_ports
+
+from board import *
 from graph import *
-import platform
+from log_manager import separator
+from data_processing import DataProcessing
+from playback import PlaybackManager
 import aboutDialog
 import fileDialog
-import serial.tools.list_ports
-from datetime import datetime
 
 # global var
-separator = "\\" if platform.system() == "Windows" else "/"  # file system separator
 serial_port_connected = dict()  # all serial port connected
+type_of_board = {  # Supported types of boards
+    "CYTON DAISY BOARD [16CH]": BoardIds.CYTON_DAISY_BOARD,
+    "CYTON BOARD [8CH]": BoardIds.CYTON_BOARD,
+    "CYTON DAISY WIFI BOARD [16CH]": BoardIds.CYTON_DAISY_WIFI_BOARD,
+    "CYTON WIFI BOARD [8CH]": BoardIds.CYTON_WIFI_BOARD,
+    "GANGLION BOARD": BoardIds.GANGLION_BOARD,
+    "GANGLION WIFI BOARD": BoardIds.GANGLION_WIFI_BOARD
+}
 
 
 class MainWindow(QMainWindow):
@@ -30,7 +39,7 @@ class MainWindow(QMainWindow):
         self.timer = None
         self.singleWaves = None
 
-        self.board = Board()
+        self.data_processing = DataProcessing()
         self.selected_board_type = None
         self.selected_port = None
 
@@ -107,7 +116,7 @@ class MainWindow(QMainWindow):
             self.playButton.setIcon(self.pauseIcon)
             self.stopButton.setEnabled(True)
 
-            delay = self.calculateDelay(self.speedControl.value())
+            delay = self.calculateDelay()
             self.startLoop(self.update, delay)
         else:
             self.playButton.setIcon(self.playIcon)
@@ -115,8 +124,7 @@ class MainWindow(QMainWindow):
 
     def stop(self):
         self.stopLoop()
-        if self.playbackRadioBtn.isChecked():
-            self.board.resetPlayback()
+        self.data_processing.reset()
         self.clearGraphs()
         self.playButton.setEnabled(True)
         self.playButton.setIcon(self.playIcon)
@@ -130,20 +138,23 @@ class MainWindow(QMainWindow):
             for wave in self.singleWaves:
                 wave.refresh([])
 
-    def changeSpeed(self, value):
-        self.timer.setInterval(self.calculateDelay(value))
+    def changeSpeed(self):
+        self.timer.setInterval(self.calculateDelay())
 
-    def calculateDelay(self, sliderValue):
-        speed = 5 - sliderValue
-        return int(self.board.update_speed_ms * speed)
+    def calculateDelay(self):
+        speed = 5 - self.speedControl.value()
+        return int(1000/self.data_processing.frame_rate*speed)
 
     # Function that updates plot data
     def update(self):
-        wave, fft = self.board.read_data()
-        if wave is None or fft is None:
+        if self.data_processing.data_source.is_finished():
             self.stopLoop()
             self.playButton.setIcon(self.playIcon)
             self.playButton.setEnabled(False)
+            return
+
+        wave, fft = self.data_processing.forward()
+        if wave is None or fft is None:
             return
 
         if self.eeg_ecg_mode.isChecked():
@@ -156,8 +167,9 @@ class MainWindow(QMainWindow):
             self.waveWidget.refresh(wave, 1 / 1.0E6)
             self.fftWidget.refresh(fft, 1 / 1.0E6)
 
+        ecg_channels = self.data_processing.get_ecg_channels()
         for i, w in enumerate(wave):
-            if self.eeg_ecg_mode.isChecked() and i + 1 in self.board.ecg_channels:
+            if self.eeg_ecg_mode.isChecked() and i + 1 in ecg_channels:
                 scale = 1 / 1.0E3
             else:
                 scale = 1 / 1.0E6
@@ -166,8 +178,9 @@ class MainWindow(QMainWindow):
     def splitWaves(self, waves):
         eeg_waves = []
         ecg_waves = []
+        ecg_channels = self.data_processing.get_ecg_channels()
         for i, wave in enumerate(waves):
-            if i + 1 in self.board.ecg_channels:
+            if i + 1 in ecg_channels:
                 ecg_waves.append(wave)
             else:
                 eeg_waves.append(wave)
@@ -184,58 +197,51 @@ class MainWindow(QMainWindow):
     def initSession(self):
         if self.liveRadioBtn.isChecked():
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.WaitCursor))
-            output_path = ""
-            if not len(self.outputDirectory.text()) == 0:
-                output_path = self.outputDirectory.text()
-                output_path = output_path.replace("/", separator)
-                if not output_path.endswith(separator):
-                    output_path += separator
-
-            output_path += datetime.now().strftime("%m-%d-%Y_%H:%M:%S") + separator
-            os.makedirs(output_path, exist_ok=True)
-            self.createMetadataFile(output_path)
-
-            self.board.begin_capturing(self.selected_board_type, self.selected_port, output_path)
+            data_source = Board(self.selected_board_type, self.selected_port, self.outputDirectory.text())
+            self.data_processing.start_session(data_source)
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
         else:
             input_path = self.fileManager.getPath()
             if input_path == "":
                 return
 
-            self.loadMetadata(os.path.dirname(input_path))
-            try:
-                self.board.playback(input_path)
-            except ValueError:
-                return
+            data_source = PlaybackManager(input_path)
+            self.data_processing.start_session(data_source)
+            metadata = data_source.parser.load_metadata()
+            self.patientName.setText(metadata[0])
+            self.patientSurname.setText(metadata[1])
+            self.patientDescription.setPlainText(metadata[2])
 
         # EEG/ECG Single Waves Instructions
+        ecg_channels = self.data_processing.get_ecg_channels()
+        exg_channels = self.data_processing.get_exg_channels()
         if self.singleWaves is None:
             self.singleWaves = []
-            for ch in self.board.exg_channels:
+            for ch in exg_channels:
                 graph = Graph()
                 graph.showAxes(True, size=(0, 0))
-                graph.setXRange(-self.board.window_size, 0)
+                graph.setXRange(-self.data_processing.window_size, 0)
                 graph.setYRange(-0.05, 0.05)
                 self.initGraph(graph, [ch])
                 self.singleWaves.append(graph)
-                if self.eeg_ecg_mode.isChecked() and ch in self.board.ecg_channels:
+                if self.eeg_ecg_mode.isChecked() and ch in ecg_channels:
                     self.findChild(QHBoxLayout, "singleECG{}".format(ch)).addWidget(graph)
                 else:
                     self.findChild(QHBoxLayout, "singleCH{}".format(ch)).addWidget(graph)
 
         # Wave Plot Instructions
-        self.initGraph(self.waveWidget, self.board.exg_channels)
-        self.waveWidget.setXRange(-self.board.window_size, 0)
+        self.initGraph(self.waveWidget, exg_channels)
+        self.waveWidget.setXRange(-self.data_processing.window_size, 0)
         self.waveWidget.setYRange(-0.05, 0.05)
 
         # FFT Plot Instructions
-        self.initGraph(self.fftWidget, self.board.exg_channels)
+        self.initGraph(self.fftWidget, exg_channels)
         self.fftWidget.setXRange(0, 60)
         self.fftWidget.setYRange(0, 1)
 
         # ECG Plot Instructions
-        self.initGraph(self.ecgWidget, self.board.ecg_channels)
-        self.ecgWidget.setXRange(-self.board.window_size, 0)
+        self.initGraph(self.ecgWidget, ecg_channels)
+        self.ecgWidget.setXRange(-self.data_processing.window_size, 0)
         self.ecgWidget.setYRange(-0.05, 0.05)
 
         self.showSessionWidgets()
@@ -269,27 +275,6 @@ class MainWindow(QMainWindow):
                 self.findChild(QHBoxLayout, "singleCH{}".format(i + 1)).removeWidget(wave)
             self.singleWaves = None
 
-    def createMetadataFile(self, output_path):
-        name = self.patientName.text()
-        surname = self.patientSurname.text()
-        description = self.patientDescription.toPlainText()
-        if len(name) > 0 or len(surname) > 0 or len(description) > 0:
-            metadata = open(output_path + "metadata.csv", "w")
-            writer = csv.writer(metadata)
-            writer.writerow(["Name", "Surname", "Description"])
-            writer.writerow([name, surname, description])
-
-    def loadMetadata(self, input_file_dir):
-        files = os.listdir(input_file_dir)
-        if "metadata.csv" in files:
-            metadata = open(input_file_dir + separator + "metadata.csv", 'r')
-            reader = csv.reader(metadata)
-            next(reader)
-            data = next(reader)
-            self.patientName.setText(data[0])
-            self.patientSurname.setText(data[1])
-            self.patientDescription.setPlainText(data[2])
-
     def openOutputDirManager(self):
         outDir = QFileDialog.getExistingDirectory(self, "Select Directory", options=QFileDialog.ShowDirsOnly)
         self.outputDirectory.setText(outDir)
@@ -297,9 +282,10 @@ class MainWindow(QMainWindow):
     def showAbout(self):
         self.aboutWindow.show()
 
-    def initGraph(self, graph, channel_range):
+    @classmethod
+    def initGraph(cls, graph, channel_range):
         for i in channel_range:
-            color = self.board.get_channel_color(i)
+            color = Board.get_channel_color(i)
             graph.addPlot(color)
 
     # Methods for theme
@@ -338,25 +324,28 @@ class MainWindow(QMainWindow):
                 self.ecgWidget.darkTheme()
 
     def toggleChannel(self, checked):
+        ecg_channels = self.data_processing.get_ecg_channels()
         ch = int(self.sender().text())
         if checked:
             self.singleWaves[ch - 1].showPlot()
-            if self.eeg_ecg_mode.isChecked() and ch in self.board.ecg_channels:
+            if self.eeg_ecg_mode.isChecked() and ch in ecg_channels:
                 self.ecgWidget.showPlot(ch - 8)
             else:
                 self.waveWidget.showPlot(ch)
                 self.fftWidget.showPlot(ch)
         else:
             self.singleWaves[ch - 1].hidePlot()
-            if self.eeg_ecg_mode.isChecked() and ch in self.board.ecg_channels:
+            if self.eeg_ecg_mode.isChecked() and ch in ecg_channels:
                 self.ecgWidget.hidePlot(ch - 8)
             else:
                 self.waveWidget.hidePlot(ch)
                 self.fftWidget.hidePlot(ch)
 
     def toggleAllChannels(self, checked):
-        self.checkChannels(self.board.exg_channels, "CH{}check", checked)
-        self.checkChannels(self.board.ecg_channels, "ECGCH{}check", checked)
+        exg_channels = self.data_processing.get_exg_channels()
+        ecg_channels = self.data_processing.get_ecg_channels()
+        self.checkChannels(exg_channels, "CH{}check", checked)
+        self.checkChannels(ecg_channels, "ECGCH{}check", checked)
 
     def checkChannels(self, channel_range, name_format, checked):
         for ch in channel_range:
@@ -425,11 +414,12 @@ class MainWindow(QMainWindow):
             self.speedControlLayout.addWidget(self.speedControl)
 
     def on_off_ecg(self, state):
+        ecg_channels = self.data_processing.get_ecg_channels()
         if state == 2:
             self.ecgPlotCheckBox.setEnabled(True)
             self.ecgPlotCheckBox.setChecked(True)
             self.showECGPlots()
-            for ch in self.board.ecg_channels:
+            for ch in ecg_channels:
                 self.findChild(QWidget, "singleCH{}_2".format(ch)).hide()
                 if self.singleWaves is not None:
                     self.findChild(QHBoxLayout, "singleCH{}".format(ch)).removeWidget(self.singleWaves[ch - 1])
@@ -438,20 +428,22 @@ class MainWindow(QMainWindow):
             self.ecgPlotCheckBox.setEnabled(False)
             self.ecgPlotCheckBox.setChecked(False)
             self.hideECGPlots()
-            for ch in self.board.ecg_channels:
+            for ch in ecg_channels:
                 self.findChild(QWidget, "singleCH{}_2".format(ch)).show()
                 if self.singleWaves is not None:
                     self.findChild(QHBoxLayout, "singleECG{}".format(ch)).removeWidget(self.singleWaves[ch - 1])
                     self.findChild(QHBoxLayout, "singleCH{}".format(ch)).addWidget(self.singleWaves[ch - 1])
 
     def hideECGPlots(self):
-        for ch in self.board.ecg_channels:
+        ecg_channels = self.data_processing.get_ecg_channels()
+        for ch in ecg_channels:
             self.waveWidget.showPlot(ch)
             self.fftWidget.showPlot(ch)
             self.ecgWidget.hidePlot(ch)
 
     def showECGPlots(self):
-        for ch in self.board.ecg_channels:
+        ecg_channels = self.data_processing.get_ecg_channels()
+        for ch in ecg_channels:
             self.waveWidget.hidePlot(ch)
             self.fftWidget.hidePlot(ch)
             self.ecgWidget.showPlot(ch)
