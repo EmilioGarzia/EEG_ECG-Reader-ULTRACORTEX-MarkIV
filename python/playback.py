@@ -1,4 +1,5 @@
 from log_manager import LogParser
+import numpy as np
 
 
 class PlaybackManager:
@@ -14,7 +15,7 @@ class PlaybackManager:
         self.board_id = int(info[0])
 
     def read_data(self, samples):
-        return self.parser.read_data(samples)
+        return np.multiply(self.parser.read_data(samples), 24)
 
     def is_finished(self):
         return not self.parser.has_new_data

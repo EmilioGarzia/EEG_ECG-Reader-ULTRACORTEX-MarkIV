@@ -99,7 +99,11 @@ class LogParser:
             except StopIteration:
                 self.has_new_data = False
                 break
-        return np.array(data)
+
+        try:
+            return np.array(data)
+        except ValueError:
+            print(data)
 
     def close(self):
         self.file.close()

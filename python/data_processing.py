@@ -35,15 +35,15 @@ class DataProcessing:
 
     def forward(self):
         if self.data_source is None:
-            return None, None
+            return None, None, None
 
         samples = self.get_unprocessed_samples()
         if samples == 0:
-            return None, None
+            return None, None, None
 
         new_data = self.data_source.read_data(samples)
         if len(new_data) == 0:
-            return None, None
+            return None, None, None
 
         if self.total_data is None:
             self.total_data = list(np.zeros(shape=(self.num_points, len(new_data[0]))))
@@ -66,11 +66,13 @@ class DataProcessing:
         return impedance, wave, fft
 
     def filter_channel(self, channel_data):
+        """
         DataFilter.detrend(channel_data, DetrendOperations.CONSTANT.value)
         DataFilter.perform_bandpass(channel_data, self.sampling_rate, 3.0, 45.0, 2, FilterTypes.BUTTERWORTH.value, 0)
         DataFilter.perform_bandstop(channel_data, self.sampling_rate, 48.0, 52.0, 2, FilterTypes.BUTTERWORTH.value, 0)
         DataFilter.perform_bandstop(channel_data, self.sampling_rate, 58.0, 62.0, 2, FilterTypes.BUTTERWORTH.value, 0)
-        # DataFilter.perform_bandpass(filtered_data, sampling_rate, 27.5, 45.0, 4, FilterTypes.BUTTERWORTH.value, 0)
+        """
+        DataFilter.perform_bandpass(channel_data, self.sampling_rate, 27.5, 45.0, 4, FilterTypes.BUTTERWORTH.value, 0)
         # Environmental noise cancellation
         DataFilter.remove_environmental_noise(channel_data, self.sampling_rate, NoiseTypes.FIFTY_AND_SIXTY.value)
 

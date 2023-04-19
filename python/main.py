@@ -42,7 +42,7 @@ class MainWindow(QMainWindow):
 
         # Additional windows loading
         self.aboutWindow = aboutDialog.AboutDialog()
-        self.imp_ui = ImpedanceUI()
+        self.imp_ui = None
 
         self.data_processing = DataProcessing()
         self.timer = None
@@ -141,7 +141,6 @@ class MainWindow(QMainWindow):
 
     # Function that updates plot data
     def update(self):
-        print("Fatto")
         if self.data_processing.data_source.is_finished():
             self.stopLoop()
             self.playButton.setIcon(self.playIcon)
@@ -206,6 +205,7 @@ class MainWindow(QMainWindow):
             port = serial_port_connected.get(self.serialPortInput.currentText())
             data_source = Board(board_type, port, self.outputDirectory.text())
             self.data_processing.start_session(data_source)
+            self.imp_ui = ImpedanceUI(data_source)
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
         else:
             input_path = self.fileManager.getPath()
@@ -244,7 +244,7 @@ class MainWindow(QMainWindow):
         # FFT Plot Instructions
         self.initGraph(self.fftWidget, exg_channels)
         self.fftWidget.setXRange(0, 60)
-        self.fftWidget.setYRange(0, 1)
+        self.fftWidget.setYRange(0, 20)
 
         # ECG Plot Instructions
         self.initGraph(self.ecgWidget, ecg_channels)
