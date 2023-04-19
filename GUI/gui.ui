@@ -110,6 +110,34 @@
         </property>
        </spacer>
       </item>
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>300</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="text">
+         <string>SHOW/HIDE IMPEDANCE DETECTOR</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
     <item>
@@ -1109,7 +1137,7 @@
                 <x>0</x>
                 <y>0</y>
                 <width>459</width>
-                <height>674</height>
+                <height>644</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -1673,7 +1701,7 @@
                 <x>0</x>
                 <y>0</y>
                 <width>459</width>
-                <height>132</height>
+                <height>126</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -2220,8 +2248,8 @@
    <slot>on_off_ecg()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>362</x>
-     <y>391</y>
+     <x>361</x>
+     <y>379</y>
     </hint>
     <hint type="destinationlabel">
      <x>530</x>
@@ -2333,7 +2361,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>271</x>
-     <y>1052</y>
+     <y>1045</y>
     </hint>
     <hint type="destinationlabel">
      <x>930</x>
@@ -2349,7 +2377,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>271</x>
-     <y>721</y>
+     <y>708</y>
     </hint>
     <hint type="destinationlabel">
      <x>675</x>
@@ -2365,7 +2393,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>271</x>
-     <y>641</y>
+     <y>628</y>
     </hint>
     <hint type="destinationlabel">
      <x>636</x>
@@ -2381,7 +2409,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>271</x>
-     <y>1092</y>
+     <y>1085</y>
     </hint>
     <hint type="destinationlabel">
      <x>931</x>
@@ -2397,7 +2425,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>271</x>
-     <y>841</y>
+     <y>828</y>
     </hint>
     <hint type="destinationlabel">
      <x>716</x>
@@ -2413,7 +2441,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>271</x>
-     <y>601</y>
+     <y>588</y>
     </hint>
     <hint type="destinationlabel">
      <x>630</x>
@@ -2429,7 +2457,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>271</x>
-     <y>921</y>
+     <y>908</y>
     </hint>
     <hint type="destinationlabel">
      <x>665</x>
@@ -2445,7 +2473,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>271</x>
-     <y>1011</y>
+     <y>1005</y>
     </hint>
     <hint type="destinationlabel">
      <x>569</x>
@@ -2461,7 +2489,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>271</x>
-     <y>761</y>
+     <y>748</y>
     </hint>
     <hint type="destinationlabel">
      <x>671</x>
@@ -2477,7 +2505,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>271</x>
-     <y>1107</y>
+     <y>1068</y>
     </hint>
     <hint type="destinationlabel">
      <x>905</x>
@@ -2493,7 +2521,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>271</x>
-     <y>561</y>
+     <y>548</y>
     </hint>
     <hint type="destinationlabel">
      <x>603</x>
@@ -2509,7 +2537,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>271</x>
-     <y>961</y>
+     <y>948</y>
     </hint>
     <hint type="destinationlabel">
      <x>907</x>
@@ -2525,7 +2553,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>271</x>
-     <y>1191</y>
+     <y>1148</y>
     </hint>
     <hint type="destinationlabel">
      <x>925</x>
@@ -2541,7 +2569,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>271</x>
-     <y>1149</y>
+     <y>1108</y>
     </hint>
     <hint type="destinationlabel">
      <x>918</x>
@@ -2557,7 +2585,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>271</x>
-     <y>801</y>
+     <y>788</y>
     </hint>
     <hint type="destinationlabel">
      <x>681</x>
@@ -2573,7 +2601,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>271</x>
-     <y>881</y>
+     <y>868</y>
     </hint>
     <hint type="destinationlabel">
      <x>730</x>
@@ -2589,7 +2617,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>271</x>
-     <y>681</y>
+     <y>668</y>
     </hint>
     <hint type="destinationlabel">
      <x>655</x>
@@ -2605,7 +2633,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>271</x>
-     <y>1065</y>
+     <y>1028</y>
     </hint>
     <hint type="destinationlabel">
      <x>908</x>
@@ -2620,8 +2648,8 @@
    <slot>toggleAllChannels()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>46</x>
-     <y>475</y>
+     <x>54</x>
+     <y>474</y>
     </hint>
     <hint type="destinationlabel">
      <x>179</x>
@@ -2637,7 +2665,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>271</x>
-     <y>1001</y>
+     <y>988</y>
     </hint>
     <hint type="destinationlabel">
      <x>930</x>
@@ -2668,12 +2696,28 @@
    <slot>show_hide_toolbar()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>234</x>
-     <y>90</y>
+     <x>229</x>
+     <y>91</y>
     </hint>
     <hint type="destinationlabel">
      <x>675</x>
      <y>29</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>show_hide_impedance_detector()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1089</x>
+     <y>70</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>953</x>
+     <y>39</y>
     </hint>
    </hints>
   </connection>
@@ -2702,5 +2746,6 @@
   <slot>initSession()</slot>
   <slot>toggleAllChannels()</slot>
   <slot>calculateUpdateSpeed()</slot>
+  <slot>show_hide_impedance_detector()</slot>
  </slots>
 </ui>

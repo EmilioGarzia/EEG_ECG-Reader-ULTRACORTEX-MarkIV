@@ -1,8 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
-import platform
-
-separator = "\\" if platform.system() == "Windows" else "/"
+from log_manager import separator
 
 
 class AboutDialog(QDialog):

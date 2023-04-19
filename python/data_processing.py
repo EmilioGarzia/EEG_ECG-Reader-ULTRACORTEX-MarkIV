@@ -38,6 +38,9 @@ class DataProcessing:
             return None, None
 
         samples = self.get_unprocessed_samples()
+        if samples == 0:
+            return None, None
+
         new_data = self.data_source.read_data(samples)
         if len(new_data) == 0:
             return None, None
@@ -55,8 +58,8 @@ class DataProcessing:
         exg_channels = BoardShim.get_exg_channels(self.data_source.board_id)
         for i, channel in enumerate(exg_channels):
             channel_data = np.array(data[channel])
-            impedance.append(calculate_impedance(channel_data))
             self.filter_channel(channel_data)
+            impedance.append(calculate_impedance(channel_data[-self.sampling_rate-1:-1]))
             wave.append(Function(np.linspace(-self.window_size, 0, self.num_points), channel_data))
             amp, freq = self.psd(channel_data)
             fft.append(Function(freq, amp))
@@ -107,11 +110,21 @@ class DataProcessing:
 
 
 def calculate_impedance(channel_data):
-    impedance = (math.sqrt(2)*DataFilter.calc_stddev(channel_data)*1.0E-6)/drive_amps
+    #stddev = DataFilter.calc_stddev(channel_data)
+    stddev = calculate_stddev(channel_data)
+    impedance = (math.sqrt(2)*stddev*1.0e-6)/drive_amps
     impedance -= base_impedance_ohms
     if impedance < 0:
         impedance = 0
     return impedance
+
+
+def calculate_stddev(channel_data):
+    avg = np.mean(channel_data)
+    data = np.subtract(channel_data, avg)
+    data = np.power(data, 2)
+    val = np.sum(data)/len(data)
+    return math.sqrt(val)
 
 
 def get_time():

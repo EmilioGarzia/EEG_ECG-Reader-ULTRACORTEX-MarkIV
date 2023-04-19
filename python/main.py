@@ -1,12 +1,14 @@
 from PyQt5 import uic, QtCore, QtGui
 from PyQt5.QtWidgets import *
 import serial.tools.list_ports
+from brainflow import BoardIds
 
 from board import *
 from graph import *
 from log_manager import separator
 from data_processing import DataProcessing
 from playback import PlaybackManager
+from impedance_ui import ImpedanceUI
 import aboutDialog
 import fileDialog
 
@@ -21,21 +23,26 @@ type_of_board = {  # Supported types of boards
     "GANGLION WIFI BOARD": BoardIds.GANGLION_WIFI_BOARD
 }
 
+# Thresholds for impedance checking
+threshold_railed_warn = 750
+threshold_railed = 2500
+
 
 class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
 
-        # GUI loader
+        # Main GUI loading
         uic.loadUi("..{0}GUI{0}gui.ui".format(separator), self)
         self.playIcon = QtGui.QIcon("..{0}SVG{0}playButton.svg".format(separator))
         self.pauseIcon = QtGui.QIcon("..{0}SVG{0}pauseButton.svg".format(separator))
         self.playButton.setIcon(self.playIcon)
         self.outputDirectory.setText(os.path.expanduser("~"))
-        # File browser object
         self.fileManager = fileDialog.FileBrowser()
-        # About window dialog
+
+        # Additional windows loading
         self.aboutWindow = aboutDialog.AboutDialog()
+        self.imp_ui = ImpedanceUI()
 
         self.data_processing = DataProcessing()
         self.timer = None
@@ -134,6 +141,7 @@ class MainWindow(QMainWindow):
 
     # Function that updates plot data
     def update(self):
+        print("Fatto")
         if self.data_processing.data_source.is_finished():
             self.stopLoop()
             self.playButton.setIcon(self.playIcon)
@@ -141,6 +149,19 @@ class MainWindow(QMainWindow):
             return
 
         impedance, wave, fft = self.data_processing.forward()
+        if impedance is not None:
+            for i, imp in enumerate(impedance):
+                label = self.imp_ui.findChild(QLabel, f"ch{i+1}")
+                kohms = int(imp//1000)
+                label.setText(str(kohms))
+                if kohms < threshold_railed_warn:
+                    color = "green"
+                elif kohms < threshold_railed:
+                    color = "yellow"
+                else:
+                    color = "red"
+                label.setStyleSheet(f"color: {color};")
+
         if wave is None or fft is None:
             return
 
@@ -156,10 +177,7 @@ class MainWindow(QMainWindow):
 
         ecg_channels = self.data_processing.get_ecg_channels()
         for i, w in enumerate(wave):
-            if self.eeg_ecg_mode.isChecked() and i + 1 in ecg_channels:
-                scale = 1 / 1.0E3
-            else:
-                scale = 1 / 1.0E6
+            scale = 1/1.0E3 if self.eeg_ecg_mode.isChecked() and i + 1 in ecg_channels else 1/1.0E6
             self.singleWaves[i].refresh([w], scale)
 
     def splitWaves(self, waves):
@@ -405,6 +423,9 @@ class MainWindow(QMainWindow):
             self.controlButtonsLayout.addWidget(self.stopButton)
             self.speedControlLayout.addWidget(self.speedControl)
             self.speedControl.setEnabled(True)
+
+    def show_hide_impedance_detector(self):
+        self.imp_ui.show()
 
     def on_off_ecg(self, state):
         ecg_channels = self.data_processing.get_ecg_channels()

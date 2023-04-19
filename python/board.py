@@ -1,6 +1,7 @@
 import time
+import numpy as np
 
-from brainflow.board_shim import BrainFlowInputParams, BoardShim
+from brainflow.board_shim import BrainFlowInputParams, BoardShim, BrainFlowError
 from log_manager import DataLogger
 
 # Global variables
@@ -28,10 +29,12 @@ class Board:
         self.board.start_stream()
         time.sleep(5)
 
-    # Returns a tuple containing the following data in order: wave, fft
-    # This function must be called inside a loop
     def read_data(self, samples=1):
-        return self.board.get_board_data(samples)
+        try:
+            return np.transpose(np.multiply(self.board.get_current_board_data(samples), 24))
+        except BrainFlowError:
+            print(samples)
+            return np.array([])
 
     def is_finished(self):
         return False
