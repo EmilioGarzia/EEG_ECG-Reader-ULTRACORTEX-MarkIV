@@ -112,7 +112,7 @@ class MainWindow(QMainWindow):
             self.stopButton.setEnabled(True)
             self.calculateUpdateSpeed()
             self.data_processing.prev_time = None
-            self.startLoop(self.update, 60)
+            self.startLoop(self.update, 1000//60)
         else:
             self.playButton.setIcon(self.playIcon)
             self.stopLoop()
@@ -141,7 +141,8 @@ class MainWindow(QMainWindow):
 
     # Function that updates plot data
     def update(self):
-        if self.data_processing.data_source.is_finished():
+        data_source = self.data_processing.data_source
+        if isinstance(data_source, PlaybackManager) and data_source.is_finished():
             self.stopLoop()
             self.playButton.setIcon(self.playIcon)
             self.playButton.setEnabled(False)
@@ -161,7 +162,6 @@ class MainWindow(QMainWindow):
             self.waveWidget.refresh(wave, 1 / 1.0E6)
             self.fftWidget.refresh(fft, 1 / 1.0E6)
 
-        ecg_channels = self.data_processing.data_source.get_ecg_channels()
         for i, w in enumerate(wave):
             scale = 1/1.0E3 if self.eeg_ecg_mode.isChecked() and i + 1 in ecg_channels else 1/1.0E6
             self.singleWaves[i].refresh([w], scale)
@@ -169,7 +169,6 @@ class MainWindow(QMainWindow):
     def splitWaves(self, waves):
         eeg_waves = []
         ecg_waves = []
-        ecg_channels = self.data_processing.data_source.get_ecg_channels()
         for i, wave in enumerate(waves):
             if i + 1 in ecg_channels:
                 ecg_waves.append(wave)
@@ -201,6 +200,7 @@ class MainWindow(QMainWindow):
                 return
 
             data_source = PlaybackManager(input_path)
+            data_source.begin()
             self.data_processing = DataProcessing(data_source)
             metadata = data_source.parser.load_metadata()
             self.patientName.setText(metadata[0])
@@ -208,8 +208,6 @@ class MainWindow(QMainWindow):
             self.patientDescription.setPlainText(metadata[2])
 
         # EEG/ECG Single Waves Instructions
-        ecg_channels = self.data_processing.data_source.get_ecg_channels()
-        exg_channels = self.data_processing.data_source.get_exg_channels()
         if self.singleWaves is None:
             self.singleWaves = []
             for ch in exg_channels:
@@ -321,7 +319,6 @@ class MainWindow(QMainWindow):
                 self.ecgWidget.darkTheme()
 
     def toggleChannel(self, checked):
-        ecg_channels = self.data_processing.data_source.get_ecg_channels()
         ch = int(self.sender().text())
         if checked:
             self.singleWaves[ch - 1].showPlot()
@@ -339,8 +336,6 @@ class MainWindow(QMainWindow):
                 self.fftWidget.hidePlot(ch)
 
     def toggleAllChannels(self, checked):
-        exg_channels = self.data_processing.data_source.get_exg_channels()
-        ecg_channels = self.data_processing.data_source.get_ecg_channels()
         self.checkChannels(exg_channels, "CH{}check", checked)
         self.checkChannels(ecg_channels, "ECGCH{}check", checked)
 
@@ -418,7 +413,6 @@ class MainWindow(QMainWindow):
         self.imp_ui.show()
 
     def on_off_ecg(self, checked):
-        ecg_channels = self.data_processing.data_source.get_ecg_channels()
         if checked:
             self.ecgPlotCheckBox.setEnabled(True)
             self.ecgPlotCheckBox.setChecked(True)
@@ -439,14 +433,12 @@ class MainWindow(QMainWindow):
                     self.findChild(QHBoxLayout, "singleCH{}".format(ch)).addWidget(self.singleWaves[ch - 1])
 
     def hideECGPlots(self):
-        ecg_channels = self.data_processing.data_source.get_ecg_channels()
         for ch in ecg_channels:
             self.waveWidget.showPlot(ch)
             self.fftWidget.showPlot(ch)
             self.ecgWidget.hidePlot(ch)
 
     def showECGPlots(self):
-        ecg_channels = self.data_processing.data_source.get_ecg_channels()
         for ch in ecg_channels:
             self.waveWidget.hidePlot(ch)
             self.fftWidget.hidePlot(ch)

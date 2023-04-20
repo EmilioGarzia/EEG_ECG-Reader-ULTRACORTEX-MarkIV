@@ -1,20 +1,17 @@
 import math
-
-import numpy as np
 import time
 
-from brainflow.board_shim import BoardShim
 from brainflow.data_filter import DataFilter, FilterTypes, NoiseTypes, WindowOperations
 
 from graph import Function
-from board import Board, base_impedance_ohms, drive_amps
+from board import *
 
 
 class DataProcessing:
     def __init__(self, data_source):
         self.data_source = data_source
         self.speed = 1
-        self.window_size = 4
+        self.window_size = 6  # Add 2 seconds to hide the filter artifact on the left side of the time series
         self.total_data = None
         self.sampling_rate = None
         self.num_points = None
@@ -60,12 +57,13 @@ class DataProcessing:
         wave = []
         fft = []
         data = np.transpose(self.total_data)
-        exg_channels = BoardShim.get_exg_channels(self.data_source.board_id)
+        offset = self.sampling_rate*2
         for i, channel in enumerate(exg_channels):
             channel_data = np.array(data[channel])
             self.filter_channel(channel_data)
+            channel_data = channel_data[offset-1:-1]
             impedance.append(calculate_impedance(channel_data[-self.sampling_rate-1:-1]))
-            wave.append(Function(np.linspace(-self.window_size, 0, self.num_points), channel_data))
+            wave.append(Function(np.linspace(-self.window_size, 0, self.num_points-offset), channel_data))
             amp, freq = self.psd(channel_data)
             fft.append(Function(freq, amp))
         return impedance, wave, fft
@@ -103,15 +101,17 @@ class DataProcessing:
 
         curr_time = get_time()
         passed_time = curr_time-self.prev_time
-        self.unprocessed_time += passed_time-int(passed_time)
+        self.unprocessed_time += passed_time
         self.prev_time = curr_time
         time_per_sample = 1000/(self.sampling_rate*self.speed)
-        return int(self.unprocessed_time/time_per_sample)
+        samples = int(self.unprocessed_time/time_per_sample)
+        self.unprocessed_time -= samples*time_per_sample
+        return samples
 
 
 def calculate_impedance(channel_data):
-    #stddev = DataFilter.calc_stddev(channel_data)
-    stddev = calculate_stddev(channel_data)
+    stddev = DataFilter.calc_stddev(channel_data)
+    # stddev = calculate_stddev(channel_data)
     impedance = (math.sqrt(2)*stddev*1.0e-6)/drive_amps
     impedance -= base_impedance_ohms
     if impedance < 0:

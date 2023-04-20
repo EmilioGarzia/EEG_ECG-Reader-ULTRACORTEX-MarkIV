@@ -11,6 +11,9 @@ colors = [(128, 129, 130), (123, 74, 141), (57, 90, 161), (49, 113, 89),
 channel_ids = [f'{ch}' for ch in range(1, 10)]
 channel_ids.extend(['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I'])
 
+exg_channels = range(1, 17)
+ecg_channels = range(9, 12)
+
 
 class Board:
     def __init__(self, board_type, port, output_folder):
@@ -36,6 +39,7 @@ class Board:
 
     def stop_stream(self):
         if self.streaming:
+            print("Fermo lo stream...")
             self.board.stop_stream()
             self.streaming = False
 
@@ -60,15 +64,6 @@ class Board:
             print(f"Non è stato possibile inviare il comando: {full_command}!")
         except UnicodeDecodeError:
             pass
-
-    def get_exg_channels(self):
-        try:
-            return BoardShim.get_exg_channels(self.board_id)
-        except BrainFlowError or AttributeError:
-            return range(1, 17)
-
-    def get_ecg_channels(self):
-        return range(9, 12)
 
     def is_finished(self):
         return False

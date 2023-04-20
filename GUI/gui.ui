@@ -400,7 +400,7 @@
            <item>
             <widget class="QCheckBox" name="eeg_ecg_mode">
              <property name="enabled">
-              <bool>false</bool>
+              <bool>true</bool>
              </property>
              <property name="cursor">
               <cursorShape>PointingHandCursor</cursorShape>

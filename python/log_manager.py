@@ -2,9 +2,9 @@ import csv
 import platform
 import os
 from datetime import datetime
+import numpy as np
 
 from brainflow.board_shim import BoardShim
-import numpy as np
 
 separator = "\\" if platform.system() == "Windows" else "/"  # file system separator
 
@@ -44,7 +44,6 @@ class DataLogger:
         self.writer = csv.writer(output_file_name)
         self.record_num += 1
 
-        exg_channels = BoardShim.get_exg_channels(board.board_id)
         accel_channels = BoardShim.get_accel_channels(board.board_id)
         analog_channels = BoardShim.get_analog_channels(board.board_id)
 
@@ -53,7 +52,7 @@ class DataLogger:
 
         # Write column headers
         headers = ["Packet Num"]
-        headers.extend([f"EXG Channel {ch}" for ch in exg_channels])
+        headers.extend([f"EXG Channel {ch}" for ch in board.exg_channels])
         headers.extend([f"Accel Channel {ch}" for ch in accel_channels])
         headers.extend(["Other"]*7)
         headers.extend([f"Analog Channel {ch}" for ch in analog_channels])
