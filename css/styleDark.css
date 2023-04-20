@@ -77,5 +77,8 @@ QRadioButton{
 
 #show_hide_button:hover{ background-color: rgb(128, 201, 225); }
 
-#openFileBtn:disabled, #browseFileBtn:disabled, #startSessionBtn:disabled, #inputBoard:disabled, #serialPortInput:disabled{ background-color: grey; }
+#openFileBtn:disabled, #browseFileBtn:disabled, #startSessionBtn:disabled,
+#impCheckBtn:disabled, #inputBoard:disabled, #serialPortInput:disabled {
+    background-color: grey;
+}
 #openedFileLabel:disabled{ color: gray; }

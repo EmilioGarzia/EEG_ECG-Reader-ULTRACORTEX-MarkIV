@@ -23,10 +23,6 @@ type_of_board = {  # Supported types of boards
     "GANGLION WIFI BOARD": BoardIds.GANGLION_WIFI_BOARD
 }
 
-# Thresholds for impedance checking
-threshold_railed_warn = 750
-threshold_railed = 2500
-
 
 class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
@@ -44,7 +40,7 @@ class MainWindow(QMainWindow):
         self.aboutWindow = aboutDialog.AboutDialog()
         self.imp_ui = None
 
-        self.data_processing = DataProcessing()
+        self.data_processing = None
         self.timer = None
         self.singleWaves = None
 
@@ -111,6 +107,7 @@ class MainWindow(QMainWindow):
     # Play the plot
     def playPause(self):
         if self.timer is None or not self.timer.isActive():
+            self.data_processing.start()
             self.playButton.setIcon(self.pauseIcon)
             self.stopButton.setEnabled(True)
             self.calculateUpdateSpeed()
@@ -122,7 +119,10 @@ class MainWindow(QMainWindow):
 
     def stop(self):
         self.stopLoop()
-        self.data_processing.reset()
+        if isinstance(self.data_processing.data_source, PlaybackManager):
+            self.data_processing.stop()
+        else:
+            self.data_processing.data_source.stop_stream()
         self.clearGraphs()
         self.playButton.setEnabled(True)
         self.playButton.setIcon(self.playIcon)
@@ -147,20 +147,7 @@ class MainWindow(QMainWindow):
             self.playButton.setEnabled(False)
             return
 
-        impedance, wave, fft = self.data_processing.forward()
-        if impedance is not None:
-            for i, imp in enumerate(impedance):
-                label = self.imp_ui.findChild(QLabel, f"ch{i+1}")
-                kohms = int(imp//1000)
-                label.setText(str(kohms))
-                if kohms < threshold_railed_warn:
-                    color = "green"
-                elif kohms < threshold_railed:
-                    color = "yellow"
-                else:
-                    color = "red"
-                label.setStyleSheet(f"color: {color};")
-
+        _, wave, fft = self.data_processing.forward()
         if wave is None or fft is None:
             return
 
@@ -174,7 +161,7 @@ class MainWindow(QMainWindow):
             self.waveWidget.refresh(wave, 1 / 1.0E6)
             self.fftWidget.refresh(fft, 1 / 1.0E6)
 
-        ecg_channels = self.data_processing.get_ecg_channels()
+        ecg_channels = self.data_processing.data_source.get_ecg_channels()
         for i, w in enumerate(wave):
             scale = 1/1.0E3 if self.eeg_ecg_mode.isChecked() and i + 1 in ecg_channels else 1/1.0E6
             self.singleWaves[i].refresh([w], scale)
@@ -182,7 +169,7 @@ class MainWindow(QMainWindow):
     def splitWaves(self, waves):
         eeg_waves = []
         ecg_waves = []
-        ecg_channels = self.data_processing.get_ecg_channels()
+        ecg_channels = self.data_processing.data_source.get_ecg_channels()
         for i, wave in enumerate(waves):
             if i + 1 in ecg_channels:
                 ecg_waves.append(wave)
@@ -204,8 +191,9 @@ class MainWindow(QMainWindow):
             board_type = type_of_board.get(self.inputBoard.currentText())
             port = serial_port_connected.get(self.serialPortInput.currentText())
             data_source = Board(board_type, port, self.outputDirectory.text())
-            self.data_processing.start_session(data_source)
-            self.imp_ui = ImpedanceUI(data_source)
+            self.data_processing = DataProcessing(data_source)
+            self.imp_ui = ImpedanceUI(self.data_processing)
+            self.impCheckBtn.setEnabled(True)
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
         else:
             input_path = self.fileManager.getPath()
@@ -213,15 +201,15 @@ class MainWindow(QMainWindow):
                 return
 
             data_source = PlaybackManager(input_path)
-            self.data_processing.start_session(data_source)
+            self.data_processing = DataProcessing(data_source)
             metadata = data_source.parser.load_metadata()
             self.patientName.setText(metadata[0])
             self.patientSurname.setText(metadata[1])
             self.patientDescription.setPlainText(metadata[2])
 
         # EEG/ECG Single Waves Instructions
-        ecg_channels = self.data_processing.get_ecg_channels()
-        exg_channels = self.data_processing.get_exg_channels()
+        ecg_channels = self.data_processing.data_source.get_ecg_channels()
+        exg_channels = self.data_processing.data_source.get_exg_channels()
         if self.singleWaves is None:
             self.singleWaves = []
             for ch in exg_channels:
@@ -255,6 +243,7 @@ class MainWindow(QMainWindow):
         self.playButton.setIcon(self.playIcon)
         self.playButton.setEnabled(True)
         self.stopButton.setEnabled(False)
+        self.eeg_ecg_mode.setEnabled(True)
         self.mainViewGroup.setEnabled(True)
 
         if self.eeg_ecg_mode.isChecked():
@@ -332,7 +321,7 @@ class MainWindow(QMainWindow):
                 self.ecgWidget.darkTheme()
 
     def toggleChannel(self, checked):
-        ecg_channels = self.data_processing.get_ecg_channels()
+        ecg_channels = self.data_processing.data_source.get_ecg_channels()
         ch = int(self.sender().text())
         if checked:
             self.singleWaves[ch - 1].showPlot()
@@ -350,8 +339,8 @@ class MainWindow(QMainWindow):
                 self.fftWidget.hidePlot(ch)
 
     def toggleAllChannels(self, checked):
-        exg_channels = self.data_processing.get_exg_channels()
-        ecg_channels = self.data_processing.get_ecg_channels()
+        exg_channels = self.data_processing.data_source.get_exg_channels()
+        ecg_channels = self.data_processing.data_source.get_ecg_channels()
         self.checkChannels(exg_channels, "CH{}check", checked)
         self.checkChannels(ecg_channels, "ECGCH{}check", checked)
 
@@ -425,11 +414,12 @@ class MainWindow(QMainWindow):
             self.speedControl.setEnabled(True)
 
     def show_hide_impedance_detector(self):
+        self.stop()
         self.imp_ui.show()
 
-    def on_off_ecg(self, state):
-        ecg_channels = self.data_processing.get_ecg_channels()
-        if state == 2:
+    def on_off_ecg(self, checked):
+        ecg_channels = self.data_processing.data_source.get_ecg_channels()
+        if checked:
             self.ecgPlotCheckBox.setEnabled(True)
             self.ecgPlotCheckBox.setChecked(True)
             self.showECGPlots()
@@ -449,14 +439,14 @@ class MainWindow(QMainWindow):
                     self.findChild(QHBoxLayout, "singleCH{}".format(ch)).addWidget(self.singleWaves[ch - 1])
 
     def hideECGPlots(self):
-        ecg_channels = self.data_processing.get_ecg_channels()
+        ecg_channels = self.data_processing.data_source.get_ecg_channels()
         for ch in ecg_channels:
             self.waveWidget.showPlot(ch)
             self.fftWidget.showPlot(ch)
             self.ecgWidget.hidePlot(ch)
 
     def showECGPlots(self):
-        ecg_channels = self.data_processing.get_ecg_channels()
+        ecg_channels = self.data_processing.data_source.get_ecg_channels()
         for ch in ecg_channels:
             self.waveWidget.hidePlot(ch)
             self.fftWidget.hidePlot(ch)

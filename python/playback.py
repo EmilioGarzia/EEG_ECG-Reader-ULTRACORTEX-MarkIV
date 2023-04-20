@@ -7,7 +7,6 @@ class PlaybackManager:
         self.file_path = file_path
         self.parser = None
         self.board_id = None
-        self.begin()
 
     def begin(self):
         self.parser = LogParser(self.file_path)

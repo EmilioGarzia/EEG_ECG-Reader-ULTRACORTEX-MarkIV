@@ -399,6 +399,9 @@
            </item>
            <item>
             <widget class="QCheckBox" name="eeg_ecg_mode">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="cursor">
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
@@ -652,7 +655,10 @@
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_17">
            <item>
-            <widget class="QPushButton" name="pushButton">
+            <widget class="QPushButton" name="impCheckBtn">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="minimumSize">
               <size>
                <width>0</width>
@@ -2243,7 +2249,7 @@
   </connection>
   <connection>
    <sender>eeg_ecg_mode</sender>
-   <signal>stateChanged(int)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>MainWindow</receiver>
    <slot>on_off_ecg()</slot>
    <hints>
@@ -2706,14 +2712,14 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton</sender>
+   <sender>impCheckBtn</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
    <slot>show_hide_impedance_detector()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1089</x>
-     <y>70</y>
+     <x>687</x>
+     <y>385</y>
     </hint>
     <hint type="destinationlabel">
      <x>953</x>

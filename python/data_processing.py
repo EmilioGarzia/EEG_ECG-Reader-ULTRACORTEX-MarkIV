@@ -3,35 +3,40 @@ import math
 import numpy as np
 import time
 
-from brainflow.board_shim import BoardShim, BrainFlowError
-from brainflow.data_filter import DataFilter, DetrendOperations, FilterTypes, NoiseTypes, WindowOperations
+from brainflow.board_shim import BoardShim
+from brainflow.data_filter import DataFilter, FilterTypes, NoiseTypes, WindowOperations
 
 from graph import Function
-from playback import PlaybackManager
-from board import base_impedance_ohms, drive_amps
+from board import Board, base_impedance_ohms, drive_amps
 
 
 class DataProcessing:
-    def __init__(self):
+    def __init__(self, data_source):
+        self.data_source = data_source
         self.speed = 1
         self.window_size = 4
-        self.data_source = None
         self.total_data = None
         self.sampling_rate = None
         self.num_points = None
+        self.unprocessed_time = None
         self.prev_time = None
 
-    def start_session(self, data_source):
-        self.data_source = data_source
-        self.sampling_rate = BoardShim.get_sampling_rate(data_source.board_id)
+    def start(self):
+        if isinstance(self.data_source, Board):
+            self.data_source.start_stream()
+        else:
+            self.data_source.begin()
+        self.sampling_rate = BoardShim.get_sampling_rate(self.data_source.board_id)
         self.num_points = self.sampling_rate*self.window_size
+        self.unprocessed_time = None
         self.prev_time = None
 
-    def reset(self):
-        if self.data_source is not None and isinstance(self.data_source, PlaybackManager):
+    def stop(self):
+        if isinstance(self.data_source, Board):
+            self.data_source.stop_stream()
+        else:
             self.data_source.reset()
-            self.total_data = None
-            self.start_session(self.data_source)
+        self.total_data = None
 
     def forward(self):
         if self.data_source is None:
@@ -92,23 +97,16 @@ class DataProcessing:
 
     def get_unprocessed_samples(self):
         if self.prev_time is None:
+            self.unprocessed_time = 0
             self.prev_time = get_time()
             return 0
 
         curr_time = get_time()
         passed_time = curr_time-self.prev_time
+        self.unprocessed_time += passed_time-int(passed_time)
         self.prev_time = curr_time
         time_per_sample = 1000/(self.sampling_rate*self.speed)
-        return int(passed_time/time_per_sample)
-
-    def get_exg_channels(self):
-        try:
-            return BoardShim.get_exg_channels(self.data_source.board_id)
-        except BrainFlowError or AttributeError:
-            return range(1, 17)
-
-    def get_ecg_channels(self):
-        return range(9, 12)
+        return int(self.unprocessed_time/time_per_sample)
 
 
 def calculate_impedance(channel_data):
