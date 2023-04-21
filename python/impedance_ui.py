@@ -1,10 +1,9 @@
-import time
-
 from PyQt5 import uic, QtCore
 from PyQt5.QtWidgets import *
 
 from log_manager import separator
 from board import exg_channels
+from python.data_processing import DataProcessing
 
 # Thresholds for impedance checking
 threshold_railed_warn = 750
@@ -12,12 +11,12 @@ threshold_railed = 2500
 
 
 class ImpedanceUI(QWidget):
-    def __init__(self, data_processing, *args, **kwargs):
+    def __init__(self, board, *args, **kwargs):
         super().__init__(*args, **kwargs)
         uic.loadUi("..{0}GUI{0}impedanceGUI.ui".format(separator), self)
 
-        self.data_processing = data_processing
-        self.board = data_processing.data_source
+        self.data_processing = DataProcessing(board, 1)
+        self.board = board
         self.checking_button = None
         self.checking_channel = None
 
@@ -31,7 +30,6 @@ class ImpedanceUI(QWidget):
 
     def check_impedance(self):
         self.data_processing.stop()
-        time.sleep(0.5)
         if self.checking_channel is not None:
             self.board.toggle_impedance_checking(self.checking_channel, False)
             self.update_button("Test", "white")
@@ -41,7 +39,6 @@ class ImpedanceUI(QWidget):
             self.board.toggle_impedance_checking(new_checking_channel, True)
             self.checking_channel = new_checking_channel
         self.data_processing.start()
-        time.sleep(0.5)
 
     def update_impedance_value(self):
         if self.checking_channel is None:

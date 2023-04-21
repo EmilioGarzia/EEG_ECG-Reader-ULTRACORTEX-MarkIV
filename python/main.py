@@ -193,7 +193,7 @@ class MainWindow(QMainWindow):
             try:
                 data_source = Board(board_type, port, self.outputDirectory.text())
                 self.data_processing = DataProcessing(data_source)
-                self.imp_ui = ImpedanceUI(self.data_processing)
+                self.imp_ui = ImpedanceUI(data_source)
                 self.impCheckBtn.setEnabled(True)
             except BrainFlowError:
                 self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))

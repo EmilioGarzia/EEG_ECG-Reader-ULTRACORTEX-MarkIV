@@ -6,6 +6,7 @@ from log_manager import DataLogger
 # Global variables
 base_impedance_ohms = 2200
 drive_amps = 6.0e-9
+default_gain = 24
 colors = [(128, 129, 130), (123, 74, 141), (57, 90, 161), (49, 113, 89),
           (220, 174, 5), (254, 97, 55), (255, 56, 44), (162, 81, 48)]
 channel_ids = [f'{ch}' for ch in range(1, 10)]
@@ -46,11 +47,10 @@ class Board:
             self.board.stop_stream()
             self.streaming = False
 
-    def read_data(self, samples=1):
+    def read_data(self, samples=1, gain=default_gain):
         try:
-            return np.transpose(np.multiply(self.board.get_board_data(samples), 24))
+            return np.transpose(np.multiply(self.board.get_board_data(samples), gain))
         except BrainFlowError:
-            print(samples)
             return np.array([])
 
     def toggle_impedance_checking(self, channel, active):
@@ -58,7 +58,7 @@ class Board:
             return
 
         n = '1' if active else '0'
-        full_command = f"x{channel_ids[channel-1]}060{n}00X"
+        full_command = f"x{channel_ids[channel-1]}000{n}00X"
         full_command += f"z{channel_ids[channel-1]}0{n}Z"
         try:
             self.board.config_board(full_command)

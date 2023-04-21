@@ -8,8 +8,9 @@ from board import *
 
 
 class DataProcessing:
-    def __init__(self, data_source):
+    def __init__(self, data_source, gain=default_gain):
         self.data_source = data_source
+        self.gain = gain
         self.speed = 1
         self.window_size = 6  # Add 2 seconds to hide the filter artifact on the left side of the time series
         self.total_data = None
@@ -43,7 +44,7 @@ class DataProcessing:
         if samples == 0:
             return None, None, None
 
-        new_data = self.data_source.read_data(samples)
+        new_data = self.data_source.read_data(samples, self.gain)
         if len(new_data) == 0:
             return None, None, None
 
@@ -61,8 +62,8 @@ class DataProcessing:
         for i, channel in enumerate(exg_channels):
             channel_data = np.array(data[channel])
             self.filter_channel(channel_data)
-            impedance.append(calculate_impedance(channel_data[-self.sampling_rate-1:-1]))
             channel_data = channel_data[offset-1:-1]
+            impedance.append(calculate_impedance(channel_data[-self.sampling_rate-1:-1]))
             wave.append(Function(np.linspace(-self.window_size+2, 0, self.num_points-offset), channel_data))
             amp, freq = self.psd(channel_data)
             fft.append(Function(freq, amp))
@@ -110,8 +111,7 @@ class DataProcessing:
 
 
 def calculate_impedance(channel_data):
-    #stddev = DataFilter.calc_stddev(channel_data)
-    stddev = calculate_stddev(channel_data)
+    stddev = DataFilter.calc_stddev(channel_data)
     impedance = (math.sqrt(2)*stddev*1.0e-6)/drive_amps
     impedance -= base_impedance_ohms
     if impedance < 0:

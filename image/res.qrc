@@ -1,5 +1,0 @@
-<RCC>
-  <qresource prefix="newPrefix">
-    <file>headplot_16ch.png</file>
-  </qresource>
-</RCC>

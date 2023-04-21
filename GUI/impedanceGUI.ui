@@ -732,7 +732,7 @@ font-weight: bold;</string>
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>../image/headplot_16ch.png</pixmap>
+      <pixmap>../image/headplot_16ch.svg</pixmap>
      </property>
      <property name="scaledContents">
       <bool>false</bool>
