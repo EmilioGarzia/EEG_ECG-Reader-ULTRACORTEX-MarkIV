@@ -1,3 +1,5 @@
+import time
+
 from PyQt5 import uic, QtCore
 from PyQt5.QtWidgets import *
 
@@ -29,15 +31,17 @@ class ImpedanceUI(QWidget):
 
     def check_impedance(self):
         self.data_processing.stop()
+        time.sleep(0.5)
         if self.checking_channel is not None:
             self.board.toggle_impedance_checking(self.checking_channel, False)
             self.update_button("Test", "white")
         self.checking_button = self.sender()
         new_checking_channel = int(self.checking_button.objectName()[2])
         if self.checking_channel != new_checking_channel:
-            self.board.toggle_impedance_checking(self.checking_channel, True)
+            self.board.toggle_impedance_checking(new_checking_channel, True)
             self.checking_channel = new_checking_channel
         self.data_processing.start()
+        time.sleep(0.5)
 
     def update_impedance_value(self):
         if self.checking_channel is None:

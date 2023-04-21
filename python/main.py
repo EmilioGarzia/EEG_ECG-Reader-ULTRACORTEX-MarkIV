@@ -11,6 +11,7 @@ from playback import PlaybackManager
 from impedance_ui import ImpedanceUI
 import aboutDialog
 import fileDialog
+from python.alert_dialog import AlertDialog
 
 # global var
 serial_port_connected = dict()  # all serial port connected
@@ -112,7 +113,7 @@ class MainWindow(QMainWindow):
             self.stopButton.setEnabled(True)
             self.calculateUpdateSpeed()
             self.data_processing.prev_time = None
-            self.startLoop(self.update, 1000//60)
+            self.startLoop(self.update, 1000 // 60)
         else:
             self.playButton.setIcon(self.playIcon)
             self.stopLoop()
@@ -137,7 +138,7 @@ class MainWindow(QMainWindow):
                 wave.refresh([])
 
     def calculateUpdateSpeed(self):
-        self.data_processing.speed = self.speedControl.value()/4
+        self.data_processing.speed = self.speedControl.value() / 4
 
     # Function that updates plot data
     def update(self):
@@ -163,7 +164,7 @@ class MainWindow(QMainWindow):
             self.fftWidget.refresh(fft, 1 / 1.0E6)
 
         for i, w in enumerate(wave):
-            scale = 1/1.0E3 if self.eeg_ecg_mode.isChecked() and i + 1 in ecg_channels else 1/1.0E6
+            scale = 1 / 1.0E3 if self.eeg_ecg_mode.isChecked() and i + 1 in ecg_channels else 1 / 1.0E6
             self.singleWaves[i].refresh([w], scale)
 
     def splitWaves(self, waves):
@@ -189,10 +190,17 @@ class MainWindow(QMainWindow):
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.WaitCursor))
             board_type = type_of_board.get(self.inputBoard.currentText())
             port = serial_port_connected.get(self.serialPortInput.currentText())
-            data_source = Board(board_type, port, self.outputDirectory.text())
-            self.data_processing = DataProcessing(data_source)
-            self.imp_ui = ImpedanceUI(self.data_processing)
-            self.impCheckBtn.setEnabled(True)
+            try:
+                data_source = Board(board_type, port, self.outputDirectory.text())
+                self.data_processing = DataProcessing(data_source)
+                self.imp_ui = ImpedanceUI(self.data_processing)
+                self.impCheckBtn.setEnabled(True)
+            except BrainFlowError:
+                self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
+                AlertDialog("Error!", "Board connection failed!" +
+                            " Make sure you have selected a valid serial port" +
+                            " and the board is on.", self).exec()
+                return
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
         else:
             input_path = self.fileManager.getPath()

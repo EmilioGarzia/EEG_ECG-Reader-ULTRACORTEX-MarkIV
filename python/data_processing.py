@@ -61,9 +61,9 @@ class DataProcessing:
         for i, channel in enumerate(exg_channels):
             channel_data = np.array(data[channel])
             self.filter_channel(channel_data)
-            channel_data = channel_data[offset-1:-1]
             impedance.append(calculate_impedance(channel_data[-self.sampling_rate-1:-1]))
-            wave.append(Function(np.linspace(-self.window_size, 0, self.num_points-offset), channel_data))
+            channel_data = channel_data[offset-1:-1]
+            wave.append(Function(np.linspace(-self.window_size+2, 0, self.num_points-offset), channel_data))
             amp, freq = self.psd(channel_data)
             fft.append(Function(freq, amp))
         return impedance, wave, fft
@@ -110,8 +110,8 @@ class DataProcessing:
 
 
 def calculate_impedance(channel_data):
-    stddev = DataFilter.calc_stddev(channel_data)
-    # stddev = calculate_stddev(channel_data)
+    #stddev = DataFilter.calc_stddev(channel_data)
+    stddev = calculate_stddev(channel_data)
     impedance = (math.sqrt(2)*stddev*1.0e-6)/drive_amps
     impedance -= base_impedance_ohms
     if impedance < 0:

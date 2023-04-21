@@ -732,7 +732,7 @@ font-weight: bold;</string>
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../image/res.qrc">:/newPrefix/headplot_16ch.png</pixmap>
+      <pixmap>../image/headplot_16ch.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>false</bool>

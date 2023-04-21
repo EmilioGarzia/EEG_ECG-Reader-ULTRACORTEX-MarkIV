@@ -28,8 +28,11 @@ class Board:
         self.logger = DataLogger(output_folder)
 
         # Start streaming session
-        print("Preparo la sessione...")
-        self.board.prepare_session()
+        try:
+            print("Preparo la sessione...")
+            self.board.prepare_session()
+        except BrainFlowError:
+            raise
 
     def start_stream(self):
         if not self.streaming:
@@ -63,7 +66,7 @@ class Board:
         except BrainFlowError:
             print(f"Non è stato possibile inviare il comando: {full_command}!")
         except UnicodeDecodeError:
-            pass
+            print("Problema!")
 
     def is_finished(self):
         return False
