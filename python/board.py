@@ -49,9 +49,9 @@ class Board:
             self.logger.close()
             self.streaming = False
 
-    def read_data(self, samples=1, gain=default_gain):
+    def read_data(self, samples=1):
         try:
-            data = np.transpose(np.multiply(self.board.get_board_data(samples), gain))
+            data = np.transpose(self.board.get_board_data(samples))
             self.logger.write_data(data)
             return data
         except BrainFlowError:
@@ -61,16 +61,16 @@ class Board:
         if channel is None:
             return
 
-        n = '1' if active else '0'
-        full_command = f"x{channel_ids[channel-1]}000{n}00X"
+        n = 1 if active else 0
+        full_command = f"x{channel_ids[channel-1]}0{(1-n)*6}0{n}00X"
         full_command += f"z{channel_ids[channel-1]}0{n}Z"
         try:
             self.board.config_board(full_command)
-            print(f"Il comando {full_command} è stato inviato con successo!")
+            print(f"Sent command: {full_command}")
         except BrainFlowError:
-            print(f"Non è stato possibile inviare il comando: {full_command}!")
+            print(f"Sending command {full_command} failed!")
         except UnicodeDecodeError:
-            print("Problema!")
+            pass
 
     def is_finished(self):
         return False

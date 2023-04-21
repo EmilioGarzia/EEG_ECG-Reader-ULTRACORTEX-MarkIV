@@ -49,7 +49,7 @@ class DataProcessing:
         if samples == 0:
             return None, None, None
 
-        new_data = self.data_source.read_data(samples, self.gain)
+        new_data = np.multiply(self.data_source.read_data(samples), self.gain)
         if len(new_data) == 0:
             return None, None, None
 
@@ -73,6 +73,9 @@ class DataProcessing:
             amp, freq = self.psd(channel_data)
             fft.append(Function(freq, amp))
         return impedance, wave, fft
+
+    def impedance(self):
+        data = self.forward()
 
     def filter_channel(self, channel_data):
         """

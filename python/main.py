@@ -215,6 +215,7 @@ class MainWindow(QMainWindow):
             self.patientName.setText(metadata[0])
             self.patientSurname.setText(metadata[1])
             self.patientDescription.setPlainText(metadata[2])
+            self.speedControl.setEnabled(True)
 
         # EEG/ECG Single Waves Instructions
         if self.singleWaves is None:
@@ -250,14 +251,11 @@ class MainWindow(QMainWindow):
         self.playButton.setIcon(self.playIcon)
         self.playButton.setEnabled(True)
         self.stopButton.setEnabled(False)
-        self.eeg_ecg_mode.setEnabled(True)
         self.mainViewGroup.setEnabled(True)
+        self.ecgPlotCheckBox.setEnabled(False)
 
         if self.eeg_ecg_mode.isChecked():
             self.showECGPlots()
-        else:
-            self.ecgPlotCheckBox.setChecked(False)
-            self.ecgPlotCheckBox.setEnabled(False)
 
         if not self.ecgPlotCheckBox.isChecked():
             self.ecg_channels.hide()
@@ -271,6 +269,7 @@ class MainWindow(QMainWindow):
 
     def closeSession(self):
         self.stopLoop()
+        self.speedControl.setEnabled(False)
         self.waveWidget.clearGraph()
         self.fftWidget.clearGraph()
         self.ecgWidget.clearGraph()
@@ -403,7 +402,7 @@ class MainWindow(QMainWindow):
             self.mini_controls_layout.addWidget(self.playButton)
             self.mini_controls_layout.addWidget(self.stopButton)
             self.mini_controls_layout.addWidget(self.speedControl)
-            if self.data_processing.data_source is None:
+            if self.data_processing is None:
                 self.speedControl.setEnabled(False)
         else:
             self.controlsGroup.show()
@@ -442,16 +441,21 @@ class MainWindow(QMainWindow):
                     self.findChild(QHBoxLayout, "singleCH{}".format(ch)).addWidget(self.singleWaves[ch - 1])
 
     def hideECGPlots(self):
-        for ch in ecg_channels:
-            self.waveWidget.showPlot(ch)
-            self.fftWidget.showPlot(ch)
-            self.ecgWidget.hidePlot(ch)
+        for i, ch in enumerate(ecg_channels):
+            if self.findChild(QCheckBox, f"CH{ch}check").isChecked():
+                self.waveWidget.showPlot(ch)
+                self.fftWidget.showPlot(ch)
+            self.ecgWidget.hidePlot(i+1)
 
     def showECGPlots(self):
-        for ch in ecg_channels:
+        for i, ch in enumerate(ecg_channels):
             self.waveWidget.hidePlot(ch)
             self.fftWidget.hidePlot(ch)
-            self.ecgWidget.showPlot(ch)
+            if self.findChild(QCheckBox, f"ECGCH{ch}check").isChecked():
+                self.ecgWidget.showPlot(i+1)
+            else:
+                print(f"Nascondo {ch}")
+                self.ecgWidget.hidePlot(i+1)
 
     # Methods for loop
     def startLoop(self, loop, delay):
