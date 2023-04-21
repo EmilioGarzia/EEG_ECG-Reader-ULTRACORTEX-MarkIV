@@ -1,8 +1,8 @@
 import csv
 import platform
 import os
-from datetime import datetime
 import numpy as np
+from datetime import datetime
 
 from brainflow.board_shim import BoardShim
 
@@ -21,6 +21,8 @@ class DataLogger:
         self.record_num = len(files)
         if "metadata.csv" not in files:
             self.record_num += 1
+
+        self.output_file = None
         self.writer = None
 
     @classmethod
@@ -38,10 +40,11 @@ class DataLogger:
         writer.writerow(metadata)
         file.close()
 
-    def create_new_record(self, board):
+    def create_new_record(self, board, exg_channels):
         # Create writer
         output_file_name = self.output_folder + str(self.record_num) + ".csv"
-        self.writer = csv.writer(output_file_name)
+        self.output_file = open(output_file_name, 'w')
+        self.writer = csv.writer(self.output_file)
         self.record_num += 1
 
         accel_channels = BoardShim.get_accel_channels(board.board_id)
@@ -52,17 +55,19 @@ class DataLogger:
 
         # Write column headers
         headers = ["Packet Num"]
-        headers.extend([f"EXG Channel {ch}" for ch in board.exg_channels])
+        headers.extend([f"EXG Channel {ch}" for ch in exg_channels])
         headers.extend([f"Accel Channel {ch}" for ch in accel_channels])
         headers.extend(["Other"]*7)
         headers.extend([f"Analog Channel {ch}" for ch in analog_channels])
-        headers.extend(["Timestamp", "Other", "Timestamp (formatted)"])
+        headers.extend(["Timestamp", "Other"])
         self.writer.writerow(headers)
 
     def write_data(self, data):
-        transposed_data = np.transpose(data)
-        for row in transposed_data:
+        for row in data:
             self.writer.writerow(row)
+
+    def close(self):
+        self.output_file.close()
 
 
 class LogParser:

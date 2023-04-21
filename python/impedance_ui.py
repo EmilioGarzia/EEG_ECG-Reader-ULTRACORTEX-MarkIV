@@ -34,7 +34,7 @@ class ImpedanceUI(QWidget):
             self.board.toggle_impedance_checking(self.checking_channel, False)
             self.update_button("Test", "white")
         self.checking_button = self.sender()
-        new_checking_channel = int(self.checking_button.objectName()[2])
+        new_checking_channel = int(self.checking_button.objectName()[2:])
         if self.checking_channel != new_checking_channel:
             self.board.toggle_impedance_checking(new_checking_channel, True)
             self.checking_channel = new_checking_channel

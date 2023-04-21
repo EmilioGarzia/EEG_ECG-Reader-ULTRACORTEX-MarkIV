@@ -3,7 +3,8 @@ from PyQt5.QtWidgets import *
 import serial.tools.list_ports
 from brainflow import BoardIds
 
-from board import *
+from board import exg_channels, ecg_channels, Board
+from brainflow.board_shim import BrainFlowError
 from graph import *
 from log_manager import separator
 from data_processing import DataProcessing

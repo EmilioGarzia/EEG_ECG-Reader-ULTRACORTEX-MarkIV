@@ -9,7 +9,7 @@ drive_amps = 6.0e-9
 default_gain = 24
 colors = [(128, 129, 130), (123, 74, 141), (57, 90, 161), (49, 113, 89),
           (220, 174, 5), (254, 97, 55), (255, 56, 44), (162, 81, 48)]
-channel_ids = [f'{ch}' for ch in range(1, 10)]
+channel_ids = [f'{ch}' for ch in range(1, 9)]
 channel_ids.extend(['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I'])
 
 exg_channels = range(1, 17)
@@ -39,17 +39,21 @@ class Board:
         if not self.streaming:
             print("Avvio lo stream...")
             self.board.start_stream()
+            self.logger.create_new_record(self, exg_channels)
             self.streaming = True
 
     def stop_stream(self):
         if self.streaming:
             print("Fermo lo stream...")
             self.board.stop_stream()
+            self.logger.close()
             self.streaming = False
 
     def read_data(self, samples=1, gain=default_gain):
         try:
-            return np.transpose(np.multiply(self.board.get_board_data(samples), gain))
+            data = np.transpose(np.multiply(self.board.get_board_data(samples), gain))
+            self.logger.write_data(data)
+            return data
         except BrainFlowError:
             return np.array([])
 
