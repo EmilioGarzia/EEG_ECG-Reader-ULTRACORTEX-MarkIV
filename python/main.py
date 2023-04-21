@@ -402,8 +402,6 @@ class MainWindow(QMainWindow):
             self.mini_controls_layout.addWidget(self.playButton)
             self.mini_controls_layout.addWidget(self.stopButton)
             self.mini_controls_layout.addWidget(self.speedControl)
-            if self.data_processing is None:
-                self.speedControl.setEnabled(False)
         else:
             self.controlsGroup.show()
             self.liveControlGroup.show()
@@ -414,7 +412,6 @@ class MainWindow(QMainWindow):
             self.controlButtonsLayout.addWidget(self.playButton)
             self.controlButtonsLayout.addWidget(self.stopButton)
             self.speedControlLayout.addWidget(self.speedControl)
-            self.speedControl.setEnabled(True)
 
     def show_hide_impedance_detector(self):
         self.stop()

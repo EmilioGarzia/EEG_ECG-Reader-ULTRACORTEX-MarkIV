@@ -68,17 +68,5 @@ QRadioButton{
     border-radius: 5px;
 }
 
-#show_hide_button{
-    background-color: rgb(0, 106, 255);
-    color: white;
-    padding: 10px;
-    border-radius: 10px;
-}
-
-#show_hide_button:hover{ background-color: rgb(128, 201, 225); }
-
-#openFileBtn:disabled, #browseFileBtn:disabled, #startSessionBtn:disabled,
-#impCheckBtn:disabled, #inputBoard:disabled, #serialPortInput:disabled {
-    background-color: grey;
-}
-#openedFileLabel:disabled{ color: gray; }
+QPushButton:disabled, QComboBox:disabled { background-color: grey; }
+#openedFileLabel:disabled { color: gray; }

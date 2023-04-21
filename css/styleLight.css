@@ -15,15 +15,6 @@
     border-radius: 15px;
 }
 
-#show_hide_button{
-    background-color: rgb(0, 106, 255);
-    color: white;
-    padding: 10px;
-    border-radius: 10px;
-}
-
-#show_hide_button:hover{ background-color: rgb(128, 201, 225); }
-
 QGroupBox{ 
     color: red; 
     font-weight: bold;
@@ -38,10 +29,7 @@ QPushButton{
     border-radius: 10px;
     color: white;
 }
-QPushButton:hover{
-    background-color: rgb(128, 201, 225);
-    color: white;
-}
+QPushButton:hover{ background-color: rgb(128, 201, 225); }
 
 QLineEdit, QPlainTextEdit, QComboBox{
     color: white;
@@ -63,3 +51,6 @@ QLineEdit, QPlainTextEdit, QComboBox{
     padding: 5px 10px;
     border-radius: 5px;
 }
+
+QPushButton:disabled, QComboBox:disabled { background-color: grey; }
+#openedFileLabel:disabled { color: gray; }
