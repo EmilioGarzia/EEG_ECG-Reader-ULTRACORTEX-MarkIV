@@ -70,3 +70,9 @@ QRadioButton{
 
 QPushButton:disabled, QComboBox:disabled { background-color: grey; }
 #openedFileLabel:disabled { color: gray; }
+
+#eeg_channels, #ecg_channels, #scrollAreaWidgetContents, #scrollAreaWidgetContents_2 {
+    background-color: rgb(21, 21, 21);
+}
+
+#allChannelCheck { margin-left: 10px; }

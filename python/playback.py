@@ -1,26 +1,28 @@
-import numpy as np
-
 from log_manager import LogParser
-from board import default_gain
+from data_source import DataSource
 
 
-class PlaybackManager:
+class PlaybackManager(DataSource):
     def __init__(self, file_path):
+        super().__init__()
         self.file_path = file_path
         self.parser = None
         self.board_id = None
 
-    def begin(self):
-        self.parser = LogParser(self.file_path)
-        info = self.parser.begin()
-        self.board_id = int(info[0])
+    def start(self):
+        if not self.streaming:
+            self.parser = LogParser(self.file_path)
+            info = self.parser.begin()
+            self.board_id = int(info[0])
+            super().start()
 
-    def read_data(self, samples):
+    def stop(self):
+        if self.streaming:
+            super().stop()
+            self.parser.close()
+
+    def read_data(self, samples=1):
         return self.parser.read_data(samples)
 
     def is_finished(self):
         return not self.parser.has_new_data
-
-    def reset(self):
-        self.parser.close()
-        self.begin()

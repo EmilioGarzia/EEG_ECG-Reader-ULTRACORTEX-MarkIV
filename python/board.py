@@ -2,6 +2,7 @@ import numpy as np
 
 from brainflow.board_shim import BrainFlowInputParams, BoardShim, BrainFlowError
 from log_manager import DataLogger
+from data_source import DataSource
 
 # Global variables
 base_impedance_ohms = 2200
@@ -16,8 +17,10 @@ exg_channels = range(1, 17)
 ecg_channels = range(9, 12)
 
 
-class Board:
+class Board(DataSource):
     def __init__(self, board_type, port, output_folder):
+        super().__init__()
+
         # Initialize board object
         params = BrainFlowInputParams()
         params.serial_port = port
@@ -35,19 +38,20 @@ class Board:
         except BrainFlowError:
             raise
 
-    def start_stream(self):
+    def start(self):
         if not self.streaming:
-            print("Avvio lo stream...")
+            print("Starting stream...")
             self.board.start_stream()
             self.logger.create_new_record(self, exg_channels)
-            self.streaming = True
+            super().start()
 
-    def stop_stream(self):
+    def stop(self):
         if self.streaming:
-            print("Fermo lo stream...")
+            print("Stopping stream...")
             self.board.stop_stream()
             self.logger.close()
             self.streaming = False
+            super().stop()
 
     def read_data(self, samples=1):
         try:

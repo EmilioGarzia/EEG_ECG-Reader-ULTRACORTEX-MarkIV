@@ -1,5 +1,5 @@
 from PyQt5 import uic, QtCore
-from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import QWidget, QPushButton
 
 from log_manager import separator
 from board import exg_channels

@@ -16,29 +16,24 @@ class DataProcessing:
         self.gain = gain
         self.speed = 1
         self.window_size = 4
-        self.total_data = None
         self.sampling_rate = None
         self.num_points = None
         self.total_points = None
+        self.total_data = None
         self.unprocessed_time = None
         self.prev_time = None
 
     def start(self):
-        if isinstance(self.data_source, Board):
-            self.data_source.start_stream()
-        else:
-            self.data_source.begin()
-        self.sampling_rate = BoardShim.get_sampling_rate(self.data_source.board_id)
-        self.num_points = self.sampling_rate*self.window_size
-        self.total_points = self.num_points+extra_window*self.sampling_rate
-        self.unprocessed_time = None
+        if not self.data_source.is_streaming():
+            self.data_source.start()
+            self.sampling_rate = BoardShim.get_sampling_rate(self.data_source.board_id)
+            self.num_points = self.sampling_rate*self.window_size
+            self.total_points = self.num_points+extra_window*self.sampling_rate
+            self.total_data = None
         self.prev_time = None
 
     def stop(self):
-        if isinstance(self.data_source, Board):
-            self.data_source.stop_stream()
-        else:
-            self.data_source.reset()
+        self.data_source.stop()
         self.total_data = None
 
     def forward(self):
@@ -73,9 +68,6 @@ class DataProcessing:
             amp, freq = self.psd(channel_data)
             fft.append(Function(freq, amp))
         return impedance, wave, fft
-
-    def impedance(self):
-        data = self.forward()
 
     def filter_channel(self, channel_data):
         """
@@ -125,14 +117,6 @@ def calculate_impedance(channel_data):
     if impedance < 0:
         impedance = 0
     return impedance
-
-
-def calculate_stddev(channel_data):
-    avg = np.mean(channel_data)
-    data = np.subtract(channel_data, avg)
-    data = np.power(data, 2)
-    val = np.sum(data)/len(data)
-    return math.sqrt(val)
 
 
 def get_time():

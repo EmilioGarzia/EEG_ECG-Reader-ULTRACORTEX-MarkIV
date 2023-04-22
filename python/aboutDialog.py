@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import QDialog
 from PyQt5 import uic
 from log_manager import separator
 

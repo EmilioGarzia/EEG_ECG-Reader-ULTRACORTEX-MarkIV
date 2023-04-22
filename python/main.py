@@ -8,14 +8,14 @@ from brainflow import BoardIds
 
 from board import exg_channels, ecg_channels, Board
 from brainflow.board_shim import BrainFlowError
-from graph import *
-from log_manager import separator
+from graph import Graph
+from log_manager import separator, save_metadata, load_metadata
 from data_processing import DataProcessing
 from playback import PlaybackManager
 from impedance_ui import ImpedanceUI
+from alert_dialog import AlertDialog
 import aboutDialog
 import fileDialog
-from python.alert_dialog import AlertDialog
 
 # global var
 serial_port_connected = dict()  # all serial port connected
@@ -112,22 +112,18 @@ class MainWindow(QMainWindow):
     # Play the plot
     def playPause(self):
         if self.timer is None or not self.timer.isActive():
-            self.data_processing.start()
             self.playButton.setIcon(self.pauseIcon)
             self.stopButton.setEnabled(True)
             self.calculateUpdateSpeed()
-            self.data_processing.prev_time = None
-            self.startLoop(self.update, 1000 // 60)
+            self.data_processing.start()
+            self.startLoop()
         else:
             self.playButton.setIcon(self.playIcon)
             self.stopLoop()
 
     def stop(self):
         self.stopLoop()
-        if isinstance(self.data_processing.data_source, PlaybackManager):
-            self.data_processing.stop()
-        else:
-            self.data_processing.data_source.stop_stream()
+        self.data_processing.stop()
         self.clearGraphs()
         self.playButton.setEnabled(True)
         self.playButton.setIcon(self.playIcon)
@@ -191,11 +187,14 @@ class MainWindow(QMainWindow):
 
     def initSession(self):
         if self.liveRadioBtn.isChecked():
+            output_folder = self.outputDirectory.text()
+            save_metadata(output_folder, [self.patientName.text(), self.patientSurname.text(),
+                                          self.patientDescription.plainText()])
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.WaitCursor))
             board_type = type_of_board.get(self.inputBoard.currentText())
             port = serial_port_connected.get(self.serialPortInput.currentText())
             try:
-                data_source = Board(board_type, port, self.outputDirectory.text())
+                data_source = Board(board_type, port, output_folder)
                 self.data_processing = DataProcessing(data_source)
                 self.imp_ui = ImpedanceUI(data_source)
                 self.impCheckBtn.setEnabled(True)
@@ -211,13 +210,13 @@ class MainWindow(QMainWindow):
             if input_path == "":
                 return
 
-            data_source = PlaybackManager(input_path)
-            data_source.begin()
-            self.data_processing = DataProcessing(data_source)
-            metadata = data_source.parser.load_metadata()
+            metadata = load_metadata(os.path.dirname(input_path))
             self.patientName.setText(metadata[0])
             self.patientSurname.setText(metadata[1])
             self.patientDescription.setPlainText(metadata[2])
+
+            data_source = PlaybackManager(input_path)
+            self.data_processing = DataProcessing(data_source)
             self.speedControl.setEnabled(True)
 
         # EEG/ECG Single Waves Instructions
@@ -416,7 +415,7 @@ class MainWindow(QMainWindow):
             self.controlButtonsLayout.addWidget(self.stopButton)
             self.speedControlLayout.addWidget(self.speedControl)
 
-    def show_hide_impedance_detector(self):
+    def show_impedance_detector(self):
         self.stop()
         self.imp_ui.show()
 
@@ -454,14 +453,13 @@ class MainWindow(QMainWindow):
             if self.findChild(QCheckBox, f"ECGCH{ch}check").isChecked():
                 self.ecgWidget.showPlot(i+1)
             else:
-                print(f"Nascondo {ch}")
                 self.ecgWidget.hidePlot(i+1)
 
     # Methods for loop
-    def startLoop(self, loop, delay):
+    def startLoop(self):
         self.timer = QtCore.QTimer()
-        self.timer.setInterval(delay)
-        self.timer.timeout.connect(loop)
+        self.timer.setInterval(1000//60)
+        self.timer.timeout.connect(self.update)
         self.timer.start()
 
     def stopLoop(self):

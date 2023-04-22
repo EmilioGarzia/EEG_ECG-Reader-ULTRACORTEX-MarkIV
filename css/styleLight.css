@@ -54,3 +54,4 @@ QLineEdit, QPlainTextEdit, QComboBox{
 
 QPushButton:disabled, QComboBox:disabled { background-color: grey; }
 #openedFileLabel:disabled { color: gray; }
+#allChannelCheck { margin-left: 10px; }

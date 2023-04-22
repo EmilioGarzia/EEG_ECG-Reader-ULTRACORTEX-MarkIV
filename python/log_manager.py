@@ -11,7 +11,7 @@ separator = "\\" if platform.system() == "Windows" else "/"  # file system separ
 
 class DataLogger:
     def __init__(self, output_folder, create_folder=True):
-        self.output_folder = self.fix_separators(output_folder)
+        self.output_folder = fix_separators(output_folder)
         if create_folder:
             self.output_folder += datetime.now().strftime("%m-%d-%Y_%H:%M:%S") + separator
             os.makedirs(self.output_folder, exist_ok=True)
@@ -24,21 +24,6 @@ class DataLogger:
 
         self.output_file = None
         self.writer = None
-
-    @classmethod
-    def fix_separators(cls, path):
-        to_fix = "\\" if separator == "/" else "\\"
-        path.replace(to_fix, separator)
-        if not path.endswith(separator):
-            path += separator
-        return path
-
-    def save_metadata(self, metadata):
-        file = open(self.output_folder + "metadata.csv", 'w')
-        writer = csv.writer(file)
-        writer.writerow(["Name", "Surname", "Description"])
-        writer.writerow(metadata)
-        file.close()
 
     def create_new_record(self, board, exg_channels):
         # Create writer
@@ -83,18 +68,6 @@ class LogParser:
         self.has_new_data = True
         return info
 
-    def load_metadata(self):
-        folder = os.path.dirname(self.file_path)
-        files = os.listdir(folder)
-        if "metadata.csv" in files:
-            file = open(folder + separator + "metadata.csv", 'r')
-            reader = csv.reader(file)
-            next(reader)
-            info = next(reader)
-            file.close()
-            return info
-        return None
-
     def read_data(self, num_rows=1):
         data = []
         for i in range(num_rows):
@@ -107,7 +80,35 @@ class LogParser:
         try:
             return np.array(data)
         except ValueError:
-            print(data)
+            print("Samples array has an invalid size!")
 
     def close(self):
         self.file.close()
+
+
+def load_metadata(folder):
+    files = os.listdir(folder)
+    if "metadata.csv" in files:
+        file = open(folder + separator + "metadata.csv", 'r')
+        reader = csv.reader(file)
+        next(reader)
+        info = next(reader)
+        file.close()
+        return info
+    return None
+
+
+def save_metadata(folder, metadata):
+    file = open(folder + "metadata.csv", 'w')
+    writer = csv.writer(file)
+    writer.writerow(["Name", "Surname", "Description"])
+    writer.writerow(metadata)
+    file.close()
+
+
+def fix_separators(path):
+    to_fix = "\\" if separator == "/" else "\\"
+    path.replace(to_fix, separator)
+    if not path.endswith(separator):
+        path += separator
+    return path
