@@ -5,7 +5,6 @@ class AlertDialog(QDialog):
     def __init__(self, title, message, parent=None):
         super().__init__(parent)
         self.setWindowTitle(title)
-        self.setFixedSize(300, 100)
 
         layout = QVBoxLayout()
         label = QLabel(message)

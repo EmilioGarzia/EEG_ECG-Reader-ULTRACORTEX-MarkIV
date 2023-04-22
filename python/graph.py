@@ -1,5 +1,5 @@
 import numpy as np
-from pyqtgraph import *
+from pyqtgraph import PlotWidget, mkPen
 
 
 class Function:
@@ -18,6 +18,7 @@ class Graph(PlotWidget):
         self.plots = []
 
         self.showGrid(x=True, y=True)
+        self.setDefaultPadding(0)
         self.lightTheme()
 
     def setLabels(self, x_label, x_units, y_label, y_units):

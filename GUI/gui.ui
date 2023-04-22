@@ -211,7 +211,7 @@
        <widget class="QGroupBox" name="controlsGroup">
         <property name="minimumSize">
          <size>
-          <width>350</width>
+          <width>330</width>
           <height>0</height>
          </size>
         </property>
@@ -907,7 +907,7 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>180</width>
+          <width>200</width>
           <height>0</height>
          </size>
         </property>
@@ -1107,7 +1107,7 @@
          </size>
         </property>
         <property name="title">
-         <string>Main Plot</string>
+         <string>Showing Plots</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <property name="sizeConstraint">
@@ -1285,7 +1285,7 @@
                 <x>0</x>
                 <y>0</y>
                 <width>459</width>
-                <height>644</height>
+                <height>674</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_10">

@@ -1,3 +1,6 @@
+import os
+import sys
+
 from PyQt5 import uic, QtCore, QtGui
 from PyQt5.QtWidgets import *
 import serial.tools.list_ports
@@ -51,7 +54,7 @@ class MainWindow(QMainWindow):
         self.waveContainer.addWidget(self.waveWidget)
 
         self.fftWidget = Graph()
-        self.fftWidget.setLabels("Frequency", "Hz", "Amplitude", "V")
+        self.fftWidget.setLabels("Frequency", "Hz", "Amplitude", "dB")
         self.fftContainer.addWidget(self.fftWidget)
 
         self.ecgWidget = Graph()
@@ -240,7 +243,7 @@ class MainWindow(QMainWindow):
         # FFT Plot Instructions
         self.initGraph(self.fftWidget, exg_channels)
         self.fftWidget.setXRange(0, 60)
-        self.fftWidget.setYRange(0, 20)
+        self.fftWidget.setYRange(0, 50)
 
         # ECG Plot Instructions
         self.initGraph(self.ecgWidget, ecg_channels)
