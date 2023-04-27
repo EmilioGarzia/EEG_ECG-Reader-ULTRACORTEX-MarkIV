@@ -23,9 +23,9 @@ class DataProcessing:
         self.unprocessed_time = None
         self.prev_time = None
 
-    def start(self):
+    def start(self, save_logs=True):
         if not self.data_source.is_streaming():
-            self.data_source.start()
+            self.data_source.start(save_logs)
             self.sampling_rate = BoardShim.get_sampling_rate(self.data_source.board_id)
             self.num_points = self.sampling_rate*self.window_size
             self.total_points = self.num_points+extra_window*self.sampling_rate

@@ -10,23 +10,24 @@ separator = "\\" if platform.system() == "Windows" else "/"  # file system separ
 
 
 class DataLogger:
-    def __init__(self, output_folder, create_folder=True):
-        self.output_folder = fix_separators(output_folder)
-        if create_folder:
-            self.output_folder += datetime.now().strftime("%m-%d-%Y_%H:%M:%S") + separator
+    def __init__(self, output_path):
+        self.output_path = fix_separators(output_path)
+        self.output_folder = None
+        self.record_num = 0
+        self.output_file = None
+        self.writer = None
+
+    def create_new_record(self, board, exg_channels, create_folder=True):
+        if create_folder and self.output_folder is None:
+            self.output_folder = self.output_path + datetime.now().strftime("%m-%d-%Y_%H:%M:%S") + separator
             os.makedirs(self.output_folder, exist_ok=True)
 
-        # Create file writer
-        files = os.listdir(output_folder)
+        # Create writer
+        files = os.listdir(self.output_folder)
         self.record_num = len(files)
         if "metadata.csv" not in files:
             self.record_num += 1
 
-        self.output_file = None
-        self.writer = None
-
-    def create_new_record(self, board, exg_channels):
-        # Create writer
         output_file_name = self.output_folder + str(self.record_num) + ".csv"
         self.output_file = open(output_file_name, 'w')
         self.writer = csv.writer(self.output_file)
@@ -48,11 +49,15 @@ class DataLogger:
         self.writer.writerow(headers)
 
     def write_data(self, data):
-        for row in data:
-            self.writer.writerow(row)
+        if self.writer is not None:
+            for row in data:
+                self.writer.writerow(row)
 
     def close(self):
-        self.output_file.close()
+        if self.output_file is not None:
+            self.output_file.close()
+            self.output_file = None
+            self.writer = None
 
 
 class LogParser:

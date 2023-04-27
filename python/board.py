@@ -26,9 +26,6 @@ class Board(DataSource):
         params.serial_port = port
         self.board = BoardShim(board_type, params)
         self.board_id = self.board.get_board_id()
-        self.streaming = False
-
-        # Initialize data logger
         self.logger = DataLogger(output_folder)
 
         # Start streaming session
@@ -38,11 +35,12 @@ class Board(DataSource):
         except BrainFlowError:
             raise
 
-    def start(self):
+    def start(self, save_logs=True):
         if not self.streaming:
             print("Starting stream...")
             self.board.start_stream()
-            self.logger.create_new_record(self, exg_channels)
+            if save_logs:
+                self.logger.create_new_record(self, exg_channels)
             super().start()
 
     def stop(self):
@@ -50,7 +48,6 @@ class Board(DataSource):
             print("Stopping stream...")
             self.board.stop_stream()
             self.logger.close()
-            self.streaming = False
             super().stop()
 
     def read_data(self, samples=1):

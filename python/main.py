@@ -189,7 +189,7 @@ class MainWindow(QMainWindow):
         if self.liveRadioBtn.isChecked():
             output_folder = self.outputDirectory.text()
             save_metadata(output_folder, [self.patientName.text(), self.patientSurname.text(),
-                                          self.patientDescription.plainText()])
+                                          self.patientDescription.toPlainText()])
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.WaitCursor))
             board_type = type_of_board.get(self.inputBoard.currentText())
             port = serial_port_connected.get(self.serialPortInput.currentText())

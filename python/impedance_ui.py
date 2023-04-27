@@ -1,4 +1,4 @@
-from PyQt5 import uic, QtCore
+from PyQt5 import uic, QtCore, QtGui
 from PyQt5.QtWidgets import QWidget, QPushButton
 
 from log_manager import separator
@@ -29,16 +29,24 @@ class ImpedanceUI(QWidget):
         self.timer.start()
 
     def check_impedance(self):
+        self.stop_impedance_checking()
+        self.checking_button = self.sender()
+        new_checking_channel = int(self.checking_button.objectName()[2:])
+        if new_checking_channel != self.checking_channel:
+            self.start_impedance_checking(new_checking_channel)
+        else:
+            self.checking_channel = None
+
+    def stop_impedance_checking(self):
         self.data_processing.stop()
         if self.checking_channel is not None:
             self.board.toggle_impedance_checking(self.checking_channel, False)
             self.update_button("Test", "white")
-        self.checking_button = self.sender()
-        new_checking_channel = int(self.checking_button.objectName()[2:])
-        if self.checking_channel != new_checking_channel:
-            self.board.toggle_impedance_checking(new_checking_channel, True)
-            self.checking_channel = new_checking_channel
-        self.data_processing.start()
+
+    def start_impedance_checking(self, channel):
+        self.board.toggle_impedance_checking(channel, True)
+        self.checking_channel = channel
+        self.data_processing.start(False)
 
     def update_impedance_value(self):
         if self.checking_channel is None:
@@ -61,3 +69,7 @@ class ImpedanceUI(QWidget):
     def update_button(self, text, color):
         self.checking_button.setStyleSheet(f"color: {color};")
         self.checking_button.setText(text)
+
+    def closeEvent(self, event: QtGui.QCloseEvent) -> None:
+        self.stop_impedance_checking()
+        event.accept()
