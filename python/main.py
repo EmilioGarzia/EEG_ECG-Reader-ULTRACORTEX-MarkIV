@@ -167,7 +167,8 @@ class MainWindow(QMainWindow):
             scale = 1 / 1.0E3 if self.eeg_ecg_mode.isChecked() and i + 1 in ecg_channels else 1 / 1.0E6
             self.singleWaves[i].refresh([w], scale)
 
-    def splitWaves(self, waves):
+    @classmethod
+    def splitWaves(cls, waves):
         eeg_waves = []
         ecg_waves = []
         for i, wave in enumerate(waves):
@@ -330,6 +331,10 @@ class MainWindow(QMainWindow):
 
     def toggleChannel(self, checked):
         ch = int(self.sender().text())
+
+        if isinstance(self.data_processing.data_source, Board):
+            self.data_processing.data_source.toggle_channel(ch, checked)
+
         if checked:
             self.singleWaves[ch - 1].showPlot()
             if self.eeg_ecg_mode.isChecked() and ch in ecg_channels:
