@@ -1,3 +1,5 @@
+import threading
+
 import numpy as np
 
 from brainflow.board_shim import BrainFlowInputParams, BoardShim, BrainFlowError
@@ -74,7 +76,9 @@ class Board(DataSource):
             command = turn_on_commands[channel-1]
         else:
             command = turn_off_commands[channel-1]
-        self.send_command(command)
+
+        thread = threading.Thread(target=self.send_command, args=(command,))
+        thread.start()
 
     def send_command(self, command):
         try:
