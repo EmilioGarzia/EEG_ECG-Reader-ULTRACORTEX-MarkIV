@@ -6,12 +6,11 @@ class PlaybackManager(DataSource):
     def __init__(self, file_path):
         super().__init__()
         self.file_path = file_path
-        self.parser = None
+        self.parser = LogParser(self.file_path)
         self.board_id = None
 
     def start(self):
         if not self.streaming:
-            self.parser = LogParser(self.file_path)
             info = self.parser.begin()
             self.board_id = int(info[0])
             super().start()

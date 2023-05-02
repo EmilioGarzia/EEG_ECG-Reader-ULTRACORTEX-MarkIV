@@ -10,18 +10,25 @@ separator = "\\" if platform.system() == "Windows" else "/"  # file system separ
 
 
 class DataLogger:
-    def __init__(self, output_path):
+    def __init__(self, output_path, create_folder=True):
         self.output_path = fix_separators(output_path)
         self.output_folder = None
         self.record_num = 0
         self.output_file = None
         self.writer = None
 
-    def create_new_record(self, board, exg_channels, create_folder=True):
-        if create_folder and self.output_folder is None:
+        if create_folder:
             self.output_folder = self.output_path + datetime.now().strftime("%m-%d-%Y_%H:%M:%S") + separator
             os.makedirs(self.output_folder, exist_ok=True)
 
+    def save_metadata(self, metadata):
+        file = open(self.output_folder + "metadata.csv", 'w')
+        writer = csv.writer(file)
+        writer.writerow(["Name", "Surname", "Description"])
+        writer.writerow(metadata)
+        file.close()
+
+    def create_new_record(self, board, exg_channels):
         # Create writer
         files = os.listdir(self.output_folder)
         self.record_num = len(files)
@@ -37,7 +44,7 @@ class DataLogger:
         analog_channels = BoardShim.get_analog_channels(board.board_id)
 
         # Write board information
-        self.writer.writerow([board.board_id])
+        self.writer.writerow([int(board.board_id)])
 
         # Write column headers
         headers = ["Packet Num"]
@@ -67,6 +74,18 @@ class LogParser:
         self.reader = csv.reader(self.file)
         self.has_new_data = False
 
+    def load_metadata(self):
+        folder = os.path.dirname(self.file_path)
+        files = os.listdir(folder)
+        if "metadata.csv" in files:
+            file = open(folder + separator + "metadata.csv", 'r')
+            reader = csv.reader(file)
+            next(reader)
+            info = next(reader)
+            file.close()
+            return info
+        return None
+
     def begin(self):
         info = next(self.reader)
         next(self.reader)
@@ -89,26 +108,6 @@ class LogParser:
 
     def close(self):
         self.file.close()
-
-
-def load_metadata(folder):
-    files = os.listdir(folder)
-    if "metadata.csv" in files:
-        file = open(folder + separator + "metadata.csv", 'r')
-        reader = csv.reader(file)
-        next(reader)
-        info = next(reader)
-        file.close()
-        return info
-    return None
-
-
-def save_metadata(folder, metadata):
-    file = open(folder + "metadata.csv", 'w')
-    writer = csv.writer(file)
-    writer.writerow(["Name", "Surname", "Description"])
-    writer.writerow(metadata)
-    file.close()
 
 
 def fix_separators(path):

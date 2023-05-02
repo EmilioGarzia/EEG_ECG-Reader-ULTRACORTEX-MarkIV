@@ -11,8 +11,9 @@ overlap_percentage = 0.75
 
 
 class DataProcessing:
-    def __init__(self, data_source, gain=default_gain):
+    def __init__(self, data_source, save_logs=True, gain=default_gain):
         self.data_source = data_source
+        self.save_logs = save_logs
         self.gain = gain
         self.speed = 1
         self.window_size = 4
@@ -23,9 +24,12 @@ class DataProcessing:
         self.unprocessed_time = None
         self.prev_time = None
 
-    def start(self, save_logs=True):
+    def start(self):
         if not self.data_source.is_streaming():
-            self.data_source.start(save_logs)
+            if isinstance(self.data_source, Board):
+                self.data_source.start(self.save_logs)
+            else:
+                self.data_source.start()
             self.sampling_rate = BoardShim.get_sampling_rate(self.data_source.board_id)
             self.num_points = self.sampling_rate*self.window_size
             self.total_points = self.num_points+extra_window*self.sampling_rate

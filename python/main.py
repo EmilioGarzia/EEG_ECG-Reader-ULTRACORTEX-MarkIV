@@ -9,7 +9,7 @@ from brainflow import BoardIds
 from board import exg_channels, ecg_channels, Board
 from brainflow.board_shim import BrainFlowError
 from graph import Graph
-from log_manager import separator, save_metadata, load_metadata
+from log_manager import separator
 from data_processing import DataProcessing
 from playback import PlaybackManager
 from impedance_ui import ImpedanceUI
@@ -143,7 +143,7 @@ class MainWindow(QMainWindow):
     # Function that updates plot data
     def update(self):
         data_source = self.data_processing.data_source
-        if isinstance(data_source, PlaybackManager) and data_source.is_finished():
+        if data_source.is_finished():
             self.stopLoop()
             self.playButton.setIcon(self.playIcon)
             self.playButton.setEnabled(False)
@@ -182,20 +182,24 @@ class MainWindow(QMainWindow):
     def showFileManager(self):
         self.fileManager.showFileBrowser()
         if len(self.fileManager.getFilename()) > 0:
-            self.openedFileLabel.setText(self.fileManager.getFilename())
-            self.closeSession()
             self.initSession()
 
     def initSession(self):
+        self.closeSession()
         if self.liveRadioBtn.isChecked():
             output_folder = self.outputDirectory.text()
-            save_metadata(output_folder, [self.patientName.text(), self.patientSurname.text(),
-                                          self.patientDescription.toPlainText()])
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.WaitCursor))
             board_type = type_of_board.get(self.inputBoard.currentText())
             port = serial_port_connected.get(self.serialPortInput.currentText())
             try:
                 data_source = Board(board_type, port, output_folder)
+
+                patientName = self.patientName.text()
+                patientSurname = self.patientSurname.text()
+                patientDescription = self.patientDescription.toPlainText()
+                if patientName != "" or patientSurname != "" or patientDescription != "":
+                    data_source.logger.save_metadata([patientName, patientSurname, patientDescription])
+
                 self.data_processing = DataProcessing(data_source)
                 self.imp_ui = ImpedanceUI(data_source)
                 self.impCheckBtn.setEnabled(True)
@@ -207,16 +211,19 @@ class MainWindow(QMainWindow):
                 return
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
         else:
+            self.openedFileLabel.setText(self.fileManager.getFilename())
             input_path = self.fileManager.getPath()
             if input_path == "":
                 return
 
-            metadata = load_metadata(os.path.dirname(input_path))
-            self.patientName.setText(metadata[0])
-            self.patientSurname.setText(metadata[1])
-            self.patientDescription.setPlainText(metadata[2])
-
             data_source = PlaybackManager(input_path)
+
+            metadata = data_source.parser.load_metadata()
+            if metadata is not None:
+                self.patientName.setText(metadata[0])
+                self.patientSurname.setText(metadata[1])
+                self.patientDescription.setPlainText(metadata[2])
+
             self.data_processing = DataProcessing(data_source)
             self.speedControl.setEnabled(True)
 
@@ -272,7 +279,11 @@ class MainWindow(QMainWindow):
 
     def closeSession(self):
         self.stopLoop()
+        self.patientName.setText("")
+        self.patientSurname.setText("")
+        self.patientDescription.setPlainText("")
         self.speedControl.setEnabled(False)
+        self.openedFileLabel.setText("<empty>")
         self.waveWidget.clearGraph()
         self.fftWidget.clearGraph()
         self.ecgWidget.clearGraph()
@@ -280,6 +291,7 @@ class MainWindow(QMainWindow):
             for i, wave in enumerate(self.singleWaves):
                 self.findChild(QHBoxLayout, "singleCH{}".format(i + 1)).removeWidget(wave)
             self.singleWaves = None
+        self.hideSessionWidgets()
 
     def openOutputDirManager(self):
         outDir = QFileDialog.getExistingDirectory(self, "Select Directory", options=QFileDialog.ShowDirsOnly)

@@ -30,12 +30,12 @@ class Board(DataSource):
         params.serial_port = port
         self.board = BoardShim(board_type, params)
         self.board_id = self.board.get_board_id()
-        self.logger = DataLogger(output_folder)
 
         # Start streaming session
         try:
             print("Preparo la sessione...")
             self.board.prepare_session()
+            self.logger = DataLogger(output_folder)
         except BrainFlowError:
             raise
 
