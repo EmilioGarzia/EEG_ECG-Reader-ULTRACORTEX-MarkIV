@@ -44,6 +44,7 @@ class MainWindow(QMainWindow):
         # Additional windows loading
         self.aboutWindow = aboutDialog.AboutDialog()
         self.imp_ui = None
+        self.darkTheme = None
 
         self.data_processing = None
         self.timer = None
@@ -271,7 +272,7 @@ class MainWindow(QMainWindow):
             self.ecg_channels.hide()
             self.ecgMainContainer.hide()
 
-        if self.darkMode:
+        if self.darkTheme:
             self.darkMode()
         else:
             self.lightMode()
@@ -326,6 +327,7 @@ class MainWindow(QMainWindow):
                 self.fftWidget.lightTheme()
             if self.ecgWidget is not None:
                 self.ecgWidget.lightTheme()
+            self.darkTheme = False
 
     def darkMode(self):
         with open("..{0}css{0}styleDark.css".format(separator), "r") as css:
@@ -340,6 +342,7 @@ class MainWindow(QMainWindow):
                 self.fftWidget.darkTheme()
             if self.ecgWidget is not None:
                 self.ecgWidget.darkTheme()
+            self.darkTheme = True
 
     def toggleChannel(self, checked):
         ch = int(self.sender().text())
