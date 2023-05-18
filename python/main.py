@@ -218,6 +218,11 @@ class MainWindow(QMainWindow):
                 return
 
             data_source = PlaybackManager(input_path)
+            if data_source.board_id == -1:
+                AlertDialog("Error!", "Input file is not valid!" +
+                            " Make sure you have selected a file generated" +
+                            " during a previous live stream session.", self).exec()
+                return
 
             metadata = data_source.parser.load_metadata()
             if metadata is not None:

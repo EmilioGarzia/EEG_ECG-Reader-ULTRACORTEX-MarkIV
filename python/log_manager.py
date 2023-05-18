@@ -72,6 +72,7 @@ class LogParser:
         self.file_path = file_path
         self.file = open(self.file_path, 'r')
         self.reader = csv.reader(self.file)
+        self.board_id = self.begin()
         self.has_new_data = False
 
     def load_metadata(self):
@@ -89,8 +90,11 @@ class LogParser:
     def begin(self):
         info = next(self.reader)
         next(self.reader)
-        self.has_new_data = True
-        return info
+
+        try:
+            return int(info[0])
+        except ValueError:
+            return -1
 
     def read_data(self, num_rows=1):
         data = []
