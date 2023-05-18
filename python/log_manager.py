@@ -1,12 +1,11 @@
 import csv
-import platform
 import os
 import numpy as np
 from datetime import datetime
 
 from brainflow.board_shim import BoardShim
 
-separator = "\\" if platform.system() == "Windows" else "/"  # file system separator
+separator = os.path.sep  # file system separator
 
 
 class DataLogger:
@@ -18,7 +17,7 @@ class DataLogger:
         self.writer = None
 
         if create_folder:
-            self.output_folder = self.output_path + datetime.now().strftime("%m-%d-%Y_%H:%M:%S") + separator
+            self.output_folder = self.output_path + datetime.now().strftime("%m-%d-%Y_%H-%M-%S") + separator
             os.makedirs(self.output_folder, exist_ok=True)
 
     def save_metadata(self, metadata):
@@ -115,8 +114,7 @@ class LogParser:
 
 
 def fix_separators(path):
-    to_fix = "\\" if separator == "/" else "\\"
-    path.replace(to_fix, separator)
+    path = path.replace("/", separator)
     if not path.endswith(separator):
         path += separator
     return path
