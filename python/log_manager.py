@@ -73,7 +73,7 @@ class LogParser:
         self.file = open(self.file_path, 'r')
         self.reader = csv.reader(self.file)
         self.board_id = self.begin()
-        self.has_new_data = False
+        self.has_new_data = True
 
     def load_metadata(self):
         folder = os.path.dirname(self.file_path)

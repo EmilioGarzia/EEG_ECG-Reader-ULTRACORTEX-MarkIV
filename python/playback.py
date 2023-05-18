@@ -16,10 +16,12 @@ class PlaybackManager(DataSource):
     def stop(self):
         if self.streaming:
             super().stop()
-            self.parser.close()
 
     def read_data(self, samples=1):
         return self.parser.read_data(samples)
 
     def is_finished(self):
         return not self.parser.has_new_data
+
+    def close(self):
+        self.parser.close()

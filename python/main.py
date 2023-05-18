@@ -285,6 +285,8 @@ class MainWindow(QMainWindow):
 
     def closeSession(self):
         self.stopLoop()
+        if self.data_processing is not None:
+            self.data_processing.close()
         self.patientName.setText("")
         self.patientSurname.setText("")
         self.patientDescription.setPlainText("")

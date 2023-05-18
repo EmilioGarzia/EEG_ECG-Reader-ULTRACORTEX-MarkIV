@@ -113,6 +113,9 @@ class DataProcessing:
         self.unprocessed_time -= samples*time_per_sample
         return samples
 
+    def close(self):
+        self.data_source.close()
+
 
 def calculate_impedance(channel_data):
     stddev = DataFilter.calc_stddev(channel_data)

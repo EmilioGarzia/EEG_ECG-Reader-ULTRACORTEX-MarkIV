@@ -54,6 +54,9 @@ class Board(DataSource):
             self.logger.close()
             super().stop()
 
+    def close(self):
+        self.board.release_session()
+
     def read_data(self, samples=1):
         try:
             data = np.transpose(self.board.get_board_data(samples))
