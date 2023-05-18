@@ -72,4 +72,5 @@ class ImpedanceUI(QWidget):
 
     def closeEvent(self, event: QtGui.QCloseEvent) -> None:
         self.stop_impedance_checking()
+        self.timer.stop()
         event.accept()
