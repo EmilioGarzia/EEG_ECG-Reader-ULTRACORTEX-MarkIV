@@ -87,10 +87,9 @@ class DataProcessing:
     # Calculates Power Spectrum Density
     def psd(self, channel_data):
         nfft = DataFilter.get_nearest_power_of_two(self.sampling_rate)
-        overlap = int(overlap_percentage*nfft)
         improvedData = channel_data[-nfft-1:-1]
         improvedData = np.subtract(improvedData, np.average(improvedData))
-        return DataFilter.get_psd_welch(improvedData, nfft, overlap, self.sampling_rate, WindowOperations.HAMMING.value)
+        return DataFilter.get_psd(improvedData, self.sampling_rate, WindowOperations.HAMMING.value)
 
     def clip_data(self):
         data_length = len(self.total_data)
