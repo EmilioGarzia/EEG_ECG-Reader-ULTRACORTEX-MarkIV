@@ -59,7 +59,7 @@ class ImpedanceUI(QWidget):
         imp = impedance[self.checking_channel-1]
         kohms = int(imp/1000)
         if kohms < threshold_railed_warn:
-            color = "green"
+            color = "lime"
         elif kohms < threshold_railed:
             color = "yellow"
         else:
