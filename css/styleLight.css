@@ -1,3 +1,7 @@
+QLabel {
+    color: black;
+}
+
 #CH1check, #CH9check, #ECGCH9check{ background-color: rgb(128,129,130);color:white;}
 #CH1check, #CH9check, #ECGCH10check{ background-color: rgb(128,129,130);color:white;}
 #CH2check, #CH10check, #ECGCH11check{ background-color: rgb(123, 74,141); color:white; }

@@ -5,19 +5,19 @@ from datetime import datetime
 
 from brainflow.board_shim import BoardShim
 
-separator = os.path.sep  # file system separator
+#separator = os.path.sep  # file system separator
 
 
 class DataLogger:
     def __init__(self, output_path, create_folder=True):
-        self.output_path = fix_separators(output_path)
+        self.output_path = output_path
         self.output_folder = None
         self.record_num = 0
         self.output_file = None
         self.writer = None
 
         if create_folder:
-            self.output_folder = self.output_path + datetime.now().strftime("%m-%d-%Y_%H-%M-%S") + separator
+            self.output_folder = os.path.join(self.output_path, datetime.now().strftime("%m-%d-%Y_%H-%M-%S"))
             os.makedirs(self.output_folder, exist_ok=True)
 
     def save_metadata(self, metadata):
@@ -78,7 +78,7 @@ class LogParser:
         folder = os.path.dirname(self.file_path)
         files = os.listdir(folder)
         if "metadata.csv" in files:
-            file = open(folder + separator + "metadata.csv", 'r')
+            file = open(os.path.join(folder, "metadata.csv"), 'r')
             reader = csv.reader(file)
             next(reader)
             info = next(reader)
@@ -111,10 +111,3 @@ class LogParser:
 
     def close(self):
         self.file.close()
-
-
-def fix_separators(path):
-    path = path.replace("/", separator)
-    if not path.endswith(separator):
-        path += separator
-    return path

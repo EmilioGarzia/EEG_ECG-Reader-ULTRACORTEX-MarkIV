@@ -1,7 +1,8 @@
+import os
+
 from PyQt5 import uic, QtCore, QtGui
 from PyQt5.QtWidgets import QWidget, QPushButton
 
-from log_manager import separator
 from board import exg_channels
 from data_processing import DataProcessing
 
@@ -13,7 +14,7 @@ threshold_railed = 2500
 class ImpedanceUI(QWidget):
     def __init__(self, board, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        uic.loadUi("..{0}GUI{0}impedanceGUI.ui".format(separator), self)
+        uic.loadUi(os.path.join("..", "GUI", "impedanceGUI.ui"), self)
 
         self.data_processing = DataProcessing(board, False, 1)
         self.board = board

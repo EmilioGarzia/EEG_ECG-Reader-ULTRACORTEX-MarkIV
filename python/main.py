@@ -9,7 +9,6 @@ from brainflow import BoardIds
 from board import exg_channels, ecg_channels, Board
 from brainflow.board_shim import BrainFlowError
 from graph import Graph
-from log_manager import separator
 from data_processing import DataProcessing
 from playback import PlaybackManager
 from impedance_ui import ImpedanceUI
@@ -34,9 +33,10 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__(*args, **kwargs)
 
         # Main GUI loading
-        uic.loadUi("..{0}GUI{0}gui.ui".format(separator), self)
-        self.playIcon = QtGui.QIcon("..{0}SVG{0}playButton.svg".format(separator))
-        self.pauseIcon = QtGui.QIcon("..{0}SVG{0}pauseButton.svg".format(separator))
+        print(os.getcwd())
+        uic.loadUi(os.path.join("GUI", "gui.ui"), self)
+        self.playIcon = QtGui.QIcon(os.path.join("SVG", "playButton.svg"))
+        self.pauseIcon = QtGui.QIcon(os.path.join("SVG", "pauseButton.svg"))
         self.playButton.setIcon(self.playIcon)
         self.outputDirectory.setText(os.path.expanduser("~"))
         self.fileManager = fileDialog.FileBrowser()
@@ -322,7 +322,7 @@ class MainWindow(QMainWindow):
         self.setStyleSheet(self.styleSheet() + "*{ font-size: 13px; }")
 
     def lightMode(self):
-        with open("..{0}css{0}styleLight.css".format(separator), "r") as css:
+        with open(os.path.join("css", "styleLight.css"), "r") as css:
             myCSS = css.read()
             self.setStyleSheet(myCSS)
             if self.singleWaves is not None:
@@ -337,7 +337,7 @@ class MainWindow(QMainWindow):
             self.darkTheme = False
 
     def darkMode(self):
-        with open("..{0}css{0}styleDark.css".format(separator), "r") as css:
+        with open(os.path.join("css", "styleDark.css"), "r") as css:
             myCSS = css.read()
             self.setStyleSheet(myCSS)
             if self.singleWaves is not None:
