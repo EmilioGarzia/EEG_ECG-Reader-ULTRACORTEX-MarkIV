@@ -14,7 +14,7 @@ threshold_railed = 2500
 class ImpedanceUI(QWidget):
     def __init__(self, board, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        uic.loadUi(os.path.join("..", "GUI", "impedanceGUI.ui"), self)
+        uic.loadUi(os.path.join("GUI", "impedanceGUI.ui"), self)
 
         self.data_processing = DataProcessing(board, False, 1)
         self.board = board
