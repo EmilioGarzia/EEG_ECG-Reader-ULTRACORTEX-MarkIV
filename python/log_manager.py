@@ -5,8 +5,6 @@ from datetime import datetime
 
 from brainflow.board_shim import BoardShim
 
-#separator = os.path.sep  # file system separator
-
 
 class DataLogger:
     def __init__(self, output_path, create_folder=True):
@@ -34,7 +32,7 @@ class DataLogger:
         if "metadata.csv" not in files:
             self.record_num += 1
 
-        output_file_name = self.output_folder + str(self.record_num) + ".csv"
+        output_file_name = os.path.join(self.output_folder, str(self.record_num) + ".csv")
         self.output_file = open(output_file_name, 'w')
         self.writer = csv.writer(self.output_file)
         self.record_num += 1

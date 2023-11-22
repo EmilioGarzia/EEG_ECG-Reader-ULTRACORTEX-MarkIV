@@ -1,5 +1,9 @@
-QLabel {
+* {
     color: black;
+}
+
+QMainWindow, QDialog, QFileDialog, QScrollArea, QWidget {
+    background-color: #eeeeee;
 }
 
 #CH1check, #CH9check, #ECGCH9check{ background-color: rgb(128,129,130);color:white;}
@@ -20,12 +24,20 @@ QLabel {
 }
 
 QGroupBox{ 
-    color: red; 
+    color: gray; 
     font-weight: bold;
+
+}
+
+QRadioButton {
+    background-color: #eeeeee;
 }
 
 #openedFileLabel{ color: rgb(235, 129, 22); }
-QCheckBox{ border-radius: 6px; }
+QCheckBox { 
+    border-radius: 6px;
+    background-color: #eeeeee;
+}
 
 QPushButton{
     background-color: rgb(0, 106, 255);
@@ -35,10 +47,18 @@ QPushButton{
 }
 QPushButton:hover{ background-color: rgb(128, 201, 225); }
 
-QLineEdit, QPlainTextEdit, QComboBox{
-    color: white;
-    background-color: black;
+QLineEdit, QComboBox{
+    color: black;
+    background-color: white;
     padding: 4px;
+}
+
+QPlainTextEdit {
+    color: black;
+    background-color: white;
+    padding: 4px;
+    border: none;
+    border-radius: 5px;
 }
 
 #refreshSerialPortBtn{

@@ -137,6 +137,9 @@
         <property name="title">
          <string>Patient Information</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
         <layout class="QVBoxLayout" name="verticalLayout_9">
          <property name="sizeConstraint">
           <enum>QLayout::SetMaximumSize</enum>
@@ -223,6 +226,9 @@
         </property>
         <property name="title">
          <string>Controls</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_7">
          <property name="sizeConstraint">
@@ -521,6 +527,9 @@
         </property>
         <property name="title">
          <string>Live Stream</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_5">
          <property name="sizeConstraint">
@@ -923,6 +932,9 @@
         <property name="title">
          <string>Playback</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
         <layout class="QVBoxLayout" name="verticalLayout_11">
          <item>
           <spacer name="verticalSpacer_2">
@@ -1112,6 +1124,9 @@
         <property name="title">
          <string>Showing Plots</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <property name="sizeConstraint">
           <enum>QLayout::SetNoConstraint</enum>
@@ -1291,7 +1306,7 @@
                 <x>0</x>
                 <y>0</y>
                 <width>459</width>
-                <height>674</height>
+                <height>644</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_10">

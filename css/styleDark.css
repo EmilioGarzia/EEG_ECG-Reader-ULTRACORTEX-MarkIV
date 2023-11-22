@@ -1,4 +1,4 @@
-QLabel {
+* {
     color: white;
 }
 
@@ -16,7 +16,7 @@ QLabel{ color: white; }
 
 QGroupBox{ 
     background-color: rgb(36, 36, 36);
-    color: yellow; 
+    color: gray; 
     font-weight: bold;
 }
 
@@ -49,10 +49,18 @@ QPushButton:hover{
     color: white;
 }
 
-QLineEdit, QPlainTextEdit, QComboBox{
+QLineEdit, QComboBox{
     color: white;
     background-color: black;
     padding: 4px;
+}
+
+QPlainTextEdit {
+    color: white;
+    background-color: black;
+    padding: 4px;
+    border: none;
+    border-radius: 5px;
 }
 
 QRadioButton{
