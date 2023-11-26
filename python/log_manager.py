@@ -67,10 +67,7 @@ class DataLogger:
 class LogParser:
     def __init__(self, file_path):
         self.file_path = file_path
-        self.file = open(self.file_path, 'r')
-        self.reader = csv.reader(self.file)
         self.board_id = self.begin()
-        self.has_new_data = True
 
     def load_metadata(self):
         folder = os.path.dirname(self.file_path)
@@ -85,12 +82,15 @@ class LogParser:
         return None
 
     def begin(self):
+        self.file = open(self.file_path, 'r')
+        self.reader = csv.reader(self.file)
         info = next(self.reader)
         next(self.reader)
-
         try:
+            self.has_new_data = True
             return int(info[0])
         except ValueError:
+            self.has_new_data = False
             return -1
 
     def read_data(self, num_rows=1):

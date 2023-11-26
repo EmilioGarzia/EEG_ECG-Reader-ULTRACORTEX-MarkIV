@@ -212,7 +212,6 @@ class MainWindow(QMainWindow):
                 return
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
         else:
-            self.openedFileLabel.setText(self.fileManager.getFilename())
             input_path = self.fileManager.getPath()
             if input_path == "":
                 return
@@ -224,6 +223,7 @@ class MainWindow(QMainWindow):
                             " during a previous live stream session.", self).exec()
                 return
 
+            self.openedFileLabel.setText(self.fileManager.getFilename())
             metadata = data_source.parser.load_metadata()
             if metadata is not None:
                 self.patientName.setText(metadata[0])

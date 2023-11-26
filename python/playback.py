@@ -12,6 +12,7 @@ class PlaybackManager(DataSource):
     def start(self):
         if not self.streaming:
             super().start()
+            self.parser.begin()
 
     def stop(self):
         if self.streaming:
