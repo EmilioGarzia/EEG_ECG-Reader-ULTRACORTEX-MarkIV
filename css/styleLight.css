@@ -23,7 +23,7 @@ QMainWindow, QDialog, QFileDialog, QScrollArea, QWidget {
     border-radius: 15px;
 }
 
-QGroupBox{ 
+QGroupBox{
     color: gray; 
     font-weight: bold;
 

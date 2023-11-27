@@ -80,7 +80,7 @@ class DataProcessing:
         DataFilter.perform_bandstop(channel_data, self.sampling_rate, 48.0, 52.0, 2, FilterTypes.BUTTERWORTH.value, 0)
         DataFilter.perform_bandstop(channel_data, self.sampling_rate, 58.0, 62.0, 2, FilterTypes.BUTTERWORTH.value, 0)
         """
-        DataFilter.perform_bandpass(channel_data, self.sampling_rate, 0.1, 45.0, 4, FilterTypes.BUTTERWORTH.value, 0)
+        DataFilter.perform_bandpass(channel_data, self.sampling_rate, 0, 45.0, 4, FilterTypes.BUTTERWORTH.value, 0)
         # Environmental noise cancellation
         DataFilter.remove_environmental_noise(channel_data, self.sampling_rate, NoiseTypes.FIFTY_AND_SIXTY.value)
 
