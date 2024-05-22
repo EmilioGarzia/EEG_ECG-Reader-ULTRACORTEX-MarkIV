@@ -186,8 +186,7 @@ color: blue;</string>
          </property>
          <property name="text">
           <string>Emilio Garzia
-Manuel Manco
-Davide De Angelis</string>
+Manuel Manco</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
