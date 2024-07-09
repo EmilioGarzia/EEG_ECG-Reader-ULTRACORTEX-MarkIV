@@ -55,7 +55,8 @@ class DataLogger:
     def write_data(self, data):
         if self.writer is not None:
             for row in data:
-                self.writer.writerow(row)
+                if len(row) > 0:
+                    self.writer.writerow(row)
 
     def close(self):
         if self.output_file is not None:
