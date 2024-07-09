@@ -1,11 +1,18 @@
 <!-- toc start: 3 [do not erase this comment] -->
 **Table of contents**
-- [EEG/ECG Reader: ULTRACORTEX MarkIV](#eegecg-reader-ultracortex-markiv)
-	- [Descritipion](#descritipion)
-	- [Used technologies](#used-technologies)
-	- [Dependencies](#dependencies)
-	- [How to execute](#how-to-execute)
-	- [Demo](#demo)
+- [EEG\ECG Reader: ULTRACORTEX MarkIV](#eegecg-reader-ultracortex-markiv)
+- [Description](#description)
+- [Dependencies](#dependencies)
+- [How to run](#how-to-run)
+- [Usage](#usage)
+	- [How to start Stream session](#how-to-start-stream-session)
+	- [How to start Playback session](#how-to-start-playback-session)
+	- [How to check impedance channels](#how-to-check-impedance-channels)
+- [Known issues](#known-issues)
+- [Demo](#demo)
+- [License](#license)
+- [Authors](#authors)
+	- [Contacts](#contacts)
 <!-- toc end [do not erase this comment] -->
 
 # EEG\ECG Reader: ULTRACORTEX MarkIV
@@ -35,6 +42,8 @@ Run the command:
 # Usage
 
 ## How to start Stream session
+
+
 
 ## How to start Playback session
 
