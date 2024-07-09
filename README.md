@@ -6,9 +6,6 @@
 	- [Impedance Checker](#impedance-checker)
 - [Dependencies](#dependencies)
 - [How to run](#how-to-run)
-- [Used technologies](#used-technologies)
-- [Dependencies](#dependencies)
-- [How to run](#how-to-run)
 - [Usage](#usage)
 	- [How to start Stream session](#how-to-start-stream-session)
 	- [How to start Playback session](#how-to-start-playback-session)
@@ -46,6 +43,7 @@ On the right side of the screen there is the **Wave Plot**, which is a combinati
 ## Impedance Checker
 
 When we click on the "Impedance Checking" button in the toolbar, the Impedance Checker tool will open. Here we can test all the electrodes one at a time and check if they are well positioned on the head of the subject. If so, the resulting value will be colored green, otherwise it will be red.
+
 
 To help the user to individuate the electrodes on the headset, the tool assigns a different color to each one and provides a map of the electrodes position.
 
