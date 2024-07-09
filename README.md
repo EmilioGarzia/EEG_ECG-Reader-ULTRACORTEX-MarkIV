@@ -13,9 +13,19 @@
 # Description
 [Manuel]
 # Dependencies
-[Emilio]
+
+* `brainflow==5.12.1`
+* `numpy==1.26.2`
+* `PyQt5==5.15.10`
+* `PyQt5-Qt5==5.15.2`
+* `PyQt5-sip==12.13.0`
+* `pyqtgraph==0.13.7`
+* `pyserial==3.5`
+
 # How to run
-[Emilio]
+
+
+
 # Used technologies
 [Emilio]
 # Known issues
