@@ -16,6 +16,8 @@ from alert_dialog import AlertDialog
 import aboutDialog
 import fileDialog
 
+separator = os.path.sep
+
 # global var
 serial_port_connected = dict()  # all serial port connected
 type_of_board = {  # Supported types of boards
@@ -34,9 +36,9 @@ class MainWindow(QMainWindow):
 
         # Main GUI loading
         print(os.getcwd())
-        uic.loadUi(os.path.join("GUI", "gui.ui"), self)
-        self.playIcon = QtGui.QIcon(os.path.join("SVG", "playButton.svg"))
-        self.pauseIcon = QtGui.QIcon(os.path.join("SVG", "pauseButton.svg"))
+        uic.loadUi(f"..{separator}GUI{separator}gui.ui", self)
+        self.playIcon = QtGui.QIcon(f"..{separator}SVG{separator}playButton.svg")
+        self.pauseIcon = QtGui.QIcon(f"..{separator}SVG{separator}pauseButton.svg")
         self.playButton.setIcon(self.playIcon)
         self.outputDirectory.setText(os.path.expanduser("~"))
         self.fileManager = fileDialog.FileBrowser()
@@ -322,7 +324,7 @@ class MainWindow(QMainWindow):
         self.setStyleSheet(self.styleSheet() + "*{ font-size: 13px; }")
 
     def lightMode(self):
-        with open(os.path.join("css", "styleLight.css"), "r") as css:
+        with open(f"..{separator}css{separator}styleLight.css", "r") as css:
             myCSS = css.read()
             self.setStyleSheet(myCSS)
             if self.singleWaves is not None:
@@ -337,7 +339,7 @@ class MainWindow(QMainWindow):
             self.darkTheme = False
 
     def darkMode(self):
-        with open(os.path.join("css", "styleDark.css"), "r") as css:
+        with open(f"..{separator}css{separator}styleDark.css", "r") as css:
             myCSS = css.read()
             self.setStyleSheet(myCSS)
             if self.singleWaves is not None:
