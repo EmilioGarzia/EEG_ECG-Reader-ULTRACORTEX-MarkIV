@@ -6,6 +6,8 @@ from PyQt5.QtWidgets import QWidget, QPushButton
 from board import exg_channels
 from data_processing import DataProcessing
 
+separator = os.path.sep
+
 # Thresholds for impedance checking
 threshold_railed_warn = 750
 threshold_railed = 2500
@@ -14,7 +16,7 @@ threshold_railed = 2500
 class ImpedanceUI(QWidget):
     def __init__(self, board, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        uic.loadUi(os.path.join("GUI", "impedanceGUI.ui"), self)
+        uic.loadUi(f"..{separator}GUI{separator}impedanceGUI.ui", self)
 
         self.data_processing = DataProcessing(board, False, 1)
         self.board = board

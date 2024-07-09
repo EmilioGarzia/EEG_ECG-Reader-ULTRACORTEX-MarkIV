@@ -24,14 +24,30 @@
 
 # How to run
 
+Enter into the directory:
 
+`EEG_ECG-Reader-ULTRACORTEX-MarkIV\python`
 
-# Used technologies
-[Emilio]
+Run the command:
+
+`python main.py`
+
+# Usage
+
+## How to start Stream session
+
+## How to start Playback session
+
+## How to check impedance channels
+
 # Known issues
+
 [Manuel]
+
 # Demo
+
 [Emilio]
+
 # License
 
 `GNU GENERAL PUBLIC LICENSE 3.0`
