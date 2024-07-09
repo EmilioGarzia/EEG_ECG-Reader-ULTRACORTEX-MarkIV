@@ -43,8 +43,6 @@ Run the command:
 
 ## How to start Stream session
 
-
-
 ## How to start Playback session
 
 ## How to check impedance channels
@@ -55,7 +53,11 @@ Run the command:
 
 # Demo
 
-[Emilio]
+![Live stream demo](image/stream.gif)
+> Live stream DEMO
+
+![Impedance DEMO](image/impedance.gif)
+> Impedance window DEMO
 
 # License
 
