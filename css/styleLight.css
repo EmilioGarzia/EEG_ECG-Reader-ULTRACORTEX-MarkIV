@@ -2,7 +2,7 @@
     color: black;
 }
 
-QMainWindow, QDialog, QFileDialog, QScrollArea, QWidget {
+QMainWindow, QDialog, QFileDialog, QScrollArea, QWidget, QToolTip {
     background-color: #eeeeee;
 }
 
@@ -37,6 +37,8 @@ QRadioButton {
 QCheckBox { 
     border-radius: 6px;
     background-color: #eeeeee;
+    padding: 1px 4px;
+    padding-right: 0;
 }
 
 QPushButton{

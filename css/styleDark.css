@@ -23,6 +23,8 @@ QGroupBox{
 QCheckBox{
     color: white;
     border-radius: 6px;
+    padding: 1px 4px;
+    padding-right: 0;
 }
 
 #playButton, #stopButton{ background-color: transparent; }

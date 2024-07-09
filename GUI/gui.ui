@@ -665,7 +665,7 @@
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Refresh Serial Port List&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>Refresh Serial Port List</string>
              </property>
              <property name="styleSheet">
               <string notr="true"/>
@@ -1324,7 +1324,7 @@
                     <property name="maximumSize">
                      <size>
                       <width>50</width>
-                      <height>20</height>
+                      <height>16777215</height>
                      </size>
                     </property>
                     <property name="font">
