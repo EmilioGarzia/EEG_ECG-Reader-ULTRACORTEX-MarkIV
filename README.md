@@ -43,9 +43,28 @@ Run the command:
 
 ## How to start Stream session
 
+![tool bar](image/live%20streamm%20tool.png)
+
+1. Check the radio button `Live stream mode`
+1. Refresh the serial port list item
+1. Choose the serial port linked with the headset
+1. Click on the button `Start session`
+1. Click on the `play` icon in the `Controls` tab
+
 ## How to start Playback session
 
+![tool bar](image/playback%20tool.png)
+
+1. Check the radio button `Playback Mode`
+1. The `Open File` button will be enabled, click on it
+1. Choose the CSV file that contain your data
+1. Click on the `play` icon in the `Controls` tab
+
 ## How to check impedance channels
+
+1. Refresh the `Serial port` list item
+1. Choose the right port
+1. Click on the button `Impedance Checking`
 
 # Known issues
 
