@@ -10,6 +10,8 @@ from data_source import DataSource
 base_impedance_ohms = 2200
 drive_amps = 6.0e-9
 default_gain = 24
+scale_factor = 4.5/default_gain/(2^23-1)
+
 colors = [(128, 129, 130), (123, 74, 141), (57, 90, 161), (49, 113, 89),
           (220, 174, 5), (254, 97, 55), (255, 56, 44), (162, 81, 48)]
 
@@ -59,7 +61,9 @@ class Board(DataSource):
 
     def read_data(self, samples=1):
         try:
-            data = np.transpose(self.board.get_board_data(samples))
+            data = self.board.get_board_data(samples)
+            data = np.multiply(data, scale_factor)
+            data = np.transpose(data)
             self.logger.write_data(data)
             return data
         except BrainFlowError:

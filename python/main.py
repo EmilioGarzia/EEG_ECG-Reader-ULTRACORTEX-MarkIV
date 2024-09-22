@@ -8,7 +8,7 @@ from brainflow import BoardIds
 
 from board import exg_channels, ecg_channels, Board
 from brainflow.board_shim import BrainFlowError
-from graph import Graph
+from graph import Resizer, Graph, decibel_scale
 from data_processing import DataProcessing
 from playback import PlaybackManager
 from impedance_ui import ImpedanceUI
@@ -133,12 +133,12 @@ class MainWindow(QMainWindow):
         self.stopButton.setEnabled(False)
 
     def clearGraphs(self):
-        self.waveWidget.refresh([])
-        self.fftWidget.refresh([])
-        self.ecgWidget.refresh([])
+        self.waveWidget.clearGraph()
+        self.fftWidget.clearGraph()
+        self.ecgWidget.clearGraph()
         if self.singleWaves is not None:
             for wave in self.singleWaves:
-                wave.refresh([])
+                wave.clearGraph()
 
     def calculateUpdateSpeed(self):
         self.data_processing.speed = self.speedControl.value() / 4
@@ -159,16 +159,15 @@ class MainWindow(QMainWindow):
         if self.eeg_ecg_mode.isChecked():
             eeg_wave, ecg_wave = self.splitWaves(wave)
             eeg_fft, _ = self.splitWaves(fft)
-            self.waveWidget.refresh(eeg_wave, 1 / 1.0E6)
-            self.fftWidget.refresh(eeg_fft, 1 / 1.0E6)
-            self.ecgWidget.refresh(ecg_wave, 1 / 1.0E3)
+            self.waveWidget.refresh(eeg_wave)
+            self.fftWidget.refresh(eeg_fft, scale_fn=decibel_scale)
+            self.ecgWidget.refresh(ecg_wave)
         else:
-            self.waveWidget.refresh(wave, 1 / 1.0E6)
-            self.fftWidget.refresh(fft, 1 / 1.0E6)
+            self.waveWidget.refresh(wave)
+            self.fftWidget.refresh(fft, scale_fn=decibel_scale)
 
         for i, w in enumerate(wave):
-            scale = 1 / 1.0E3 if self.eeg_ecg_mode.isChecked() and i + 1 in ecg_channels else 1 / 1.0E6
-            self.singleWaves[i].refresh([w], scale)
+            self.singleWaves[i].refresh([w])
 
     @classmethod
     def splitWaves(cls, waves):
@@ -237,12 +236,12 @@ class MainWindow(QMainWindow):
 
         # EEG/ECG Single Waves Instructions
         if self.singleWaves is None:
+            resizer = Resizer()
             self.singleWaves = []
             for ch in exg_channels:
-                graph = Graph()
+                graph = Graph(resizer)
                 graph.showAxes(True, size=(0, 0))
                 graph.setXRange(-self.data_processing.window_size, 0)
-                graph.setYRange(-0.05, 0.05)
                 self.initGraph(graph, [ch])
                 self.singleWaves.append(graph)
                 if self.eeg_ecg_mode.isChecked() and ch in ecg_channels:
@@ -253,17 +252,14 @@ class MainWindow(QMainWindow):
         # Wave Plot Instructions
         self.initGraph(self.waveWidget, exg_channels)
         self.waveWidget.setXRange(-self.data_processing.window_size, 0)
-        self.waveWidget.setYRange(-0.05, 0.05)
 
         # FFT Plot Instructions
         self.initGraph(self.fftWidget, exg_channels)
         self.fftWidget.setXRange(0, 60)
-        self.fftWidget.setYRange(0, 50)
 
         # ECG Plot Instructions
         self.initGraph(self.ecgWidget, ecg_channels)
         self.ecgWidget.setXRange(-self.data_processing.window_size, 0)
-        self.ecgWidget.setYRange(-0.05, 0.05)
 
         self.showSessionWidgets()
         self.playButton.setIcon(self.playIcon)
@@ -294,9 +290,9 @@ class MainWindow(QMainWindow):
         self.patientDescription.setPlainText("")
         self.speedControl.setEnabled(False)
         self.openedFileLabel.setText("<empty>")
-        self.waveWidget.clearGraph()
-        self.fftWidget.clearGraph()
-        self.ecgWidget.clearGraph()
+        self.waveWidget.reset()
+        self.fftWidget.reset()
+        self.ecgWidget.reset()
         if self.singleWaves is not None:
             for i, wave in enumerate(self.singleWaves):
                 self.findChild(QHBoxLayout, "singleCH{}".format(i + 1)).removeWidget(wave)

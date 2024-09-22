@@ -2,6 +2,13 @@ import numpy as np
 from pyqtgraph import PlotWidget, mkPen
 
 
+def decibel_scale(x):
+    return 10*np.log10(x)
+
+def linear_scale(x, scale=1):
+    return np.multiply(x, scale)
+
+
 class Function:
     def __init__(self, x=None, y=None):
         if x is None:
@@ -13,9 +20,10 @@ class Function:
 
 
 class Graph(PlotWidget):
-    def __init__(self):
+    def __init__(self, resizer=None):
         super().__init__()
         self.plots = []
+        self.resizer = Resizer() if resizer is None else resizer
 
         self.showGrid(x=True, y=True)
         self.setDefaultPadding(0)
@@ -41,17 +49,38 @@ class Graph(PlotWidget):
 
     def addPlot(self, color):
         pen = mkPen(color=color)
-        graph = self.plot([], [], pen=pen)
-        self.plots.append(graph)
-        return graph
+        plot = self.plot([], [], pen=pen)
+        self.plots.append(plot)
+        return plot
 
-    def clearGraph(self):
+    def reset(self):
         self.clear()
         self.plots.clear()
 
-    def refresh(self, data, scale=1):
-        for i, graph in enumerate(self.plots):
+    def clearGraph(self):
+        self.refresh([])
+        self.resizer.reset()
+
+    def refresh(self, data, scale_fn=linear_scale, **kwargs):
+        for i, plot in enumerate(self.plots):
             if i < len(data):
-                graph.setData(data[i].x, np.multiply(data[i].y, scale))
+                y = scale_fn(data[i].y, **kwargs)
+                self.resizer.update(self, y)
+                plot.setData(data[i].x, y)
             else:
-                graph.setData([], [])
+                plot.setData([], [])
+
+
+class Resizer:
+    def __init__(self):
+        self.min = float("inf")
+        self.max = float("-inf")
+
+    def reset(self):
+        self.min = float("inf")
+        self.max = float("-inf")
+
+    def update(self, graph, data):
+        self.min = min(self.min, np.min(data))
+        self.max = max(self.max, np.max(data))
+        graph.setYRange(self.min, self.max)

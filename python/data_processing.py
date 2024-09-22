@@ -48,7 +48,7 @@ class DataProcessing:
         if samples == 0:
             return None, None, None
 
-        new_data = np.multiply(self.data_source.read_data(samples), self.gain)
+        new_data = np.multiply(self.data_source.read_data(samples), scale_factor)
         if len(new_data) == 0:
             return None, None, None
 
